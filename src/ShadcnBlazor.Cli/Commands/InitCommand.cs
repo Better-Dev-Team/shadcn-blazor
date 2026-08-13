@@ -48,6 +48,12 @@ public static class InitCommand
         // 5. Configure _Imports.razor with @using ShadcnBlazor
         ConfigureImports(currentDir);
 
+        // 6. Register DI services in Program.cs
+        ConfigureProgramCs(currentDir);
+
+        // 7. Wire stylesheet & interop script into wwwroot/index.html
+        ConfigureIndexHtml(currentDir);
+
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("\n✦ ShadcnBlazor initialization complete! You can now add components with:");
         Console.ForegroundColor = ConsoleColor.Cyan;
@@ -108,5 +114,134 @@ public static class InitCommand
         }
 
         Console.WriteLine("  ✓ _Imports.razor configured with @using ShadcnBlazor.");
+    }
+
+    private static void ConfigureProgramCs(string projectDir)
+    {
+        var programPath = Path.Combine(projectDir, "Program.cs");
+        if (!File.Exists(programPath))
+        {
+            Console.WriteLine("  ⚠ Program.cs not found. Add builder.Services.AddShadcnBlazor(); manually.");
+            return;
+        }
+
+        var content = File.ReadAllText(programPath);
+        if (content.Contains("AddShadcnBlazor", StringComparison.Ordinal))
+        {
+            Console.WriteLine("  - Skipped Program.cs (AddShadcnBlazor already registered)");
+            return;
+        }
+
+        const string servicesLine = "builder.Services.AddShadcnBlazor();";
+        var lines = new List<string>(content.Split('\n'));
+
+        if (!content.Contains("using ShadcnBlazor", StringComparison.Ordinal))
+        {
+            lines.Insert(0, "using ShadcnBlazor;");
+        }
+
+        var headOutletIndex = lines.FindIndex(l => l.Contains("HeadOutlet", StringComparison.Ordinal));
+        var insertAt = headOutletIndex >= 0 ? headOutletIndex + 1 : -1;
+        if (insertAt < 0)
+        {
+            var buildIndex = lines.FindIndex(l => l.Contains("builder.Build()", StringComparison.Ordinal));
+            insertAt = buildIndex;
+        }
+
+        if (insertAt >= 0)
+        {
+            lines.Insert(insertAt, servicesLine);
+            File.WriteAllText(programPath, string.Join("\n", lines));
+            Console.WriteLine("  ✓ Program.cs configured with builder.Services.AddShadcnBlazor().");
+        }
+        else
+        {
+            Console.WriteLine("  ⚠ Could not find an insertion point in Program.cs. Add builder.Services.AddShadcnBlazor(); manually.");
+        }
+    }
+
+    private static void ConfigureIndexHtml(string projectDir)
+    {
+        var indexPath = Path.Combine(projectDir, "wwwroot", "index.html");
+        if (!File.Exists(indexPath))
+        {
+            Console.WriteLine("  ⚠ wwwroot/index.html not found. Link shadcn-blazor.css and shadcn-blazor.js manually.");
+            return;
+        }
+
+        var content = File.ReadAllText(indexPath);
+        var changed = false;
+
+        RemoveBootstrapLink(ref content, ref changed);
+
+        if (content.Contains("shadcn-blazor.css", StringComparison.Ordinal))
+        {
+            Console.WriteLine("  - Skipped index.html (shadcn-blazor.css already linked)");
+        }
+        else
+        {
+            const string cssLink = "    <link rel=\"stylesheet\" href=\"shadcn-blazor.css\" />";
+            var headClose = content.IndexOf("</head>", StringComparison.OrdinalIgnoreCase);
+            if (headClose >= 0)
+            {
+                content = content.Insert(headClose, cssLink + Environment.NewLine);
+                changed = true;
+            }
+            else
+            {
+                Console.WriteLine("  ⚠ Could not find </head> in index.html. Link shadcn-blazor.css manually.");
+            }
+        }
+
+        if (content.Contains("shadcn-blazor.js", StringComparison.Ordinal))
+        {
+            Console.WriteLine("  - Skipped index.html (shadcn-blazor.js already referenced)");
+        }
+        else
+        {
+            const string jsScript = "    <script src=\"shadcn-blazor.js\"></script>";
+            var frameworkIdx = content.IndexOf("_framework/blazor.webassembly", StringComparison.OrdinalIgnoreCase);
+            if (frameworkIdx < 0)
+            {
+                frameworkIdx = content.IndexOf("_framework/blazor.web.js", StringComparison.OrdinalIgnoreCase);
+            }
+
+            if (frameworkIdx >= 0)
+            {
+                var lineStart = content.LastIndexOf("\n", frameworkIdx) + 1;
+                content = content.Insert(lineStart, jsScript + Environment.NewLine);
+                changed = true;
+            }
+            else
+            {
+                Console.WriteLine("  ⚠ Could not find Blazor bootstrap script. Link shadcn-blazor.js manually.");
+            }
+        }
+
+        if (changed)
+        {
+            File.WriteAllText(indexPath, content);
+            Console.WriteLine("  ✓ index.html wired with ShadcnBlazor stylesheet & interop script.");
+        }
+    }
+
+    private static void RemoveBootstrapLink(ref string content, ref bool changed)
+    {
+        var bootstrapIdx = content.IndexOf("bootstrap.min.css", StringComparison.OrdinalIgnoreCase);
+        if (bootstrapIdx < 0)
+        {
+            return;
+        }
+
+        var lineStart = content.LastIndexOf("\n", bootstrapIdx) + 1;
+        var lineEnd = content.IndexOf("\n", bootstrapIdx);
+        if (lineEnd < 0)
+        {
+            lineEnd = content.Length;
+        }
+
+        content = content.Remove(lineStart, lineEnd - lineStart);
+        changed = true;
+        Console.WriteLine("  ✓ Removed Bootstrap stylesheet (ShadcnBlazor provides its own styling).");
     }
 }

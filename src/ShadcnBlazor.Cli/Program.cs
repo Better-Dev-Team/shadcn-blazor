@@ -30,7 +30,8 @@ public class Program
                 return ListCommand.Execute();
 
             case "--version" or "-v" or "version":
-                Console.WriteLine("ShadcnBlazor CLI v1.0.0");
+                var version = typeof(Program).Assembly.GetName().Version;
+                Console.WriteLine($"ShadcnBlazor CLI v{version?.ToString(3) ?? "0.0.0"}");
                 return 0;
 
             default:

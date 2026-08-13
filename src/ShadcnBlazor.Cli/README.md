@@ -28,7 +28,14 @@ Run inside your Blazor project folder:
 ```bash
 shadcn-blazor init
 ```
-This creates the necessary folders, configuration, and CSS token setups.
+This fully integrates ShadcnBlazor into your project:
+- Creates `Components/UI/` and copies the shared support layer (Cn, variants, services)
+- Copies the compiled stylesheet (`wwwroot/shadcn-blazor.css`) and JS interop (`wwwroot/shadcn-blazor.js`) — no Tailwind setup needed
+- Registers DI services (`builder.Services.AddShadcnBlazor()`) in `Program.cs`
+- Wires the stylesheet & script into `wwwroot/index.html`
+- Adds `@using ShadcnBlazor` to `_Imports.razor`
+
+The command is idempotent — files that already exist are skipped.
 
 ---
 

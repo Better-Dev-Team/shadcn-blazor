@@ -11,6 +11,16 @@ ShadcnBlazor: a shadcn/ui-style component library for Blazor, plus a CLI tool fo
 - `src/ShadcnBlazor.Docs` – the docs site (Blazor WASM on .NET 10, Tailwind CSS via CDN)
 - `tests/ShadcnBlazor.Tests` – bUnit-based unit tests
 
+## CLI `init` integration (what it must do)
+
+`shadcn-blazor init` is not just a file copier — it fully integrates the library into the consumer project:
+- Copies the shared support layer into `Components/UI/` (Cn, Variants, services) and `wwwroot/shadcn-blazor.{css,js}`
+- Adds `builder.Services.AddShadcnBlazor();` (+ `using ShadcnBlazor;`) to `Program.cs`
+- Wires the stylesheet & interop script into `wwwroot/index.html` and removes the template's Bootstrap `<link>`
+- Adds `@using ShadcnBlazor` to `_Imports.razor`
+
+All steps are idempotent (skip existing). Any new integration step added to `init` must follow this pattern and update the README + docs.
+
 ## Build / test / run
 
 ```powershell
@@ -18,7 +28,16 @@ dotnet build
 dotnet test
 dotnet run --project src/ShadcnBlazor.Docs
 dotnet pack src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj -c Release -o nupkg
+npm run build:css   # regenerate the compiled Tailwind stylesheet (requires npm install first)
 ```
+
+## Compiled stylesheet (gotcha)
+
+`src/ShadcnBlazor/wwwroot/shadcn-blazor.css` is **generated** — edit `src/ShadcnBlazor/styles/input.css` instead, then run `npm run build:css` (Tailwind v4 CLI + `scripts/unlayer-css.cjs`).
+
+The css is intentionally compiled **without cascade layers** (unlayered): unlayered rules beat Tailwind v4's `@layer utilities` output, so a plain unlayered stylesheet like Bootstrap would override every utility class otherwise. `scripts/unlayer-css.cjs` strips the `@layer` wrappers; never remove that step.
+
+The CLI embeds this css and `init` also **removes the Bootstrap `<link>`** from the consumer's `index.html` to avoid utility collisions.
 
 ## Versioning is mandatory before publishing (IMPORTANT)
 

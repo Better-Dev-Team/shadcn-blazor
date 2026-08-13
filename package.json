@@ -1,21 +1,11 @@
 {
-  "name": "shadcn-blazor",
-  "version": "1.0.0",
-  "description": "The shadcn/ui component ecosystem for Blazor (.NET 8 & .NET 10)",
-  "scripts": {
-    "build": "dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj -c Release -o output",
-    "test": "dotnet test",
-    "dev": "dotnet watch --project src/ShadcnBlazor.Docs"
+  "name": "shadcn-blazor-build",
+  "private": true,
+  "devDependencies": {
+    "tailwindcss": "4.1.11",
+    "@tailwindcss/cli": "4.1.11"
   },
-  "keywords": [
-    "blazor",
-    "shadcn",
-    "shadcn-ui",
-    "tailwind",
-    "components",
-    "dotnet",
-    "csharp"
-  ],
-  "author": "Better-Dev-Team",
-  "license": "MIT"
+  "scripts": {
+    "build:css": "tailwindcss -i src/ShadcnBlazor/styles/input.css -o src/ShadcnBlazor/wwwroot/shadcn-blazor.css --minify && node scripts/unlayer-css.cjs src/ShadcnBlazor/wwwroot/shadcn-blazor.css"
+  }
 }
