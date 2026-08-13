@@ -16,11 +16,16 @@
     <RepositoryUrl>https://github.com/Better-Dev-Team/shadcn-blazor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>blazor;shadcn;shadcn-ui;tailwind;components;ui;razor;dotnet;csharp</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />

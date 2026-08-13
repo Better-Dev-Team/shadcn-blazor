@@ -17,7 +17,12 @@
     <RepositoryUrl>https://github.com/Better-Dev-Team/shadcn-blazor</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>blazor;cli;shadcn;shadcn-ui;tailwind;tools;dotnet</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
