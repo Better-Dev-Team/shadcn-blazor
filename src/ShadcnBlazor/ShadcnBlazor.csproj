@@ -4,8 +4,23 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
 
+    <!-- NuGet Package Properties -->
+    <PackageId>ShadcnBlazor</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Better-Dev-Team</Authors>
+    <Company>Better-Dev-Team</Company>
+    <Description>Beautifully designed, accessible, copy-paste and package-ready Razor components for Blazor inspired by shadcn/ui.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Better-Dev-Team/shadcn-blazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Better-Dev-Team/shadcn-blazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>blazor;shadcn;shadcn-ui;tailwind;components;ui;razor;dotnet;csharp</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />

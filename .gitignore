@@ -3,6 +3,7 @@ bin/
 obj/
 output/
 dist/
+nupkg/
 
 # Visual Studio & IDEs
 .vs/

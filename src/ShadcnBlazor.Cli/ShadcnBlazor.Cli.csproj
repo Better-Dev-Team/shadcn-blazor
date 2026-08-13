@@ -9,9 +9,14 @@
     <ToolCommandName>shadcn-blazor</ToolCommandName>
     <PackageId>ShadcnBlazor.Cli</PackageId>
     <Version>1.0.0</Version>
-    <Authors>Antigravity &amp; Community</Authors>
+    <Authors>Better-Dev-Team</Authors>
+    <Company>Better-Dev-Team</Company>
     <Description>CLI tool for scaffolding ShadcnBlazor components directly into Blazor projects.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/Better-Dev-Team/shadcn-blazor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Better-Dev-Team/shadcn-blazor</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>blazor;cli;shadcn;shadcn-ui;tailwind;tools;dotnet</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
