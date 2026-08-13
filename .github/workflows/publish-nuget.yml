@@ -8,7 +8,7 @@ on:
       nuget_username:
         description: 'NuGet.org personal username who created the Trusted Publishing policy'
         required: false
-        default: ''
+        default: 'TeRiRi606'
 
 permissions:
   id-token: write
@@ -17,6 +17,7 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: production
 
     steps:
     - uses: actions/checkout@v4
@@ -45,7 +46,7 @@ jobs:
       if: env.NUGET_API_KEY == ''
       uses: NuGet/login@v1
       with:
-        user: ${{ secrets.NUGET_USERNAME || inputs.nuget_username || github.actor }}
+        user: ${{ secrets.NUGET_USERNAME || inputs.nuget_username || 'TeRiRi606' }}
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
