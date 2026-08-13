@@ -31,13 +31,17 @@ jobs:
       - name: Publish Blazor WebAssembly
         run: |
           dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj -c Release -o output
-          # Copy index.html to 404.html for GitHub Pages SPA routing
+          # Adjust base href for GitHub Pages repo subpath
+          sed -i 's/<base href="\/" \/>/<base href="\/shadcn-blazor\/" \/>/g' output/wwwroot/index.html
+          # Copy index.html to 404.html for GitHub Pages SPA client-side routing fallback
           cp output/wwwroot/index.html output/wwwroot/404.html
-          # Add .nojekyll to prevent GitHub Pages from bypassing files with underscores
+          # Prevent GitHub Pages Jekyll engine from ignoring underscore folders
           touch output/wwwroot/.nojekyll
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
