@@ -1,4 +1,4 @@
-name: Publish to NuGet (Trusted Publishing)
+name: Publish to NuGet
 
 on:
   release:
@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       nuget_username:
-        description: 'NuGet.org username or organization owner (if not set in secrets.NUGET_USERNAME)'
+        description: 'NuGet.org personal username who created the Trusted Publishing policy'
         required: false
-        default: 'Better-Dev-Team'
+        default: ''
 
 permissions:
   id-token: write
@@ -40,10 +40,22 @@ jobs:
         dotnet pack src/ShadcnBlazor/ShadcnBlazor.csproj -c Release -o nupkg
         dotnet pack src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj -c Release -o nupkg
 
+    # Option A: Trusted Publishing via OIDC
     - name: NuGet Trusted Login
+      if: env.NUGET_API_KEY == ''
       uses: NuGet/login@v1
       with:
-        user: ${{ secrets.NUGET_USERNAME || inputs.nuget_username || 'Better-Dev-Team' }}
+        user: ${{ secrets.NUGET_USERNAME || inputs.nuget_username || github.actor }}
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
+    # Option B: Push with API Key (if provided) or OIDC temporary token
     - name: Push Packages to NuGet.org
-      run: dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        if [ -n "$NUGET_API_KEY" ]; then
+          dotnet nuget push nupkg/*.nupkg --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json --skip-duplicate
+        else
+          dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
+        fi
