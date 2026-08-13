@@ -47,8 +47,8 @@ NuGet does not allow republishing the same version. Any change to `src/ShadcnBla
 - CLI: `src/ShadcnBlazor.Cli/ShadcnBlazor.Cli.csproj`
 
 Bump patch for bug fixes, minor for features, major for breaking changes. Do this in the same commit as the change. Existing published versions:
-- `BetterDev.ShadcnBlazor` – 1.0.0
-- `BetterDev.ShadcnBlazor.Cli` – 1.0.1
+- `BetterDev.ShadcnBlazor` – 1.0.1
+- `BetterDev.ShadcnBlazor.Cli` – 1.0.2
 
 ## NuGet publishing
 
