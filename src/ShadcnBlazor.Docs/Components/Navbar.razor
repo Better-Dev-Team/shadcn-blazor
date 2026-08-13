@@ -1,7 +1,8 @@
 @namespace ShadcnBlazor.Docs.Components
+@implements IDisposable
 @inject IThemeService ThemeService
 
-<header class="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header class="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95">
     <div class="container flex h-14 max-w-screen-2xl items-center justify-between px-4 sm:px-8">
         <!-- Logo and Main Navigation -->
         <div class="flex items-center gap-6 md:gap-8">
@@ -58,6 +59,18 @@
 </header>
 
 @code {
+    protected override void OnInitialized()
+    {
+        ThemeService.OnChange += OnThemeChanged;
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnChange -= OnThemeChanged;
+    }
+
+    private void OnThemeChanged() => InvokeAsync(StateHasChanged);
+
     private async Task ToggleThemeModeAsync()
     {
         var newMode = ThemeService.IsDark ? ThemeMode.Light : ThemeMode.Dark;

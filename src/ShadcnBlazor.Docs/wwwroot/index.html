@@ -69,7 +69,7 @@
     </script>
 
     <!-- ShadcnBlazor CSS Design Tokens -->
-    <link rel="stylesheet" href="_content/ShadcnBlazor/shadcn-blazor.css" />
+    <link rel="stylesheet" href="_content/BetterDev.ShadcnBlazor/shadcn-blazor.css" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='black'/><path d='M208,128a80,80,0,1,1-80-80A80,80,0,0,1,208,128Z' fill='white'/></svg>" />
 </head>
 
@@ -89,7 +89,22 @@
     </div>
 
     <!-- ShadcnBlazor JavaScript Interop -->
-    <script src="_content/ShadcnBlazor/shadcn-blazor.js"></script>
+    <script src="_content/BetterDev.ShadcnBlazor/shadcn-blazor.js"></script>
+    <script>
+        (function () {
+            var raw = localStorage.getItem('shadcn-blazor-theme');
+            if (!raw) return;
+            try {
+                var state = JSON.parse(raw);
+                var dark = state.mode === 'dark' ||
+                    (state.mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', dark);
+                document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+                if (state.preset) document.documentElement.setAttribute('data-preset', state.preset);
+                if (typeof state.radius === 'number') document.documentElement.style.setProperty('--radius', state.radius + 'rem');
+            } catch (e) {}
+        })();
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 

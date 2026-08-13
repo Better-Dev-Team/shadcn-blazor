@@ -1,0 +1,13 @@
+@namespace ShadcnBlazor.Docs.Components
+
+@code {
+    [Parameter] public Exception? Exception { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (Exception != null)
+        {
+            Console.Error.WriteLine($"ShadcnBlazor Docs: unhandled render error: {Exception}");
+        }
+    }
+}

@@ -8,7 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>shadcn-blazor</ToolCommandName>
     <PackageId>BetterDev.ShadcnBlazor.Cli</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Better-Dev-Team</Authors>
     <Company>Better-Dev-Team</Company>
     <Description>CLI tool for scaffolding ShadcnBlazor components directly into Blazor projects.</Description>

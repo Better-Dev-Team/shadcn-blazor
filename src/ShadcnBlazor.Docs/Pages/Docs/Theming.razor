@@ -1,5 +1,6 @@
 @page "/docs/theming"
 @namespace ShadcnBlazor.Docs.Pages.Docs
+@implements IDisposable
 @inject IThemeService ThemeService
 
 <div class="space-y-8">
@@ -54,3 +55,17 @@
         </div>
     </div>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        ThemeService.OnChange += OnThemeChanged;
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnChange -= OnThemeChanged;
+    }
+
+    private void OnThemeChanged() => InvokeAsync(StateHasChanged);
+}

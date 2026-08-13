@@ -1,7 +1,24 @@
 <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        <ErrorBoundary>
+            <ChildContent>
+                <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </ChildContent>
+            <ErrorContent>
+                @if (context != null)
+                {
+                    <ErrorLogger Exception="@context" />
+                    <div class="mx-auto my-12 max-w-md rounded-lg border border-destructive/50 bg-destructive/10 p-6 text-center">
+                        <h1 class="text-lg font-semibold text-destructive">Something went wrong</h1>
+                        <p class="mt-2 text-sm text-muted-foreground">
+                            An unhandled error occurred while rendering this page.
+                        </p>
+                        <a href="." class="mt-4 inline-block text-sm font-medium underline underline-offset-4 text-foreground">Reload page</a>
+                    </div>
+                }
+            </ErrorContent>
+        </ErrorBoundary>
     </Found>
     <NotFound>
         <LayoutView Layout="@typeof(MainLayout)">

@@ -1,4 +1,5 @@
 @namespace ShadcnBlazor.Docs.Components
+@implements IDisposable
 @inject IThemeService ThemeService
 @inject IToastService ToastService
 @inject IJSRuntime JS
@@ -105,6 +106,18 @@
 
 @code {
     private bool _open = false;
+
+    protected override void OnInitialized()
+    {
+        ThemeService.OnChange += OnThemeChanged;
+    }
+
+    public void Dispose()
+    {
+        ThemeService.OnChange -= OnThemeChanged;
+    }
+
+    private void OnThemeChanged() => InvokeAsync(StateHasChanged);
 
     private string GetPresetColor(ColorPreset preset) => preset switch
     {
