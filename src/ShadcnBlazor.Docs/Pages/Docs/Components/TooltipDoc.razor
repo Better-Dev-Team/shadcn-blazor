@@ -1,0 +1,31 @@
+@page "/docs/components/tooltip"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Tooltip</h1>
+        <p class="text-lg text-muted-foreground">
+            A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Hover Tooltip" CodeSnippet='<Tooltip>
+    <TooltipTrigger>
+        <Button Variant="ButtonVariant.Outline">Hover Me</Button>
+    </TooltipTrigger>
+    <TooltipContent Placement="TooltipPlacement.Top">
+        Add to library
+    </TooltipContent>
+</Tooltip>'>
+        <Tooltip>
+            <TooltipTrigger>
+                <Button Variant="ButtonVariant.Outline">Hover Me</Button>
+            </TooltipTrigger>
+            <TooltipContent Placement="TooltipPlacement.Top">
+                Add to library
+            </TooltipContent>
+        </Tooltip>
+    </ComponentPreview>
+</div>

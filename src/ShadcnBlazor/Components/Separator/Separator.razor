@@ -1,0 +1,19 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass"
+     role="@(Decorative ? "none" : "separator")"
+     aria-orientation="@(Orientation == "vertical" ? "vertical" : "horizontal")"
+     @attributes="AdditionalAttributes"></div>
+
+@code {
+    [Parameter] public string Orientation { get; set; } = "horizontal";
+    [Parameter] public bool Decorative { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "shrink-0 bg-border",
+        Orientation == "vertical" ? "h-full w-[1px]" : "h-[1px] w-full",
+        Class
+    );
+}

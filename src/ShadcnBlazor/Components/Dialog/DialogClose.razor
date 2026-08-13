@@ -1,0 +1,20 @@
+@namespace ShadcnBlazor
+
+<div class="@Cn.Class("inline-flex cursor-pointer", Class)" @onclick="CloseAsync" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public Dialog? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task CloseAsync()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+}

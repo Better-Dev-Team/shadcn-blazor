@@ -1,0 +1,17 @@
+@namespace ShadcnBlazor
+
+<a href="@Href" class="@ComputedClass" @attributes="AdditionalAttributes">
+    @ChildContent
+</a>
+
+@code {
+    [Parameter] public string? Href { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "transition-colors hover:text-foreground",
+        Class
+    );
+}

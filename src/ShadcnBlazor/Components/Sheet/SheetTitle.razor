@@ -1,0 +1,16 @@
+@namespace ShadcnBlazor
+
+<h2 class="@ComputedClass" @attributes="AdditionalAttributes">
+    @ChildContent
+</h2>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "text-lg font-semibold text-foreground",
+        Class
+    );
+}

@@ -1,0 +1,73 @@
+@page "/docs/components/table"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Table</h1>
+        <p class="text-lg text-muted-foreground">
+            A responsive table component.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Invoices Table" CodeSnippet='<Table>
+    <TableCaption>A list of your recent invoices.</TableCaption>
+    <TableHeader>
+        <TableRow>
+            <TableHead Class="w-[100px]">Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead Class="text-right">Amount</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        <TableRow>
+            <TableCell Class="font-medium">INV001</TableCell>
+            <TableCell><Badge Variant="BadgeVariant.Success">Paid</Badge></TableCell>
+            <TableCell>Credit Card</TableCell>
+            <TableCell Class="text-right">$250.00</TableCell>
+        </TableRow>
+    </TableBody>
+</Table>'>
+        <div class="w-full">
+            <Table>
+                <TableCaption>A list of your recent invoices.</TableCaption>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead Class="w-[100px]">Invoice</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Method</TableHead>
+                        <TableHead Class="text-right">Amount</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    <TableRow>
+                        <TableCell Class="font-medium">INV001</TableCell>
+                        <TableCell><Badge Variant="BadgeVariant.Success">Paid</Badge></TableCell>
+                        <TableCell>Credit Card</TableCell>
+                        <TableCell Class="text-right font-mono">$250.00</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell Class="font-medium">INV002</TableCell>
+                        <TableCell><Badge Variant="BadgeVariant.Warning">Pending</Badge></TableCell>
+                        <TableCell>PayPal</TableCell>
+                        <TableCell Class="text-right font-mono">$150.00</TableCell>
+                    </TableRow>
+                    <TableRow>
+                        <TableCell Class="font-medium">INV003</TableCell>
+                        <TableCell><Badge Variant="BadgeVariant.Destructive">Unpaid</Badge></TableCell>
+                        <TableCell>Bank Transfer</TableCell>
+                        <TableCell Class="text-right font-mono">$350.00</TableCell>
+                    </TableRow>
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TableCell colspan="3">Total</TableCell>
+                        <TableCell Class="text-right font-mono font-bold">$750.00</TableCell>
+                    </TableRow>
+                </TableFooter>
+            </Table>
+        </div>
+    </ComponentPreview>
+</div>

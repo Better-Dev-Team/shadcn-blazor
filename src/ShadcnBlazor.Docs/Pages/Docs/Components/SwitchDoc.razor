@@ -1,0 +1,30 @@
+@page "/docs/components/switch"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Switch</h1>
+        <p class="text-lg text-muted-foreground">
+            A control that allows the user to toggle between on and off states.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Airplane Mode Switch" CodeSnippet="@_code">
+        <div class="space-y-4">
+            <Switch @bind-Checked="_airplaneMode"
+                    Label="Airplane Mode"
+                    Description="Disable all wireless connections on this device." />
+
+            <p class="text-xs text-muted-foreground font-mono">State: @(_airplaneMode ? "Enabled" : "Disabled")</p>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private bool _airplaneMode = false;
+    private string _code = @"<Switch @bind-Checked=""_airplaneMode""
+        Label=""Airplane Mode""
+        Description=""Disable all wireless connections on this device."" />";
+}

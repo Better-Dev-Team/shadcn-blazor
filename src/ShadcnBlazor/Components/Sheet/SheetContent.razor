@@ -1,0 +1,95 @@
+@namespace ShadcnBlazor
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@if (Parent?.Open == true)
+{
+    <!-- Backdrop Overlay -->
+    <div class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm transition-all duration-150 animate-fade-in"
+         @onclick="HandleOverlayClickAsync"></div>
+
+    <!-- Slide-in Sheet Content -->
+    <div class="@ComputedClass"
+         role="dialog"
+         aria-modal="true"
+         @attributes="AdditionalAttributes">
+
+        @ChildContent
+
+        @if (ShowClose)
+        {
+            <button type="button"
+                    class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none p-1"
+                    @onclick="CloseAsync">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                <span class="sr-only">Close</span>
+            </button>
+        }
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Sheet? Parent { get; set; }
+    [Parameter] public SheetSide Side { get; set; } = SheetSide.Right;
+    [Parameter] public bool ShowClose { get; set; } = true;
+    [Parameter] public bool CloseOnOverlayClick { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _scrollLocked = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Parent?.Open == true && !_scrollLocked)
+        {
+            _scrollLocked = true;
+            try { await JS.InvokeVoidAsync("shadcnBlazor.lockScroll"); } catch {}
+        }
+        else if (Parent?.Open == false && _scrollLocked)
+        {
+            _scrollLocked = false;
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unlockScroll"); } catch {}
+        }
+    }
+
+    private async Task CloseAsync()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+
+    private async Task HandleOverlayClickAsync()
+    {
+        if (CloseOnOverlayClick)
+        {
+            await CloseAsync();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_scrollLocked)
+        {
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unlockScroll"); } catch {}
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "fixed z-50 gap-4 bg-background p-6 shadow-xl transition ease-in-out duration-300",
+        Side switch
+        {
+            SheetSide.Top => "inset-x-0 top-0 border-b animate-[slide-in-from-top_0.3s_cubic-bezier(0.16,1,0.3,1)]",
+            SheetSide.Bottom => "inset-x-0 bottom-0 border-t animate-[slide-in-from-bottom_0.3s_cubic-bezier(0.16,1,0.3,1)]",
+            SheetSide.Left => "inset-y-0 left-0 h-full w-3/4 border-r animate-[slide-in-from-left_0.3s_cubic-bezier(0.16,1,0.3,1)] sm:max-w-sm",
+            SheetSide.Right => "inset-y-0 right-0 h-full w-3/4 border-l animate-[slide-in-from-right_0.3s_cubic-bezier(0.16,1,0.3,1)] sm:max-w-sm",
+            _ => "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm"
+        },
+        Class
+    );
+}

@@ -1,0 +1,17 @@
+@namespace ShadcnBlazor
+
+<tr class="@ComputedClass" @onclick="OnClick" @attributes="AdditionalAttributes">
+    @ChildContent
+</tr>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
+        Class
+    );
+}

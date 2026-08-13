@@ -1,0 +1,19 @@
+@namespace ShadcnBlazor
+@inject IThemeService ThemeService
+
+@ChildContent
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public ThemeMode DefaultMode { get; set; } = ThemeMode.System;
+    [Parameter] public ColorPreset DefaultPreset { get; set; } = ColorPreset.Zinc;
+    [Parameter] public double DefaultRadius { get; set; } = 0.5;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ThemeService.InitializeAsync();
+        }
+    }
+}

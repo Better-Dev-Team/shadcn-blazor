@@ -1,0 +1,56 @@
+@page "/docs/theming"
+@namespace ShadcnBlazor.Docs.Pages.Docs
+@inject IThemeService ThemeService
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Theming</h1>
+        <p class="text-lg text-muted-foreground">
+            Using CSS variables for smooth light/dark mode and customizable color palettes.
+        </p>
+    </div>
+
+    <Separator />
+
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">CSS Variables</h3>
+        <p class="text-sm text-muted-foreground">
+            ShadcnBlazor uses HSL CSS variables for theme tokens. You can override these in your global CSS:
+        </p>
+
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50 overflow-x-auto">
+<pre><code>:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --border: 240 5.9% 90%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --border: 240 3.7% 15.9%;
+}</code></pre>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">Live Preset Switcher</h3>
+        <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+            @foreach (var preset in Enum.GetValues<ColorPreset>())
+            {
+                <Button Variant="@(ThemeService.Preset == preset ? ButtonVariant.Default : ButtonVariant.Outline)"
+                        Size="ButtonSize.Sm"
+                        Class="capitalize"
+                        OnClick="() => ThemeService.SetPresetAsync(preset)">
+                    @preset.ToString()
+                </Button>
+            }
+        </div>
+    </div>
+</div>

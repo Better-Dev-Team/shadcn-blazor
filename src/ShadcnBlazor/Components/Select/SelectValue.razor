@@ -1,0 +1,33 @@
+@namespace ShadcnBlazor
+
+<span class="@ComputedClass" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrEmpty(Parent?.SelectedLabel))
+    {
+        @Parent.SelectedLabel
+    }
+    else if (!string.IsNullOrEmpty(Parent?.Value))
+    {
+        @Parent.Value
+    }
+    else if (!string.IsNullOrEmpty(Placeholder))
+    {
+        <span class="text-muted-foreground">@Placeholder</span>
+    }
+    else
+    {
+        @ChildContent
+    }
+</span>
+
+@code {
+    [CascadingParameter] public Select? Parent { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "pointer-events-none truncate text-left flex-1",
+        Class
+    );
+}

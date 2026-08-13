@@ -1,0 +1,49 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@Cn.Class("w-full divide-y divide-border", Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool AllowMultiple { get; set; }
+    [Parameter] public HashSet<string> ExpandedValues { get; set; } = new();
+    [Parameter] public EventCallback<HashSet<string>> ExpandedValuesChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool IsExpanded(string itemValue)
+    {
+        if (AllowMultiple)
+        {
+            return ExpandedValues.Contains(itemValue);
+        }
+        return Value == itemValue;
+    }
+
+    public async Task ToggleItemAsync(string itemValue)
+    {
+        if (AllowMultiple)
+        {
+            if (ExpandedValues.Contains(itemValue))
+            {
+                ExpandedValues.Remove(itemValue);
+            }
+            else
+            {
+                ExpandedValues.Add(itemValue);
+            }
+            await ExpandedValuesChanged.InvokeAsync(ExpandedValues);
+        }
+        else
+        {
+            Value = Value == itemValue ? null : itemValue;
+            await ValueChanged.InvokeAsync(Value);
+        }
+        StateHasChanged();
+    }
+}

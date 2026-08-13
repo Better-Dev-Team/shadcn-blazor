@@ -1,0 +1,46 @@
+@page "/docs/introduction"
+@namespace ShadcnBlazor.Docs.Pages.Docs
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Introduction</h1>
+        <p class="text-lg text-muted-foreground">
+            Re-usable components built using Blazor, Tailwind CSS, and accessible primitives.
+        </p>
+    </div>
+
+    <Separator />
+
+    <div class="space-y-4">
+        <p class="leading-7">
+            <strong>ShadcnBlazor</strong> is <strong>NOT</strong> a typical black-box component library where you are locked into rigid markup or private internal styles.
+        </p>
+        <p class="leading-7">
+            It is a collection of re-usable Razor components that you can either copy and paste directly into your apps (using our CLI tool) or reference via our Razor Class Library (RCL) NuGet package.
+        </p>
+    </div>
+
+    <div class="space-y-3">
+        <h3 class="text-xl font-semibold tracking-tight">FAQ</h3>
+        <Accordion>
+            <AccordionItem Value="item-1">
+                <AccordionTrigger>Why copy/paste instead of only a package?</AccordionTrigger>
+                <AccordionContent>
+                    The idea behind this is to give you ownership and control over the code, allowing you to decide how the components are built and styled. You can freely change classes, add custom logic, or adjust behavior without waiting for an upstream package release.
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-2">
+                <AccordionTrigger>Can I use this in .NET 8 and .NET 10?</AccordionTrigger>
+                <AccordionContent>
+                    Yes! ShadcnBlazor works across all modern Blazor hosting models, including Blazor WebAssembly, Blazor Server, and Blazor Hybrid (.NET MAUI).
+                </AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-3">
+                <AccordionTrigger>Does it require Node.js or npm in production?</AccordionTrigger>
+                <AccordionContent>
+                    No. The design token CSS is precompiled and included. You can use it with zero build tooling or with your existing Tailwind CSS build pipeline.
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    </div>
+</div>

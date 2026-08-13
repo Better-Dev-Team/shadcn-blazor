@@ -1,0 +1,63 @@
+@page "/docs/components/popover"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Popover</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays rich content in a portal, triggered by a button.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example Popover" CodeSnippet='<Popover>
+    <PopoverTrigger>
+        <Button Variant="ButtonVariant.Outline">Open Popover</Button>
+    </PopoverTrigger>
+    <PopoverContent Class="w-80">
+        <div class="grid gap-4">
+            <div class="space-y-2">
+                <h4 class="font-medium leading-none">Dimensions</h4>
+                <p class="text-xs text-muted-foreground">Set the dimensions for the layer.</p>
+            </div>
+            <div class="grid gap-2">
+                <div class="grid grid-cols-3 items-center gap-4">
+                    <Label>Width</Label>
+                    <div class="col-span-2">
+                        <Input Placeholder="100%" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </PopoverContent>
+</Popover>'>
+        <Popover>
+            <PopoverTrigger>
+                <Button Variant="ButtonVariant.Outline">Open Popover</Button>
+            </PopoverTrigger>
+            <PopoverContent Class="w-80">
+                <div class="grid gap-4">
+                    <div class="space-y-2">
+                        <h4 class="font-medium leading-none">Dimensions</h4>
+                        <p class="text-xs text-muted-foreground">Set the dimensions for the layer.</p>
+                    </div>
+                    <div class="grid gap-2">
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label>Width</Label>
+                            <div class="col-span-2">
+                                <Input Placeholder="100%" />
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 items-center gap-4">
+                            <Label>Height</Label>
+                            <div class="col-span-2">
+                                <Input Placeholder="25px" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </PopoverContent>
+        </Popover>
+    </ComponentPreview>
+</div>

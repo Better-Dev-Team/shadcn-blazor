@@ -1,0 +1,34 @@
+@page "/docs/components/radio-group"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Radio Group</h1>
+        <p class="text-lg text-muted-foreground">
+            A set of checkable buttons—known as radio buttons—where no more than one can be checked at a time.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example Radio Group" CodeSnippet="@_code">
+        <div class="space-y-4">
+            <RadioGroup @bind-Value="_themeOption">
+                <RadioGroupItem Value="default" Label="Default" />
+                <RadioGroupItem Value="comfortable" Label="Comfortable" />
+                <RadioGroupItem Value="compact" Label="Compact" />
+            </RadioGroup>
+
+            <p class="text-xs text-muted-foreground font-mono">Selected: @_themeOption</p>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _themeOption = "default";
+    private string _code = @"<RadioGroup @bind-Value=""_themeOption"">
+    <RadioGroupItem Value=""default"" Label=""Default"" />
+    <RadioGroupItem Value=""comfortable"" Label=""Comfortable"" />
+    <RadioGroupItem Value=""compact"" Label=""Compact"" />
+</RadioGroup>";
+}

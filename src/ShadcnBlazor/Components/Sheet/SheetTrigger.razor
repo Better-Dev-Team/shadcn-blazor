@@ -1,0 +1,20 @@
+@namespace ShadcnBlazor
+
+<div class="@Cn.Class("inline-flex cursor-pointer", Class)" @onclick="HandleClickAsync" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public Sheet? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleClickAsync()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(true);
+        }
+    }
+}

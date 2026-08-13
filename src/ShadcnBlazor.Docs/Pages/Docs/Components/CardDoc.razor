@@ -1,0 +1,56 @@
+@page "/docs/components/card"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+@inject IToastService ToastService
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Card</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays a card with header, content, and footer.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example Card" CodeSnippet="@_code">
+        <Card Class="w-[350px]">
+            <CardHeader>
+                <CardTitle>Create project</CardTitle>
+                <CardDescription>Deploy your new project in one-click.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div class="grid w-full items-center gap-4">
+                    <div class="flex flex-col space-y-1.5">
+                        <Label>Name</Label>
+                        <Input Placeholder="Name of your project" />
+                    </div>
+                </div>
+            </CardContent>
+            <CardFooter Class="flex justify-between">
+                <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Info("Cancelled"))">Cancel</Button>
+                <Button OnClick="@(() => ToastService.Success("Project deployed!"))">Deploy</Button>
+            </CardFooter>
+        </Card>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<Card Class=""w-[350px]"">
+    <CardHeader>
+        <CardTitle>Create project</CardTitle>
+        <CardDescription>Deploy your new project in one-click.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <div class=""grid w-full items-center gap-4"">
+            <div class=""flex flex-col space-y-1.5"">
+                <Label>Name</Label>
+                <Input Placeholder=""Name of your project"" />
+            </div>
+        </div>
+    </CardContent>
+    <CardFooter Class=""flex justify-between"">
+        <Button Variant=""ButtonVariant.Outline"">Cancel</Button>
+        <Button>Deploy</Button>
+    </CardFooter>
+</Card>";
+}

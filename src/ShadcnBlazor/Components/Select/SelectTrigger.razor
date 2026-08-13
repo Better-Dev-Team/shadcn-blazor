@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor
+
+<button type="button"
+        id="@(Parent?.TriggerId)"
+        role="combobox"
+        aria-expanded="@(Parent?.Open == true ? "true" : "false")"
+        disabled="@(Parent?.Disabled == true)"
+        class="@ComputedClass"
+        @onclick="HandleClickAsync"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+    <svg class="h-4 w-4 opacity-50 ml-2 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9 6 6 6-6"/>
+    </svg>
+</button>
+
+@code {
+    [CascadingParameter] public Select? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleClickAsync()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(!Parent.Open);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 cursor-pointer",
+        Class
+    );
+}

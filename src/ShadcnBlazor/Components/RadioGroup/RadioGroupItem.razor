@@ -1,0 +1,51 @@
+@namespace ShadcnBlazor
+
+<div class="flex items-center space-x-2">
+    <button type="button"
+            role="radio"
+            aria-checked="@(IsSelected ? "true" : "false")"
+            disabled="@Disabled"
+            class="@ComputedClass"
+            @onclick="HandleClickAsync"
+            @attributes="AdditionalAttributes">
+        @if (IsSelected)
+        {
+            <span class="flex items-center justify-center">
+                <span class="h-2.5 w-2.5 rounded-full bg-current"></span>
+            </span>
+        }
+    </button>
+    @if (!string.IsNullOrEmpty(Label) || ChildContent != null)
+    {
+        <label class="text-sm font-medium leading-none select-none @(Disabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer")" @onclick="HandleClickAsync">
+            @if (!string.IsNullOrEmpty(Label))
+            {
+                @Label
+            }
+            @ChildContent
+        </label>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public RadioGroup? Parent { get; set; }
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsSelected => Parent?.Value == Value;
+
+    private async Task HandleClickAsync()
+    {
+        if (Disabled || Parent == null) return;
+        await Parent.SelectValueAsync(Value);
+    }
+
+    private string ComputedClass => Cn.Class(
+        "aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center cursor-pointer",
+        Class
+    );
+}

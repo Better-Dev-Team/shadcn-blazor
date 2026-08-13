@@ -1,0 +1,54 @@
+@page "/docs/components/alert-dialog"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+@inject IToastService ToastService
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Alert Dialog</h1>
+        <p class="text-lg text-muted-foreground">
+            A modal dialog that interrupts the user with important content and expects a response.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Confirmation Alert Dialog" CodeSnippet="@_code">
+        <AlertDialog>
+            <AlertDialogTrigger>
+                <Button Variant="ButtonVariant.Destructive">Delete Account</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction OnClick="@(() => ToastService.Error("Account deleted permanently."))">Continue</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<AlertDialog>
+    <AlertDialogTrigger>
+        <Button Variant=""ButtonVariant.Destructive"">Delete Account</Button>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+            </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>";
+}

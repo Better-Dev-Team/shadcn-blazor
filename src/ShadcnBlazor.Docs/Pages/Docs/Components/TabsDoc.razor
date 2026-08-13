@@ -1,0 +1,77 @@
+@page "/docs/components/tabs"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Tabs</h1>
+        <p class="text-lg text-muted-foreground">
+            A set of layered sections of content—known as tab panels—that are displayed one at a time.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example Tabs" CodeSnippet="@_code">
+        <Tabs Value="@_tab" ValueChanged="v => _tab = v" Class="w-[400px]">
+            <TabsList Class="grid w-full grid-cols-2">
+                <TabsTrigger Value="account">Account</TabsTrigger>
+                <TabsTrigger Value="password">Password</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Account</CardTitle>
+                        <CardDescription>Make changes to your account here.</CardDescription>
+                    </CardHeader>
+                    <CardContent Class="space-y-2">
+                        <div class="space-y-1">
+                            <Label>Name</Label>
+                            <Input Placeholder="Pedro Duarte" />
+                        </div>
+                    </CardContent>
+                    <CardFooter>
+                        <Button>Save changes</Button>
+                    </CardFooter>
+                </Card>
+            </TabsContent>
+            <TabsContent Value="password">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Password</CardTitle>
+                        <CardDescription>Change your password here.</CardDescription>
+                    </CardHeader>
+                    <CardContent Class="space-y-2">
+                        <div class="space-y-1">
+                            <Label>Current password</Label>
+                            <Input Type="password" />
+                        </div>
+                    </CardContent>
+                    <CardFooter>
+                        <Button>Save password</Button>
+                    </CardFooter>
+                </Card>
+            </TabsContent>
+        </Tabs>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _tab = "account";
+    private string _code = @"<Tabs Value=""@_tab"" ValueChanged=""v => _tab = v"" Class=""w-[400px]"">
+    <TabsList Class=""grid w-full grid-cols-2"">
+        <TabsTrigger Value=""account"">Account</TabsTrigger>
+        <TabsTrigger Value=""password"">Password</TabsTrigger>
+    </TabsList>
+    <TabsContent Value=""account"">
+        <Card>
+            <CardHeader>
+                <CardTitle>Account</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <Label>Name</Label>
+                <Input Placeholder=""Pedro Duarte"" />
+            </CardContent>
+        </Card>
+    </TabsContent>
+</Tabs>";
+}

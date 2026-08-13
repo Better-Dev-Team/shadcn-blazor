@@ -1,0 +1,76 @@
+@namespace ShadcnBlazor
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@if (Parent?.Open == true)
+{
+    <div id="@(Parent.ContentId)"
+         class="@ComputedClass"
+         role="dialog"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Popover? Parent { get; set; }
+    [Parameter] public PopoverPlacement Placement { get; set; } = PopoverPlacement.Bottom;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private DotNetObjectReference<PopoverContent>? _dotNetRef;
+    private bool _registered = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Parent?.Open == true && !_registered && Parent != null)
+        {
+            _registered = true;
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("shadcnBlazor.registerClickOutside", Parent.RootId, _dotNetRef, nameof(OnClickOutside));
+            }
+            catch {}
+        }
+        else if (Parent?.Open == false && _registered && Parent != null)
+        {
+            _registered = false;
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnClickOutside()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_registered && Parent != null)
+        {
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+        _dotNetRef?.Dispose();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95 absolute mt-2",
+        Placement switch
+        {
+            PopoverPlacement.Bottom => "left-1/2 -translate-x-1/2 top-full",
+            PopoverPlacement.BottomStart => "left-0 top-full",
+            PopoverPlacement.BottomEnd => "right-0 top-full",
+            PopoverPlacement.Top => "left-1/2 -translate-x-1/2 bottom-full mb-2",
+            PopoverPlacement.TopStart => "left-0 bottom-full mb-2",
+            PopoverPlacement.TopEnd => "right-0 bottom-full mb-2",
+            _ => "left-1/2 -translate-x-1/2 top-full"
+        },
+        Class
+    );
+}

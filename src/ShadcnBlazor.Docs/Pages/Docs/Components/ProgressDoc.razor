@@ -1,0 +1,51 @@
+@page "/docs/components/progress"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Progress &amp; Slider</h1>
+        <p class="text-lg text-muted-foreground">
+            Indicators for progress and interactive numeric range inputs.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Progress -->
+    <ComponentPreview Title="Progress Bar" CodeSnippet="@_progressCode">
+        <div class="w-full max-w-sm space-y-4">
+            <Progress Value="@_progress" Max="100" />
+            <div class="flex items-center justify-between">
+                <span class="text-xs text-muted-foreground font-mono">@_progress.ToString("0")%</span>
+                <div class="flex gap-2">
+                    <Button Size="ButtonSize.Sm" Variant="ButtonVariant.Outline" OnClick="() => _progress = Math.Max(0, _progress - 15)">-15%</Button>
+                    <Button Size="ButtonSize.Sm" Variant="ButtonVariant.Outline" OnClick="() => _progress = Math.Min(100, _progress + 15)">+15%</Button>
+                </div>
+            </div>
+        </div>
+    </ComponentPreview>
+
+    <!-- Slider -->
+    <ComponentPreview Title="Slider Input" CodeSnippet="@_sliderCode">
+        <div class="w-full max-w-sm space-y-2">
+            <div class="flex justify-between text-sm">
+                <Label>Volume</Label>
+                <span class="text-xs font-mono text-muted-foreground">@_sliderValue%</span>
+            </div>
+            <Slider @bind-Value="_sliderValue" Min="0" Max="100" />
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private double _progress = 60;
+    private double _sliderValue = 45;
+
+    private string _progressCode = @"<div class=""w-full max-w-sm space-y-2"">
+    <Progress Value=""60"" Max=""100"" />
+</div>";
+
+    private string _sliderCode = @"<div class=""w-full max-w-sm space-y-2"">
+    <Slider @bind-Value=""_sliderValue"" Min=""0"" Max=""100"" />
+</div>";
+}

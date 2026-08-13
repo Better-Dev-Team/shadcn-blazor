@@ -1,0 +1,142 @@
+@namespace ShadcnBlazor.Docs.Components
+@inject IThemeService ThemeService
+@inject IToastService ToastService
+@inject IJSRuntime JS
+
+<!-- Trigger button -->
+<Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="gap-2" OnClick="() => _open = true">
+    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+    </svg>
+    <span>Customize</span>
+</Button>
+
+<!-- Sheet Drawer -->
+<Sheet Open="@_open" OpenChanged="v => _open = v">
+    <SheetContent Side="SheetSide.Right" Class="w-full sm:max-w-md overflow-y-auto">
+        <SheetHeader>
+            <SheetTitle>Theme Customizer</SheetTitle>
+            <SheetDescription>
+                Customize colors, border radius, and light/dark appearance in real-time.
+            </SheetDescription>
+        </SheetHeader>
+
+        <div class="mt-6 space-y-6">
+            <!-- Mode Selection -->
+            <div class="space-y-2">
+                <Label>Mode</Label>
+                <div class="grid grid-cols-3 gap-2">
+                    <Button Variant="@(ThemeService.Mode == ThemeMode.Light ? ButtonVariant.Default : ButtonVariant.Outline)"
+                            Size="ButtonSize.Sm"
+                            OnClick="() => ThemeService.SetModeAsync(ThemeMode.Light)">
+                        <svg class="mr-1.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+                        </svg>
+                        Light
+                    </Button>
+                    <Button Variant="@(ThemeService.Mode == ThemeMode.Dark ? ButtonVariant.Default : ButtonVariant.Outline)"
+                            Size="ButtonSize.Sm"
+                            OnClick="() => ThemeService.SetModeAsync(ThemeMode.Dark)">
+                        <svg class="mr-1.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                        </svg>
+                        Dark
+                    </Button>
+                    <Button Variant="@(ThemeService.Mode == ThemeMode.System ? ButtonVariant.Default : ButtonVariant.Outline)"
+                            Size="ButtonSize.Sm"
+                            OnClick="() => ThemeService.SetModeAsync(ThemeMode.System)">
+                        <svg class="mr-1.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>
+                        </svg>
+                        System
+                    </Button>
+                </div>
+            </div>
+
+            <!-- Color Presets -->
+            <div class="space-y-2">
+                <Label>Color Palette</Label>
+                <div class="grid grid-cols-3 gap-2">
+                    @foreach (var preset in Enum.GetValues<ColorPreset>())
+                    {
+                        var isSelected = ThemeService.Preset == preset;
+                        <button type="button"
+                                class="flex items-center justify-start gap-2 rounded-md border p-2 text-xs font-medium transition-all @(isSelected ? "border-primary bg-accent ring-1 ring-primary" : "border-border hover:bg-accent/50")"
+                                @onclick="() => ThemeService.SetPresetAsync(preset)">
+                            <span class="h-4 w-4 rounded-full border shadow-sm" style="background-color: @GetPresetColor(preset)"></span>
+                            <span class="capitalize">@preset.ToString()</span>
+                        </button>
+                    }
+                </div>
+            </div>
+
+            <!-- Radius -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <Label>Radius</Label>
+                    <span class="text-xs text-muted-foreground">@ThemeService.Radius.ToString("0.0#") rem</span>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    @foreach (var r in new[] { 0.0, 0.3, 0.5, 0.75, 1.0 })
+                    {
+                        var isSelected = Math.Abs(ThemeService.Radius - r) < 0.01;
+                        <Button Variant="@(isSelected ? ButtonVariant.Default : ButtonVariant.Outline)"
+                                Size="ButtonSize.Sm"
+                                Class="text-xs"
+                                OnClick="() => ThemeService.SetRadiusAsync(r)">
+                            @r
+                        </Button>
+                    }
+                </div>
+            </div>
+
+            <Separator />
+
+            <!-- Copy Code Button -->
+            <Button Class="w-full gap-2" OnClick="CopyThemeCodeAsync">
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                </svg>
+                <span>Copy Theme CSS</span>
+            </Button>
+        </div>
+    </SheetContent>
+</Sheet>
+
+@code {
+    private bool _open = false;
+
+    private string GetPresetColor(ColorPreset preset) => preset switch
+    {
+        ColorPreset.Zinc => "#71717a",
+        ColorPreset.Slate => "#64748b",
+        ColorPreset.Stone => "#78716c",
+        ColorPreset.Gray => "#6b7280",
+        ColorPreset.Neutral => "#737373",
+        ColorPreset.Red => "#ef4444",
+        ColorPreset.Rose => "#f43f5e",
+        ColorPreset.Orange => "#f97316",
+        ColorPreset.Green => "#22c55e",
+        ColorPreset.Blue => "#3b82f6",
+        ColorPreset.Yellow => "#eab308",
+        ColorPreset.Violet => "#8b5cf6",
+        _ => "#71717a"
+    };
+
+    private async Task CopyThemeCodeAsync()
+    {
+        var css = $@"/* Theme Preset: {ThemeService.Preset} | Radius: {ThemeService.Radius}rem */
+:root {{
+  --radius: {ThemeService.Radius}rem;
+}}";
+        try
+        {
+            await JS.InvokeVoidAsync("shadcnBlazor.copyToClipboard", css);
+            ToastService.Success("Theme CSS Copied!", "Paste into your stylesheet or app root.");
+        }
+        catch
+        {
+            ToastService.Info("Theme CSS generated.");
+        }
+    }
+}

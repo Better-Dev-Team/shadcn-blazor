@@ -1,0 +1,216 @@
+@page "/"
+@namespace ShadcnBlazor.Docs.Pages
+@inject IToastService ToastService
+@inject IJSRuntime JS
+
+<div class="space-y-12 pb-16">
+    <!-- Hero Section -->
+    <section class="space-y-6 pt-6 md:pt-10">
+        <div class="flex flex-col items-start gap-4">
+            <a href="docs/introduction" class="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 text-xs font-medium transition-colors hover:bg-muted">
+                <span class="mr-2 flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                <span>Announcing ShadcnBlazor v1.0</span>
+                <svg class="ml-1 h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+
+            <h1 class="text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                Build your component library.
+            </h1>
+
+            <p class="max-w-[700px] text-lg text-muted-foreground sm:text-xl">
+                Beautifully designed, accessible, and customizable components that you can copy and paste into your Blazor applications. Accessible. Customizable. Open Source.
+            </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-4">
+            <Button Href="docs/introduction" Size="ButtonSize.Lg" Class="gap-2">
+                <span>Get Started</span>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </Button>
+            <Button Href="docs/components/button" Variant="ButtonVariant.Outline" Size="ButtonSize.Lg">
+                Browse Components
+            </Button>
+        </div>
+
+        <!-- CLI Command Box -->
+        <div class="flex items-center gap-2 rounded-lg border bg-muted/40 p-3 max-w-lg">
+            <span class="font-mono text-xs text-muted-foreground">$</span>
+            <span class="font-mono text-xs font-semibold flex-1">dotnet tool install -g shadcn-blazor</span>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-7 w-7" OnClick="CopyCliCommand">
+                <svg class="h-3.5 w-3.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                </svg>
+            </Button>
+        </div>
+    </section>
+
+    <Separator />
+
+    <!-- Live Interactive Showcase Dashboard Grid -->
+    <section class="space-y-6">
+        <div class="space-y-1">
+            <h2 class="text-2xl font-bold tracking-tight">Interactive Showcase</h2>
+            <p class="text-sm text-muted-foreground">Experience the look, feel, and seamless reactivity of the components below.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Card 1: Account / Notifications Settings -->
+            <Card>
+                <CardHeader>
+                    <div class="flex items-center justify-between">
+                        <CardTitle>Notifications</CardTitle>
+                        <Badge Variant="BadgeVariant.Success">Live</Badge>
+                    </div>
+                    <CardDescription>Configure how you receive alert updates.</CardDescription>
+                </CardHeader>
+                <CardContent Class="space-y-4">
+                    <div class="flex items-center justify-between space-x-2">
+                        <div class="space-y-0.5">
+                            <Label>Push Notifications</Label>
+                            <p class="text-xs text-muted-foreground">Receive real-time notifications on your device.</p>
+                        </div>
+                        <Switch @bind-Checked="_pushNotifications" />
+                    </div>
+                    <Separator />
+                    <div class="flex items-center justify-between space-x-2">
+                        <div class="space-y-0.5">
+                            <Label>Marketing Emails</Label>
+                            <p class="text-xs text-muted-foreground">Receive emails about new features and product updates.</p>
+                        </div>
+                        <Switch @bind-Checked="_marketingEmails" />
+                    </div>
+                    <Separator />
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs">
+                            <Label>Volume Threshold</Label>
+                            <span class="text-muted-foreground">@_volume%</span>
+                        </div>
+                        <Slider @bind-Value="_volume" Min="0" Max="100" />
+                    </div>
+                </CardContent>
+                <CardFooter Class="flex justify-between">
+                    <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Info("Cancelled changes"))">Cancel</Button>
+                    <Button OnClick="@(() => ToastService.Success("Preferences saved!", "Your settings are now updated."))">Save Changes</Button>
+                </CardFooter>
+            </Card>
+
+            <!-- Card 2: Interactive Dialog & Toasts -->
+            <Card>
+                <CardHeader>
+                    <CardTitle>Overlays &amp; Actions</CardTitle>
+                    <CardDescription>Modals, dropdowns, and toast notifications.</CardDescription>
+                </CardHeader>
+                <CardContent Class="space-y-4">
+                    <!-- Dropdown Trigger -->
+                    <div class="flex flex-wrap gap-3">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Button Variant="ButtonVariant.Outline" Class="gap-2">
+                                    <span>Actions Menu</span>
+                                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                <DropdownMenuItem OnClick="@(() => ToastService.Info("Navigated to Profile"))">Profile</DropdownMenuItem>
+                                <DropdownMenuItem OnClick="@(() => ToastService.Info("Opened Billing"))">Billing</DropdownMenuItem>
+                                <DropdownMenuItem OnClick="@(() => ToastService.Info("Opened Settings"))">Settings</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem Destructive="true" OnClick="@(() => ToastService.Error("Logged out successfully"))">Logout</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <!-- Modal Dialog -->
+                        <Dialog>
+                            <DialogTrigger>
+                                <Button Variant="ButtonVariant.Secondary">Open Modal</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Edit Profile</DialogTitle>
+                                    <DialogDescription>
+                                        Make changes to your profile here. Click save when you're done.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div class="grid gap-4 py-4">
+                                    <div class="grid grid-cols-4 items-center gap-4">
+                                        <Label Class="text-right">Name</Label>
+                                        <div class="col-span-3">
+                                            <Input @bind-Value="_profileName" Placeholder="Pedro Duarte" />
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-4 items-center gap-4">
+                                        <Label Class="text-right">Username</Label>
+                                        <div class="col-span-3">
+                                            <Input @bind-Value="_profileUsername" Placeholder="peduarte" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <DialogFooter>
+                                    <DialogClose>
+                                        <Button Variant="ButtonVariant.Outline">Cancel</Button>
+                                    </DialogClose>
+                                    <DialogClose>
+                                        <Button OnClick="SaveProfile">Save changes</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+
+                    <Separator />
+
+                    <!-- Toast Triggers -->
+                    <div class="space-y-2">
+                        <Label>Trigger Toasts</Label>
+                        <div class="flex flex-wrap gap-2">
+                            <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" OnClick="@(() => ToastService.Success("Event created", "Monday, August 17 at 5:00 PM"))">
+                                Success Toast
+                            </Button>
+                            <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" OnClick="@(() => ToastService.Error("Uh oh! Something went wrong.", "There was a problem with your request."))">
+                                Error Toast
+                            </Button>
+                            <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" OnClick="TriggerPromiseToast">
+                                Async Promise
+                            </Button>
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+    </section>
+</div>
+
+@code {
+    private bool _pushNotifications = true;
+    private bool _marketingEmails = false;
+    private double _volume = 65;
+    private string _profileName = "Jane Doe";
+    private string _profileUsername = "janedoe";
+
+    private void SaveProfile()
+    {
+        ToastService.Success("Profile Updated", $"Saved {_profileName}");
+    }
+
+    private async Task CopyCliCommand()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("shadcnBlazor.copyToClipboard", "dotnet tool install -g shadcn-blazor");
+            ToastService.Success("CLI install command copied!");
+        }
+        catch {}
+    }
+
+    private async Task TriggerPromiseToast()
+    {
+        await ToastService.PromiseAsync(
+            async () => await Task.Delay(2000),
+            "Processing transaction...",
+            "Transaction confirmed!",
+            "Transaction rejected."
+        );
+    }
+}

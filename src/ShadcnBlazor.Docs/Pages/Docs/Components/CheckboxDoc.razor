@@ -1,0 +1,30 @@
+@page "/docs/components/checkbox"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Checkbox</h1>
+        <p class="text-lg text-muted-foreground">
+            A control that allows the user to toggle between checked and not checked.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example with Label and Description" CodeSnippet="@_code">
+        <div class="space-y-4">
+            <Checkbox @bind-Checked="_acceptTerms"
+                      Label="Accept terms and conditions"
+                      Description="You agree to our Terms of Service and Privacy Policy." />
+            
+            <p class="text-xs text-muted-foreground font-mono">Checked State: @_acceptTerms</p>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private bool _acceptTerms = true;
+    private string _code = @"<Checkbox @bind-Checked=""_acceptTerms""
+          Label=""Accept terms and conditions""
+          Description=""You agree to our Terms of Service and Privacy Policy."" />";
+}

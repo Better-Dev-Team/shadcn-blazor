@@ -1,0 +1,43 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass"
+     role="menuitem"
+     tabindex="-1"
+     @onclick="HandleClickAsync"
+     @attributes="AdditionalAttributes">
+    @if (Icon != null)
+    {
+        <span class="mr-2 h-4 w-4 flex items-center justify-center">
+            @Icon
+        </span>
+    }
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public DropdownMenu? Parent { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Destructive { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleClickAsync(MouseEventArgs e)
+    {
+        if (Disabled) return;
+        await OnClick.InvokeAsync(e);
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        Destructive ? "text-destructive focus:bg-destructive focus:text-destructive-foreground hover:bg-destructive/10" : null,
+        Disabled ? "pointer-events-none opacity-50" : null,
+        Class
+    );
+}

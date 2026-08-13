@@ -1,0 +1,48 @@
+@page "/docs/components/toast"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+@inject IToastService ToastService
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Toast (Sonner)</h1>
+        <p class="text-lg text-muted-foreground">
+            A succinct message that is displayed temporarily with smooth animations.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Toast Types" CodeSnippet="@_code">
+        <div class="flex flex-wrap gap-2">
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Success("Success!", "Your file has been uploaded."))">Success</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Error("Error!", "Failed to save changes."))">Error</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Warning("Warning!", "Disk space running low."))">Warning</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Info("Info", "Update available."))">Info</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="TriggerActionToast">With Action</Button>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<div class=""flex flex-wrap gap-2"">
+    <Button Variant=""ButtonVariant.Outline"" OnClick=""@(() => ToastService.Success(""""Success!"""", """"Your file has been uploaded.""""))"">Success</Button>
+    <Button Variant=""ButtonVariant.Outline"" OnClick=""@(() => ToastService.Error(""""Error!"""", """"Failed to save changes.""""))"">Error</Button>
+    <Button Variant=""ButtonVariant.Outline"" OnClick=""@(() => ToastService.Warning(""""Warning!"""", """"Disk space running low.""""))"">Warning</Button>
+    <Button Variant=""ButtonVariant.Outline"" OnClick=""@(() => ToastService.Info(""""Info"""", """"Update available.""""))"">Info</Button>
+</div>";
+
+    private void TriggerActionToast()
+    {
+        ToastService.Show(
+            "Event scheduled",
+            "Added to your primary calendar",
+            ToastType.Default,
+            actionText: "Undo",
+            onAction: async () =>
+            {
+                await Task.Yield();
+                ToastService.Info("Action undone!");
+            }
+        );
+    }
+}

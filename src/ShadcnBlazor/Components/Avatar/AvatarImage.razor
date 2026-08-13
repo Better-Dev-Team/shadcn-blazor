@@ -1,0 +1,36 @@
+@namespace ShadcnBlazor
+
+<img src="@Src"
+     alt="@Alt"
+     class="@ComputedClass"
+     @onload="HandleLoad"
+     @onerror="HandleError"
+     @attributes="AdditionalAttributes" />
+
+@code {
+    [CascadingParameter] public Avatar? Parent { get; set; }
+    [Parameter] public string? Src { get; set; }
+    [Parameter] public string? Alt { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _hasError = false;
+
+    private void HandleLoad()
+    {
+        _hasError = false;
+        Parent?.NotifyImageLoaded(true);
+    }
+
+    private void HandleError()
+    {
+        _hasError = true;
+        Parent?.NotifyImageLoaded(false);
+    }
+
+    private string ComputedClass => Cn.Class(
+        "aspect-square h-full w-full object-cover",
+        _hasError ? "hidden" : null,
+        Class
+    );
+}

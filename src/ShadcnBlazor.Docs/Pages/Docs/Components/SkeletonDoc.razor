@@ -1,0 +1,29 @@
+@page "/docs/components/skeleton"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Skeleton</h1>
+        <p class="text-lg text-muted-foreground">
+            Use to show a placeholder while content is loading.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Card Skeleton" CodeSnippet='<div class="flex items-center space-x-4">
+    <Skeleton Class="h-12 w-12 rounded-full" />
+    <div class="space-y-2">
+        <Skeleton Class="h-4 w-[250px]" />
+        <Skeleton Class="h-4 w-[200px]" />
+    </div>
+</div>'>
+        <div class="flex items-center space-x-4">
+            <Skeleton Class="h-12 w-12 rounded-full" />
+            <div class="space-y-2">
+                <Skeleton Class="h-4 w-[250px]" />
+                <Skeleton Class="h-4 w-[200px]" />
+            </div>
+        </div>
+    </ComponentPreview>
+</div>

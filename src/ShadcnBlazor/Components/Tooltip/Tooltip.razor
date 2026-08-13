@@ -1,0 +1,39 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="relative inline-flex"
+         @onmouseenter="HandleMouseEnter"
+         @onmouseleave="HandleMouseLeave"
+         @onfocusin="HandleMouseEnter"
+         @onfocusout="HandleMouseLeave">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public int DelayMs { get; set; } = 200;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public bool IsVisible { get; private set; }
+    private CancellationTokenSource? _cts;
+
+    private async Task HandleMouseEnter()
+    {
+        _cts?.Cancel();
+        _cts = new CancellationTokenSource();
+        try
+        {
+            await Task.Delay(DelayMs, _cts.Token);
+            IsVisible = true;
+            StateHasChanged();
+        }
+        catch (TaskCanceledException) {}
+    }
+
+    private void HandleMouseLeave()
+    {
+        _cts?.Cancel();
+        IsVisible = false;
+        StateHasChanged();
+    }
+}

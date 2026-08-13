@@ -1,0 +1,22 @@
+@namespace ShadcnBlazor
+
+<Button Variant="ButtonVariant.Default" Class="@Class" OnClick="HandleClickAsync" @attributes="AdditionalAttributes">
+    @ChildContent
+</Button>
+
+@code {
+    [CascadingParameter] public AlertDialog? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleClickAsync(MouseEventArgs e)
+    {
+        await OnClick.InvokeAsync(e);
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+}

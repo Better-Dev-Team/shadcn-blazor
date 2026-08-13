@@ -1,0 +1,11 @@
+@namespace ShadcnBlazor
+
+<nav aria-label="breadcrumb" class="@Cn.Class("", Class)" @attributes="AdditionalAttributes">
+    @ChildContent
+</nav>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

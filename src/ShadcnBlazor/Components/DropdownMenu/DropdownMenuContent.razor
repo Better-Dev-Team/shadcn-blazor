@@ -1,0 +1,84 @@
+@namespace ShadcnBlazor
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@if (Parent?.Open == true)
+{
+    <div id="@(Parent.ContentId)"
+         class="@ComputedClass"
+         role="menu"
+         aria-orientation="vertical"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public DropdownMenu? Parent { get; set; }
+    [Parameter] public DropdownPlacement Placement { get; set; } = DropdownPlacement.BottomStart;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private DotNetObjectReference<DropdownMenuContent>? _dotNetRef;
+    private bool _registered = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Parent?.Open == true && !_registered && Parent != null)
+        {
+            _registered = true;
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                var placementStr = Placement switch
+                {
+                    DropdownPlacement.BottomEnd => "bottom-end",
+                    DropdownPlacement.TopStart => "top-start",
+                    DropdownPlacement.TopEnd => "top-end",
+                    DropdownPlacement.Right => "right",
+                    DropdownPlacement.Left => "left",
+                    _ => "bottom-start"
+                };
+                await JS.InvokeVoidAsync("shadcnBlazor.registerClickOutside", Parent.RootId, _dotNetRef, nameof(OnClickOutside));
+            }
+            catch {}
+        }
+        else if (Parent?.Open == false && _registered && Parent != null)
+        {
+            _registered = false;
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnClickOutside()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_registered && Parent != null)
+        {
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+        _dotNetRef?.Dispose();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95 mt-1 absolute",
+        Placement switch
+        {
+            DropdownPlacement.BottomEnd => "right-0 top-full",
+            DropdownPlacement.BottomStart => "left-0 top-full",
+            DropdownPlacement.TopStart => "left-0 bottom-full mb-1",
+            DropdownPlacement.TopEnd => "right-0 bottom-full mb-1",
+            _ => "left-0 top-full"
+        },
+        Class
+    );
+}

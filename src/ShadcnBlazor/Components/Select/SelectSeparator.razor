@@ -1,0 +1,13 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" role="separator" @attributes="AdditionalAttributes"></div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "-mx-1 my-1 h-px bg-muted",
+        Class
+    );
+}

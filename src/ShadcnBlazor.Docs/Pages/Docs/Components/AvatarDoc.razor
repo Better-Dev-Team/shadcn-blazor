@@ -1,0 +1,40 @@
+@page "/docs/components/avatar"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Avatar</h1>
+        <p class="text-lg text-muted-foreground">
+            An image element with a fallback for representing the user.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Avatar with Fallback" CodeSnippet="@_code">
+        <div class="flex items-center gap-4">
+            <Avatar>
+                <AvatarImage Src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" Alt="shadcn" />
+                <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Avatar>
+                <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+            <Avatar>
+                <AvatarFallback>AG</AvatarFallback>
+            </Avatar>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<div class=""flex items-center gap-4"">
+    <Avatar>
+        <AvatarImage Src=""https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"" Alt=""shadcn"" />
+        <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+    <Avatar>
+        <AvatarFallback>JD</AvatarFallback>
+    </Avatar>
+</div>";
+}

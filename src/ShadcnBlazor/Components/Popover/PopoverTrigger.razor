@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor
+
+<div id="@(Parent?.TriggerId)"
+     class="@Cn.Class("inline-flex cursor-pointer", Class)"
+     @onclick="HandleClickAsync"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public Popover? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleClickAsync()
+    {
+        if (Parent != null)
+        {
+            await Parent.ToggleAsync();
+        }
+    }
+}

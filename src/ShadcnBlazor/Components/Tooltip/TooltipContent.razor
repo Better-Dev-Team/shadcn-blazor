@@ -1,0 +1,29 @@
+@namespace ShadcnBlazor
+
+@if (Parent?.IsVisible == true)
+{
+    <div role="tooltip" class="@ComputedClass" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Tooltip? Parent { get; set; }
+    [Parameter] public TooltipPlacement Placement { get; set; } = TooltipPlacement.Top;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "z-50 overflow-hidden rounded-md bg-primary px-3 py-1.5 text-xs text-primary-foreground shadow-md animate-in fade-in-0 zoom-in-95 pointer-events-none absolute whitespace-nowrap",
+        Placement switch
+        {
+            TooltipPlacement.Top => "bottom-full left-1/2 -translate-x-1/2 mb-1.5",
+            TooltipPlacement.Bottom => "top-full left-1/2 -translate-x-1/2 mt-1.5",
+            TooltipPlacement.Left => "right-full top-1/2 -translate-y-1/2 mr-1.5",
+            TooltipPlacement.Right => "left-full top-1/2 -translate-y-1/2 ml-1.5",
+            _ => "bottom-full left-1/2 -translate-x-1/2 mb-1.5"
+        },
+        Class
+    );
+}

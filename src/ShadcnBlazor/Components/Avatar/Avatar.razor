@@ -1,0 +1,26 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ComputedClass" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool ImageLoaded { get; private set; }
+
+    public void NotifyImageLoaded(bool loaded)
+    {
+        ImageLoaded = loaded;
+        StateHasChanged();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+        Class
+    );
+}

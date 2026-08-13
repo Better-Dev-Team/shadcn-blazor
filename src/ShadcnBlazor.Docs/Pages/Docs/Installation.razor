@@ -1,0 +1,54 @@
+@page "/docs/installation"
+@namespace ShadcnBlazor.Docs.Pages.Docs
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Installation</h1>
+        <p class="text-lg text-muted-foreground">
+            How to install and set up ShadcnBlazor in your project.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Step 1: CLI Tool Installation -->
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">1. Install the CLI Tool</h3>
+        <p class="text-sm text-muted-foreground">Install the .NET global tool to scaffold components with a single command:</p>
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+            <code>dotnet tool install -g shadcn-blazor</code>
+        </div>
+    </div>
+
+    <!-- Step 2: Initialize Project -->
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">2. Initialize ShadcnBlazor</h3>
+        <p class="text-sm text-muted-foreground">Run the init command from your Blazor project root:</p>
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+            <code>shadcn-blazor init</code>
+        </div>
+    </div>
+
+    <!-- Step 3: Add Components -->
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">3. Add Components</h3>
+        <p class="text-sm text-muted-foreground">Add components directly into your <code class="bg-muted px-1.5 py-0.5 rounded font-mono text-xs">Components/UI</code> directory:</p>
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+            <code>shadcn-blazor add button card dialog tabs toast</code>
+        </div>
+    </div>
+
+    <!-- Step 4: Razor Imports -->
+    <div class="space-y-4">
+        <h3 class="text-xl font-semibold tracking-tight">4. Register Services &amp; Imports</h3>
+        <p class="text-sm text-muted-foreground">In your <code class="bg-muted px-1.5 py-0.5 rounded font-mono text-xs">Program.cs</code>:</p>
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+            <code>builder.Services.AddShadcnBlazor();</code>
+        </div>
+
+        <p class="text-sm text-muted-foreground mt-2">In your <code class="bg-muted px-1.5 py-0.5 rounded font-mono text-xs">_Imports.razor</code>:</p>
+        <div class="rounded-lg border bg-zinc-950 p-4 font-mono text-xs text-zinc-50">
+            <code>@@using ShadcnBlazor</code>
+        </div>
+    </div>
+</div>

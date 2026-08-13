@@ -1,0 +1,57 @@
+@namespace ShadcnBlazor.Docs.Components
+
+<aside class="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 md:sticky md:block overflow-y-auto border-r border-border/40 py-6 pr-6 lg:py-8">
+    <div class="w-full space-y-6">
+        <!-- Getting Started -->
+        <div class="space-y-2">
+            <h4 class="rounded-md px-2 py-1 text-xs font-semibold uppercase tracking-wider text-foreground">Getting Started</h4>
+            <div class="grid grid-flow-row auto-rows-max text-sm gap-1">
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline text-muted-foreground transition-colors hover:text-foreground"
+                         href="docs/introduction" Match="NavLinkMatch.All">
+                    Introduction
+                </NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline text-muted-foreground transition-colors hover:text-foreground"
+                         href="docs/installation">
+                    Installation &amp; CLI
+                </NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:underline text-muted-foreground transition-colors hover:text-foreground"
+                         href="docs/theming">
+                    Theming &amp; Colors
+                </NavLink>
+            </div>
+        </div>
+
+        <!-- Components -->
+        <div class="space-y-2">
+            <div class="flex items-center justify-between px-2">
+                <h4 class="py-1 text-xs font-semibold uppercase tracking-wider text-foreground">Components</h4>
+                <Badge Variant="BadgeVariant.Secondary" Class="text-[10px] px-1.5 py-0">20+</Badge>
+            </div>
+            <div class="grid grid-flow-row auto-rows-max text-sm gap-0.5">
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/accordion">Accordion</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/alert">Alert</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/alert-dialog">Alert Dialog</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/avatar">Avatar</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/badge">Badge</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/breadcrumb">Breadcrumb</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/button">Button</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/card">Card</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/checkbox">Checkbox</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/dialog">Dialog</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/dropdown-menu">Dropdown Menu</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/input">Input &amp; Textarea</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/popover">Popover</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/progress">Progress &amp; Slider</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/radio-group">Radio Group</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/select">Select</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/sheet">Sheet</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/skeleton">Skeleton</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/switch">Switch</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/table">Table</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/tabs">Tabs</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/toast">Toast</NavLink>
+                <NavLink class="group flex w-full items-center rounded-md border border-transparent px-2 py-1.5 hover:bg-muted/50 text-muted-foreground transition-colors hover:text-foreground" href="docs/components/tooltip">Tooltip</NavLink>
+            </div>
+        </div>
+    </div>
+</aside>

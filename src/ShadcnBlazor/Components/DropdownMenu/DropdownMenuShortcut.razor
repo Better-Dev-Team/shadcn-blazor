@@ -1,0 +1,16 @@
+@namespace ShadcnBlazor
+
+<span class="@ComputedClass" @attributes="AdditionalAttributes">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "ml-auto text-xs tracking-widest text-muted-foreground",
+        Class
+    );
+}

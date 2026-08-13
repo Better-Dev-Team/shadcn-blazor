@@ -1,0 +1,66 @@
+@page "/docs/components/sheet"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Sheet</h1>
+        <p class="text-lg text-muted-foreground">
+            Extends the Dialog component to display content that complements the screen from any side.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Sheet Sides" CodeSnippet='<div class="flex gap-2">
+    <Sheet>
+        <SheetTrigger><Button Variant="ButtonVariant.Outline">Top</Button></SheetTrigger>
+        <SheetContent Side="SheetSide.Top"><SheetHeader><SheetTitle>Top Sheet</SheetTitle></SheetHeader></SheetContent>
+    </Sheet>
+    <Sheet>
+        <SheetTrigger><Button Variant="ButtonVariant.Outline">Right</Button></SheetTrigger>
+        <SheetContent Side="SheetSide.Right"><SheetHeader><SheetTitle>Right Sheet</SheetTitle></SheetHeader></SheetContent>
+    </Sheet>
+</div>'>
+        <div class="flex flex-wrap gap-2">
+            <Sheet>
+                <SheetTrigger><Button Variant="ButtonVariant.Outline">Top</Button></SheetTrigger>
+                <SheetContent Side="SheetSide.Top">
+                    <SheetHeader>
+                        <SheetTitle>Top Sheet</SheetTitle>
+                        <SheetDescription>Slide-in from the top edge.</SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+
+            <Sheet>
+                <SheetTrigger><Button Variant="ButtonVariant.Outline">Right</Button></SheetTrigger>
+                <SheetContent Side="SheetSide.Right">
+                    <SheetHeader>
+                        <SheetTitle>Right Sheet</SheetTitle>
+                        <SheetDescription>Slide-in from the right edge.</SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+
+            <Sheet>
+                <SheetTrigger><Button Variant="ButtonVariant.Outline">Bottom</Button></SheetTrigger>
+                <SheetContent Side="SheetSide.Bottom">
+                    <SheetHeader>
+                        <SheetTitle>Bottom Sheet</SheetTitle>
+                        <SheetDescription>Slide-in from the bottom edge.</SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+
+            <Sheet>
+                <SheetTrigger><Button Variant="ButtonVariant.Outline">Left</Button></SheetTrigger>
+                <SheetContent Side="SheetSide.Left">
+                    <SheetHeader>
+                        <SheetTitle>Left Sheet</SheetTitle>
+                        <SheetDescription>Slide-in from the left edge.</SheetDescription>
+                    </SheetHeader>
+                </SheetContent>
+            </Sheet>
+        </div>
+    </ComponentPreview>
+</div>

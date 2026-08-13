@@ -1,0 +1,46 @@
+@namespace ShadcnBlazor
+@implements IDisposable
+@inject IToastService ToastService
+
+@if (ToastService.Toasts.Any())
+{
+    <div class="@PositionClass" aria-label="Notifications" tabindex="-1">
+        @foreach (var toast in ToastService.Toasts)
+        {
+            <ToastItem @key="toast.Id" Toast="toast" />
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public ToastPosition Position { get; set; } = ToastPosition.BottomRight;
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnChange += HandleChange;
+    }
+
+    private void HandleChange()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        ToastService.OnChange -= HandleChange;
+    }
+
+    private string PositionClass => Cn.Class(
+        "fixed z-[100] flex flex-col gap-2 p-4 pointer-events-none max-h-screen w-full sm:max-w-[420px]",
+        Position switch
+        {
+            ToastPosition.BottomRight => "bottom-0 right-0 items-end",
+            ToastPosition.BottomLeft => "bottom-0 left-0 items-start",
+            ToastPosition.TopRight => "top-0 right-0 items-end",
+            ToastPosition.TopLeft => "top-0 left-0 items-start",
+            ToastPosition.TopCenter => "top-0 left-1/2 -translate-x-1/2 items-center",
+            ToastPosition.BottomCenter => "bottom-0 left-1/2 -translate-x-1/2 items-center",
+            _ => "bottom-0 right-0 items-end"
+        }
+    );
+}

@@ -1,0 +1,61 @@
+@page "/docs/components/input"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Input &amp; Textarea</h1>
+        <p class="text-lg text-muted-foreground">
+            Form input elements that support icons, validation, and two-way binding.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Standard Input -->
+    <ComponentPreview Title="Default Input" CodeSnippet="@_inputCode">
+        <div class="grid w-full max-w-sm items-center gap-1.5">
+            <Label>Email</Label>
+            <Input Type="email" Placeholder="name@example.com" @bind-Value="_email" />
+        </div>
+    </ComponentPreview>
+
+    <!-- With Icons -->
+    <ComponentPreview Title="Input With Icon" CodeSnippet="@_iconCode">
+        <div class="w-full max-w-sm">
+            <Input Placeholder="Search documentation...">
+                <LeadingIcon>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                </LeadingIcon>
+            </Input>
+        </div>
+    </ComponentPreview>
+
+    <!-- Textarea -->
+    <ComponentPreview Title="Textarea" CodeSnippet="@_textareaCode">
+        <div class="grid w-full max-w-sm gap-1.5">
+            <Label>Your message</Label>
+            <Textarea Placeholder="Type your message here." Rows="4" />
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _email = "";
+    private string _inputCode = @"<div class=""grid w-full max-w-sm items-center gap-1.5"">
+    <Label>Email</Label>
+    <Input Type=""email"" Placeholder=""Email"" @bind-Value=""_email"" />
+</div>";
+
+    private string _iconCode = @"<div class=""w-full max-w-sm"">
+    <Input Placeholder=""Search documentation..."">
+        <LeadingIcon>
+            <svg class=""h-4 w-4"" xmlns=""http://www.w3.org/2000/svg"" viewBox=""0 0 24 24"" fill=""none"" stroke=""currentColor"" stroke-width=""2""><circle cx=""11"" cy=""11"" r=""8""/><path d=""m21 21-4.3-4.3""/></svg>
+        </LeadingIcon>
+    </Input>
+</div>";
+
+    private string _textareaCode = @"<div class=""grid w-full max-w-sm gap-1.5"">
+    <Label>Your message</Label>
+    <Textarea Placeholder=""Type your message here."" Rows=""4"" />
+</div>";
+}

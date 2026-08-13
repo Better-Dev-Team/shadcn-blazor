@@ -1,0 +1,32 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="relative inline-block text-left" id="@RootId">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public readonly string RootId = $"dropdown-{Guid.NewGuid():N}";
+    public readonly string TriggerId = $"dropdown-trig-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"dropdown-cnt-{Guid.NewGuid():N}";
+
+    public async Task SetOpenAsync(bool open)
+    {
+        if (Open != open)
+        {
+            Open = open;
+            await OpenChanged.InvokeAsync(Open);
+            StateHasChanged();
+        }
+    }
+
+    public async Task ToggleAsync()
+    {
+        await SetOpenAsync(!Open);
+    }
+}

@@ -1,0 +1,59 @@
+@page "/docs/components/alert"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Alert</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays a callout for user attention.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Alert -->
+    <ComponentPreview Title="Default Alert" CodeSnippet='<Alert>
+    <Icon>
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    </Icon>
+    <ChildContent>
+        <AlertTitle>Heads up!</AlertTitle>
+        <AlertDescription>You can add components to your app using the cli.</AlertDescription>
+    </ChildContent>
+</Alert>'>
+        <div class="w-full max-w-lg">
+            <Alert>
+                <Icon>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                </Icon>
+                <ChildContent>
+                    <AlertTitle>Heads up!</AlertTitle>
+                    <AlertDescription>You can add components to your app using the cli.</AlertDescription>
+                </ChildContent>
+            </Alert>
+        </div>
+    </ComponentPreview>
+
+    <!-- Destructive Alert -->
+    <ComponentPreview Title="Destructive Alert" CodeSnippet='<Alert Variant="AlertVariant.Destructive">
+    <Icon>
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </Icon>
+    <ChildContent>
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
+    </ChildContent>
+</Alert>'>
+        <div class="w-full max-w-lg">
+            <Alert Variant="AlertVariant.Destructive">
+                <Icon>
+                    <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                </Icon>
+                <ChildContent>
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
+                </ChildContent>
+            </Alert>
+        </div>
+    </ComponentPreview>
+</div>

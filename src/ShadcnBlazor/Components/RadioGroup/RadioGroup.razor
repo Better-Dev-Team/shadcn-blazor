@@ -1,0 +1,27 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ComputedClass" role="radiogroup" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public async Task SelectValueAsync(string? value)
+    {
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+        StateHasChanged();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "grid gap-2",
+        Class
+    );
+}

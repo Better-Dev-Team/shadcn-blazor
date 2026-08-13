@@ -1,0 +1,85 @@
+@namespace ShadcnBlazor.Docs.Components
+@inject IJSRuntime JS
+@inject IToastService ToastService
+
+<div class="space-y-4 my-6">
+    <div class="flex items-center justify-between">
+        @if (!string.IsNullOrEmpty(Title))
+        {
+            <h4 class="text-base font-semibold tracking-tight">@Title</h4>
+        }
+        else
+        {
+            <div></div>
+        }
+
+        <!-- Tab switcher & Copy action -->
+        <div class="flex items-center gap-2">
+            <Tabs Value="@_activeTab" ValueChanged="v => _activeTab = v ?? _activeTab">
+                <TabsList>
+                    <TabsTrigger Value="preview">Preview</TabsTrigger>
+                    <TabsTrigger Value="code">Code</TabsTrigger>
+                </TabsList>
+            </Tabs>
+
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="h-8 w-8" OnClick="CopyCodeAsync" title="Copy code">
+                @if (_copied)
+                {
+                    <svg class="h-4 w-4 text-emerald-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                }
+                else
+                {
+                    <svg class="h-4 w-4 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                    </svg>
+                }
+            </Button>
+        </div>
+    </div>
+
+    <!-- Preview Container -->
+    @if (_activeTab == "preview")
+    {
+        <div class="@Cn.Class("min-h-[300px] w-full rounded-xl border bg-card/50 backdrop-blur-sm p-10 flex items-center justify-center shadow-sm relative overflow-hidden", PreviewClass)">
+            @ChildContent
+        </div>
+    }
+    else
+    {
+        <!-- Code Tab -->
+        <div class="relative rounded-xl border bg-zinc-950 dark:bg-zinc-900/90 text-zinc-50 p-4 font-mono text-xs overflow-x-auto shadow-inner">
+            <pre class="leading-relaxed whitespace-pre"><code>@CodeSnippet</code></pre>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? CodeSnippet { get; set; }
+    [Parameter] public string? PreviewClass { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string _activeTab = "preview";
+    private bool _copied = false;
+
+    private async Task CopyCodeAsync()
+    {
+        if (string.IsNullOrEmpty(CodeSnippet)) return;
+
+        try
+        {
+            await JS.InvokeVoidAsync("shadcnBlazor.copyToClipboard", CodeSnippet);
+            _copied = true;
+            ToastService.Success("Code copied to clipboard!");
+            StateHasChanged();
+
+            await Task.Delay(2000);
+            _copied = false;
+            StateHasChanged();
+        }
+        catch {}
+    }
+}

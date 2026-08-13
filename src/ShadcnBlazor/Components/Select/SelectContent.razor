@@ -1,0 +1,67 @@
+@namespace ShadcnBlazor
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+
+@if (Parent?.Open == true)
+{
+    <div id="@(Parent.ContentId)"
+         class="@ComputedClass"
+         role="listbox"
+         @attributes="AdditionalAttributes">
+        <div class="p-1">
+            @ChildContent
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Select? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private DotNetObjectReference<SelectContent>? _dotNetRef;
+    private bool _registered = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Parent?.Open == true && !_registered && Parent != null)
+        {
+            _registered = true;
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("shadcnBlazor.registerClickOutside", Parent.RootId, _dotNetRef, nameof(OnClickOutside));
+            }
+            catch {}
+        }
+        else if (Parent?.Open == false && _registered && Parent != null)
+        {
+            _registered = false;
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnClickOutside()
+    {
+        if (Parent != null)
+        {
+            await Parent.SetOpenAsync(false);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_registered && Parent != null)
+        {
+            try { await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", Parent.RootId); } catch {}
+        }
+        _dotNetRef?.Dispose();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "absolute top-full left-0 mt-1 z-50 max-h-96 min-w-[8rem] w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95",
+        Class
+    );
+}

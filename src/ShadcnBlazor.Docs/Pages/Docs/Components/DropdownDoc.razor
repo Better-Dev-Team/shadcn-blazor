@@ -1,0 +1,48 @@
+@page "/docs/components/dropdown-menu"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+@inject IToastService ToastService
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Dropdown Menu</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays a menu to the user—such as a set of actions or functions—triggered by a button.
+        </p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Example Dropdown" CodeSnippet="@_code">
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <Button Variant="ButtonVariant.Outline">Open Menu</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent Class="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem OnClick="@(() => ToastService.Info("Profile clicked"))">Profile</DropdownMenuItem>
+                <DropdownMenuItem OnClick="@(() => ToastService.Info("Billing clicked"))">Billing</DropdownMenuItem>
+                <DropdownMenuItem OnClick="@(() => ToastService.Info("Settings clicked"))">Settings</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem Destructive="true" OnClick="@(() => ToastService.Error("Logged out"))">Log out</DropdownMenuItem>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Button Variant=""ButtonVariant.Outline"">Open Menu</Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class=""w-56"">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>Profile</DropdownMenuItem>
+        <DropdownMenuItem>Billing</DropdownMenuItem>
+        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem Destructive=""true"">Log out</DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>";
+}

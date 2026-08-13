@@ -1,0 +1,37 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="relative inline-block w-full" id="@RootId">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public readonly string RootId = $"select-{Guid.NewGuid():N}";
+    public readonly string TriggerId = $"select-trig-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"select-cnt-{Guid.NewGuid():N}";
+
+    public bool Open { get; private set; }
+    public string? SelectedLabel { get; private set; }
+
+    public async Task SetOpenAsync(bool open)
+    {
+        if (Disabled) return;
+        Open = open;
+        StateHasChanged();
+    }
+
+    public async Task SelectValueAsync(string? value, string? label)
+    {
+        Value = value;
+        SelectedLabel = label;
+        Open = false;
+        await ValueChanged.InvokeAsync(Value);
+        StateHasChanged();
+    }
+}
