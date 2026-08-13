@@ -5,10 +5,10 @@ on:
     types: [published]
   workflow_dispatch:
     inputs:
-      version:
-        description: 'Package version override (e.g. 1.0.0)'
+      nuget_username:
+        description: 'NuGet.org username or organization owner (if not set in secrets.NUGET_USERNAME)'
         required: false
-        default: ''
+        default: 'Better-Dev-Team'
 
 permissions:
   id-token: write
@@ -42,6 +42,8 @@ jobs:
 
     - name: NuGet Trusted Login
       uses: NuGet/login@v1
+      with:
+        user: ${{ secrets.NUGET_USERNAME || inputs.nuget_username || 'Better-Dev-Team' }}
 
     - name: Push Packages to NuGet.org
       run: dotnet nuget push nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --skip-duplicate
