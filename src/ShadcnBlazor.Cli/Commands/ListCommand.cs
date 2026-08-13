@@ -5,7 +5,7 @@ namespace ShadcnBlazor.Cli.Commands;
 
 public static class ListCommand
 {
-    public static void Execute()
+    public static int Execute()
     {
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("\n✦ Available ShadcnBlazor Components:\n");
@@ -26,5 +26,7 @@ public static class ListCommand
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("\nTo add a component: shadcn-blazor add <component-name>\n");
         Console.ResetColor();
+
+        return 0;
     }
 }

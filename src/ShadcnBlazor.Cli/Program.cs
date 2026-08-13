@@ -21,20 +21,17 @@ public class Program
         switch (command)
         {
             case "init":
-                await InitCommand.ExecuteAsync(cmdArgs);
-                break;
+                return await InitCommand.ExecuteAsync(cmdArgs);
 
             case "add":
-                await AddCommand.ExecuteAsync(cmdArgs);
-                break;
+                return await AddCommand.ExecuteAsync(cmdArgs);
 
             case "list" or "ls":
-                ListCommand.Execute();
-                break;
+                return ListCommand.Execute();
 
             case "--version" or "-v" or "version":
                 Console.WriteLine("ShadcnBlazor CLI v1.0.0");
-                break;
+                return 0;
 
             default:
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -43,8 +40,6 @@ public class Program
                 PrintUsage();
                 return 1;
         }
-
-        return 0;
     }
 
     private static void PrintUsage()

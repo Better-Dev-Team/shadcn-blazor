@@ -28,4 +28,27 @@
     <ProjectReference Include="..\ShadcnBlazor\ShadcnBlazor.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="..\ShadcnBlazor\Components\**\*.razor" />
+    <None Remove="..\ShadcnBlazor\Common\*.cs" />
+    <None Remove="..\ShadcnBlazor\Services\*.cs" />
+    <None Remove="..\ShadcnBlazor\wwwroot\shadcn-blazor.css" />
+    <None Remove="..\ShadcnBlazor\wwwroot\shadcn-blazor.js" />
+    <EmbeddedResource Include="..\ShadcnBlazor\Components\**\*.razor"
+                      Link="Assets\Components\%(RecursiveDir)%(Filename)%(Extension)"
+                      LogicalName="ShadcnBlazor.Cli.assets.Components.%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\ShadcnBlazor\Common\*.cs"
+                      Link="Assets\Common\%(Filename)%(Extension)"
+                      LogicalName="ShadcnBlazor.Cli.assets.Common.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\ShadcnBlazor\Services\*.cs"
+                      Link="Assets\Services\%(Filename)%(Extension)"
+                      LogicalName="ShadcnBlazor.Cli.assets.Services.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\ShadcnBlazor\wwwroot\shadcn-blazor.css"
+                      Link="Assets\wwwroot\shadcn-blazor.css"
+                      LogicalName="ShadcnBlazor.Cli.assets.wwwroot.shadcn-blazor.css" />
+    <EmbeddedResource Include="..\ShadcnBlazor\wwwroot\shadcn-blazor.js"
+                      Link="Assets\wwwroot\shadcn-blazor.js"
+                      LogicalName="ShadcnBlazor.Cli.assets.wwwroot.shadcn-blazor.js" />
+  </ItemGroup>
+
 </Project>
