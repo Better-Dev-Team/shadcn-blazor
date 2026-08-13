@@ -44,16 +44,17 @@ jobs:
     # Option A: Trusted Publishing via OIDC
     - name: NuGet Trusted Login
       id: login
-      if: secrets.NUGET_API_KEY == ''
       uses: NuGet/login@v1
       with:
         user: ${{ inputs.nuget_username || 'TeRiRi606' }}
 
     # Option B: Push with API Key (if provided) or OIDC temporary token
     - name: Push Packages to NuGet.org
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: |
-        API_KEY="${{ secrets.NUGET_API_KEY }}"
-        if [ -z "$API_KEY" ]; then
-          API_KEY="${{ steps.login.outputs.NUGET_API_KEY }}"
+        if [ -n "$NUGET_API_KEY" ]; then
+          dotnet nuget push nupkg/*.nupkg --api-key "$NUGET_API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        else
+          dotnet nuget push nupkg/*.nupkg --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
         fi
-        dotnet nuget push nupkg/*.nupkg --api-key "$API_KEY" --source https://api.nuget.org/v3/index.json --skip-duplicate
