@@ -1,0 +1,61 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div role="group" class="@ComputedClass" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public ToggleGroupType Type { get; set; } = ToggleGroupType.Single;
+    [Parameter] public bool Multiple { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public HashSet<string> Values { get; set; } = new(StringComparer.Ordinal);
+    [Parameter] public EventCallback<HashSet<string>> ValuesChanged { get; set; }
+    [Parameter] public ToggleVariant Variant { get; set; } = ToggleVariant.Default;
+    [Parameter] public ToggleSize Size { get; set; } = ToggleSize.Default;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool IsMultiple => Multiple || Type == ToggleGroupType.Multiple;
+
+    public bool IsSelected(string value)
+    {
+        return IsMultiple ? Values.Contains(value) : Value == value;
+    }
+
+    public async Task ToggleValueAsync(string value)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        if (IsMultiple)
+        {
+            var nextValues = new HashSet<string>(Values, StringComparer.Ordinal);
+            if (!nextValues.Add(value))
+            {
+                nextValues.Remove(value);
+            }
+
+            Values = nextValues;
+            await ValuesChanged.InvokeAsync(Values);
+        }
+        else
+        {
+            Value = Value == value ? null : value;
+            await ValueChanged.InvokeAsync(Value);
+        }
+
+        StateHasChanged();
+    }
+
+    private string ComputedClass => Cn.Class(
+        "flex items-center justify-center gap-1",
+        Class
+    );
+}

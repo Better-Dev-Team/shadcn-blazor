@@ -1,0 +1,36 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@Cn.Class("w-full", Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public readonly string TriggerId = $"collapsible-trig-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"collapsible-cnt-{Guid.NewGuid():N}";
+
+    public async Task SetOpenAsync(bool open)
+    {
+        if ((Disabled && open) || Open == open)
+        {
+            return;
+        }
+
+        Open = open;
+        await OpenChanged.InvokeAsync(Open);
+        StateHasChanged();
+    }
+
+    public Task ToggleAsync()
+    {
+        return SetOpenAsync(!Open);
+    }
+}

@@ -1,0 +1,40 @@
+@namespace ShadcnBlazor
+
+<div id="@(Parent?.TriggerId)"
+     class="@Cn.Class("inline-flex cursor-context-menu select-none", Class)"
+     role="button"
+     tabindex="0"
+     aria-haspopup="menu"
+     aria-expanded="@(Parent?.Open == true ? "true" : "false")"
+     aria-disabled="@(Disabled || Parent?.Disabled == true ? "true" : null)"
+     @oncontextmenu="HandleContextMenuAsync"
+     @oncontextmenu:preventDefault
+     @onkeydown="HandleKeyDownAsync"
+     @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public ContextMenu? Parent { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private Task HandleContextMenuAsync(MouseEventArgs args)
+    {
+        return Parent == null || Disabled ? Task.CompletedTask : Parent.OpenAtAsync(args);
+    }
+
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        if (Parent == null || Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        return args.Key == "ContextMenu" || (args.Key == "F10" && args.ShiftKey)
+            ? Parent.OpenAtAsync(0, 0)
+            : Task.CompletedTask;
+    }
+}

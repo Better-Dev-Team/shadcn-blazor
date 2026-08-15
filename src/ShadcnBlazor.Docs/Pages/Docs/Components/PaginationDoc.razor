@@ -1,0 +1,22 @@
+@page "/docs/components/pagination"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Pagination</h1>
+        <p class="text-lg text-muted-foreground">Accessible page navigation with controlled state.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Pagination">
+        <div class="w-full space-y-4">
+            <Pagination @bind-Page="_page" TotalPages="12" VisiblePageCount="5" />
+            <p class="text-center text-sm text-muted-foreground">Current page: @_page</p>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private int _page = 4;
+}

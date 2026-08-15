@@ -1,0 +1,64 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass"
+     role="group"
+     aria-labelledby="@(string.IsNullOrWhiteSpace(Label) ? null : LabelId)"
+     aria-describedby="@DescribedBy"
+     aria-invalid="@(HasError ? "true" : null)"
+     aria-required="@(Required ? "true" : null)"
+     @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label id="@LabelId"
+               for="@Id"
+               class="block text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+            @Label
+            @if (Required)
+            {
+                <span class="text-destructive" aria-hidden="true"> *</span>
+            }
+        </label>
+    }
+
+    <div class="space-y-1">
+        @ChildContent
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <p id="@DescriptionId" class="text-[0.8rem] text-muted-foreground">@Description</p>
+    }
+
+    @if (HasError)
+    {
+        <p id="@ErrorId" class="text-[0.8rem] font-medium text-destructive" role="alert">@Error</p>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Error { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _generatedId = $"form-field-{Guid.NewGuid():N}";
+
+    private string FieldId => Id ?? _generatedId;
+    private string LabelId => $"{FieldId}-label";
+    private string DescriptionId => $"{FieldId}-description";
+    private string ErrorId => $"{FieldId}-error";
+    private bool HasError => !string.IsNullOrWhiteSpace(Error);
+    private string DescribedBy => string.Join(
+        " ",
+        new[]
+        {
+            string.IsNullOrWhiteSpace(Description) ? null : DescriptionId,
+            HasError ? ErrorId : null
+        }.Where(id => id is not null));
+
+    private string ComputedClass => Cn.Class("space-y-2", Class);
+}

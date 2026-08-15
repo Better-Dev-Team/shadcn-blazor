@@ -1,0 +1,35 @@
+@page "/docs/components/toggle"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Toggle</h1>
+        <p class="text-lg text-muted-foreground">Pressed state buttons and single or multiple selection groups.</p>
+    </div>
+
+    <Separator />
+
+    <div class="grid gap-8 md:grid-cols-2">
+        <ComponentPreview Title="Toggle">
+            <Toggle @bind-Pressed="_isBold" Variant="ToggleVariant.Outline">Bold</Toggle>
+        </ComponentPreview>
+        <ComponentPreview Title="Toggle group">
+            <ToggleGroup Value="@_alignment" ValueChanged="SetAlignmentAsync" Type="ToggleGroupType.Single">
+                <ToggleGroupItem Value="left" Variant="ToggleVariant.Outline">Left</ToggleGroupItem>
+                <ToggleGroupItem Value="center" Variant="ToggleVariant.Outline">Center</ToggleGroupItem>
+                <ToggleGroupItem Value="right" Variant="ToggleVariant.Outline">Right</ToggleGroupItem>
+            </ToggleGroup>
+        </ComponentPreview>
+    </div>
+</div>
+
+@code {
+    private bool _isBold;
+    private string? _alignment = "left";
+
+    private Task SetAlignmentAsync(string? value)
+    {
+        _alignment = value;
+        return Task.CompletedTask;
+    }
+}

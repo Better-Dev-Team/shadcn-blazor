@@ -1,0 +1,50 @@
+@namespace ShadcnBlazor
+
+<li>
+    <button type="button"
+            class="@ComputedClass"
+            aria-label="@AriaLabelValue"
+            aria-current="@(IsActive ? "page" : null)"
+            disabled="@IsDisabled"
+            @onclick="HandleClickAsync"
+            @attributes="AdditionalAttributes">
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        else
+        {
+            @Page
+        }
+    </button>
+</li>
+
+@code {
+    [CascadingParameter] public Pagination? Parent { get; set; }
+    [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsActive => Parent?.Page == Page;
+    private bool IsDisabled => Disabled
+        || Page < 1
+        || (Parent != null && (Parent.EffectiveTotalPages == 0 || Page > Parent.EffectiveTotalPages));
+    private string AriaLabelValue => AriaLabel ?? $"Go to page {Page}";
+
+    private async Task HandleClickAsync()
+    {
+        if (!IsDisabled && Parent != null)
+        {
+            await Parent.SetPageAsync(Page);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "inline-flex h-9 min-w-9 items-center justify-center rounded-md px-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+        IsActive ? "bg-primary text-primary-foreground shadow hover:bg-primary/90" : "hover:bg-accent hover:text-accent-foreground",
+        Class
+    );
+}

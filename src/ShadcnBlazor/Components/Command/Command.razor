@@ -1,0 +1,57 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ComputedClass" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Query { get; set; }
+    [Parameter] public EventCallback<string?> QueryChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly HashSet<CommandItem> _items = new();
+
+    public bool HasVisibleItems => _items.Any(item => item.IsVisible);
+
+    public bool IsMatch(string? value)
+    {
+        return string.IsNullOrWhiteSpace(Query) || (value?.Contains(Query, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
+    public async Task SetQueryAsync(string? query)
+    {
+        if (Query == query)
+        {
+            return;
+        }
+
+        Query = query;
+        await QueryChanged.InvokeAsync(Query);
+        StateHasChanged();
+    }
+
+    internal void RegisterItem(CommandItem item)
+    {
+        if (_items.Add(item))
+        {
+            _ = InvokeAsync(StateHasChanged);
+        }
+    }
+
+    internal void UnregisterItem(CommandItem item)
+    {
+        if (_items.Remove(item))
+        {
+            _ = InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+        Class
+    );
+}

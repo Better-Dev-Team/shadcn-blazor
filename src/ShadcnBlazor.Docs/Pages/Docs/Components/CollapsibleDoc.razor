@@ -1,0 +1,27 @@
+@page "/docs/components/collapsible"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Collapsible</h1>
+        <p class="text-lg text-muted-foreground">Progressively disclose secondary content without leaving the page.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Expandable content">
+        <Collapsible @bind-Open="_open" Class="w-full max-w-md space-y-2">
+            <div class="flex items-center justify-between gap-4 rounded-md border px-4 py-3">
+                <span class="text-sm font-medium">Project details</span>
+                <CollapsibleTrigger Class="border px-3 py-1.5">@(_open ? "Hide" : "Show")</CollapsibleTrigger>
+            </div>
+            <CollapsibleContent>
+                <div class="rounded-md border px-4 py-3 text-sm text-muted-foreground">Additional project metadata is shown here.</div>
+            </CollapsibleContent>
+        </Collapsible>
+    </ComponentPreview>
+</div>
+
+@code {
+    private bool _open;
+}

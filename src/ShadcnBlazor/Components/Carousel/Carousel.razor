@@ -1,0 +1,119 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div id="@RootId"
+         class="@Cn.Class("relative w-full", Class)"
+         role="region"
+         aria-roledescription="carousel"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    private readonly List<CarouselItem> _items = new();
+    private int _lastItemCount;
+
+    [Parameter] public int SelectedIndex { get; set; }
+    [Parameter] public EventCallback<int> SelectedIndexChanged { get; set; }
+    [Parameter] public bool Loop { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public readonly string RootId = $"carousel-{Guid.NewGuid():N}";
+
+    public int ItemCount => _items.Count;
+    public int CurrentIndex => NormalizeIndex(SelectedIndex);
+    public bool CanPrevious => ItemCount > 1 && (Loop || CurrentIndex > 0);
+    public bool CanNext => ItemCount > 1 && (Loop || CurrentIndex < ItemCount - 1);
+
+    public async Task SetSelectedIndexAsync(int index)
+    {
+        if (ItemCount == 0)
+        {
+            return;
+        }
+
+        var nextIndex = NormalizeIndex(index);
+        if (SelectedIndex == nextIndex)
+        {
+            return;
+        }
+
+        SelectedIndex = nextIndex;
+        await SelectedIndexChanged.InvokeAsync(SelectedIndex);
+        StateHasChanged();
+    }
+
+    public Task SelectAsync(int index)
+    {
+        return SetSelectedIndexAsync(index);
+    }
+
+    public Task PreviousAsync()
+    {
+        if (!CanPrevious)
+        {
+            return Task.CompletedTask;
+        }
+
+        var nextIndex = CurrentIndex == 0 ? ItemCount - 1 : CurrentIndex - 1;
+        return SetSelectedIndexAsync(nextIndex);
+    }
+
+    public Task NextAsync()
+    {
+        if (!CanNext)
+        {
+            return Task.CompletedTask;
+        }
+
+        var nextIndex = CurrentIndex == ItemCount - 1 ? 0 : CurrentIndex + 1;
+        return SetSelectedIndexAsync(nextIndex);
+    }
+
+    internal void RegisterItem(CarouselItem item)
+    {
+        if (!_items.Contains(item))
+        {
+            _items.Add(item);
+        }
+    }
+
+    internal void UnregisterItem(CarouselItem item)
+    {
+        _items.Remove(item);
+    }
+
+    internal int GetItemIndex(CarouselItem item)
+    {
+        var index = _items.IndexOf(item);
+        return index < 0 ? 0 : index;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (_lastItemCount != _items.Count)
+        {
+            _lastItemCount = _items.Count;
+            StateHasChanged();
+        }
+    }
+
+    private int NormalizeIndex(int index)
+    {
+        if (ItemCount == 0)
+        {
+            return 0;
+        }
+
+        if (Loop)
+        {
+            var normalized = index % ItemCount;
+            return normalized < 0 ? normalized + ItemCount : normalized;
+        }
+
+        return Math.Clamp(index, 0, ItemCount - 1);
+    }
+}

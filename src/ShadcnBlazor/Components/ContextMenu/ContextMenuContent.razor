@@ -1,0 +1,25 @@
+@namespace ShadcnBlazor
+
+@if (Parent?.Open == true)
+{
+    <div id="@(Parent.ContentId)"
+         class="@Cn.Class("z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95", Class)"
+         style="@PositionStyle"
+         role="menu"
+         aria-orientation="vertical"
+         tabindex="-1"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public ContextMenu? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string PositionStyle => Parent == null
+        ? string.Empty
+        : $"position: fixed; left: {Parent.ContextMenuX.ToString(System.Globalization.CultureInfo.InvariantCulture)}px; top: {Parent.ContextMenuY.ToString(System.Globalization.CultureInfo.InvariantCulture)}px;";
+}

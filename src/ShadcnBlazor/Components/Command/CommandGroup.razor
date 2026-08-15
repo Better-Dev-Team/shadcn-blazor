@@ -1,0 +1,23 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" role="group" @attributes="AdditionalAttributes">
+    @if (!string.IsNullOrWhiteSpace(Heading))
+    {
+        <div class="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+            @Heading
+        </div>
+    }
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Heading { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "overflow-hidden p-1 text-foreground",
+        Class
+    );
+}

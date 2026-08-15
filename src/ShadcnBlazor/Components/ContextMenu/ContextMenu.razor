@@ -1,0 +1,78 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div id="@RootId"
+         class="@Cn.Class("relative inline-block", Class)"
+         @onclick="HandleClickAsync"
+         @onkeydown="HandleKeyDownAsync"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public readonly string RootId = $"context-menu-{Guid.NewGuid():N}";
+    public readonly string TriggerId = $"context-menu-trig-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"context-menu-cnt-{Guid.NewGuid():N}";
+
+    public double ContextMenuX { get; private set; }
+    public double ContextMenuY { get; private set; }
+
+    public async Task SetOpenAsync(bool open)
+    {
+        if ((Disabled && open) || Open == open)
+        {
+            return;
+        }
+
+        Open = open;
+        await OpenChanged.InvokeAsync(Open);
+        StateHasChanged();
+    }
+
+    public Task CloseAsync()
+    {
+        return SetOpenAsync(false);
+    }
+
+    public Task OpenAtAsync(MouseEventArgs args)
+    {
+        return OpenAtAsync(args.ClientX, args.ClientY);
+    }
+
+    public async Task OpenAtAsync(double x, double y)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        ContextMenuX = Math.Max(0, x);
+        ContextMenuY = Math.Max(0, y);
+
+        if (!Open)
+        {
+            Open = true;
+            await OpenChanged.InvokeAsync(Open);
+        }
+
+        StateHasChanged();
+    }
+
+    private Task HandleClickAsync()
+    {
+        return Open ? SetOpenAsync(false) : Task.CompletedTask;
+    }
+
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        return args.Key == "Escape" ? CloseAsync() : Task.CompletedTask;
+    }
+}

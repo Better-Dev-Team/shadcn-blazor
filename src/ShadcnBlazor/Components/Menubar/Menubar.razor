@@ -1,0 +1,53 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@Cn.Class("flex h-10 items-center space-x-1 rounded-md border bg-background p-1", Class)"
+         role="menubar"
+         @onkeydown="HandleKeyDownAsync"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool HasOpenMenu => Value != null;
+
+    public bool IsOpen(string value)
+    {
+        return Value == value;
+    }
+
+    public async Task SetValueAsync(string? value)
+    {
+        if ((Disabled && value != null) || Value == value)
+        {
+            return;
+        }
+
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+        StateHasChanged();
+    }
+
+    public Task ToggleMenuAsync(string value, bool disabled = false)
+    {
+        return disabled ? Task.CompletedTask : SetValueAsync(Value == value ? null : value);
+    }
+
+    public Task CloseAsync()
+    {
+        return SetValueAsync(null);
+    }
+
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        return args.Key == "Escape" ? CloseAsync() : Task.CompletedTask;
+    }
+}

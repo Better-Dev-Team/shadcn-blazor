@@ -1,0 +1,21 @@
+@namespace ShadcnBlazor
+
+@if (Parent != null && Item != null && Parent.IsOpen(Item.Value))
+{
+    <div id="@(Item.ContentId)"
+         class="@Cn.Class("absolute left-0 top-full z-50 mt-1 min-w-[8rem] origin-top-left overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95", Class)"
+         role="menu"
+         aria-orientation="vertical"
+         aria-labelledby="@(Item.TriggerId)"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Menubar? Parent { get; set; }
+    [CascadingParameter] public MenubarMenu? Item { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+}

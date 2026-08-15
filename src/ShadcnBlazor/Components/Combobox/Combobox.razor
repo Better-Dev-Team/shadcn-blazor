@@ -1,0 +1,196 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div id="@RootId" class="@ComputedClass" @attributes="AdditionalAttributes">
+        <button type="button"
+                id="@TriggerId"
+                role="combobox"
+                aria-expanded="@(Open ? "true" : "false")"
+                aria-controls="@ContentId"
+                disabled="@Disabled"
+                class="@TriggerClass"
+                @onclick="ToggleAsync">
+            <span class="truncate">@(SelectedLabel ?? Placeholder)</span>
+            <svg class="ml-2 h-4 w-4 shrink-0 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m7 15 5 5 5-5"></path>
+                <path d="m7 9 5-5 5 5"></path>
+            </svg>
+        </button>
+
+        <div id="@ContentId"
+             class="@ContentClass"
+             role="dialog"
+             aria-hidden="@(Open ? "false" : "true")"
+             hidden="@(!Open)">
+            <div class="flex items-center border-b px-3">
+                <svg class="mr-2 h-4 w-4 shrink-0 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </svg>
+                <input type="text"
+                       class="h-10 w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground"
+                       value="@SearchText"
+                       placeholder="@SearchPlaceholder"
+                       disabled="@Disabled"
+                       autocomplete="off"
+                       @oninput="HandleSearchInputAsync"
+                       @onkeydown="HandleSearchKeyDownAsync" />
+            </div>
+            <div class="max-h-60 overflow-y-auto p-1" role="listbox" aria-labelledby="@TriggerId">
+                @ChildContent
+                @if (!HasVisibleItems)
+                {
+                    <div class="py-6 text-center text-sm text-muted-foreground" role="status">
+                        No results found.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Placeholder { get; set; } = "Select an option...";
+    [Parameter] public string? SearchPlaceholder { get; set; } = "Search...";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly HashSet<ComboboxItem> _items = new();
+    private string _searchText = string.Empty;
+    private string? _selectedLabel;
+    private string? _selectedValue;
+
+    public readonly string RootId = $"combobox-{Guid.NewGuid():N}";
+    public readonly string TriggerId = $"combobox-trigger-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"combobox-content-{Guid.NewGuid():N}";
+
+    public string? SelectedLabel
+    {
+        get
+        {
+            var itemLabel = _items.FirstOrDefault(item => item.Value == Value)?.Label;
+            return itemLabel ?? (_selectedValue == Value ? _selectedLabel : Value);
+        }
+    }
+
+    public bool HasVisibleItems => _items.Any(item => item.IsVisible);
+
+    public bool IsMatch(string? value, string? label)
+    {
+        if (string.IsNullOrWhiteSpace(_searchText))
+        {
+            return true;
+        }
+
+        return (label?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false)
+            || (value?.Contains(_searchText, StringComparison.OrdinalIgnoreCase) ?? false);
+    }
+
+    public bool IsItemVisible(ComboboxItem item)
+    {
+        return IsMatch(item.Value, item.Label);
+    }
+
+    public async Task SetOpenAsync(bool open)
+    {
+        if (Disabled || Open == open)
+        {
+            return;
+        }
+
+        Open = open;
+        if (!Open)
+        {
+            _searchText = string.Empty;
+        }
+
+        await OpenChanged.InvokeAsync(Open);
+        StateHasChanged();
+    }
+
+    public async Task SelectValueAsync(string? value, string? label)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        Value = value;
+        _selectedLabel = label ?? value;
+        _selectedValue = value;
+        _searchText = string.Empty;
+
+        var wasOpen = Open;
+        Open = false;
+        if (wasOpen)
+        {
+            await OpenChanged.InvokeAsync(false);
+        }
+
+        await ValueChanged.InvokeAsync(Value);
+        StateHasChanged();
+    }
+
+    internal void RegisterItem(ComboboxItem item)
+    {
+        if (_items.Add(item))
+        {
+            _ = InvokeAsync(StateHasChanged);
+        }
+    }
+
+    internal void UnregisterItem(ComboboxItem item)
+    {
+        if (_items.Remove(item))
+        {
+            _ = InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task ToggleAsync()
+    {
+        await SetOpenAsync(!Open);
+    }
+
+    private async Task HandleSearchInputAsync(ChangeEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        _searchText = args.Value?.ToString() ?? string.Empty;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task HandleSearchKeyDownAsync(KeyboardEventArgs args)
+    {
+        if (args.Key == "Escape")
+        {
+            await SetOpenAsync(false);
+        }
+    }
+
+    private string SearchText => _searchText;
+
+    private string ComputedClass => Cn.Class(
+        "relative w-full",
+        Class
+    );
+
+    private string TriggerClass => Cn.Class(
+        "flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+        Open ? "bg-accent/50" : null
+    );
+
+    private string ContentClass => Cn.Class(
+        "absolute left-0 top-full z-50 mt-1 w-full overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md",
+        Open ? "animate-in fade-in-80 zoom-in-95" : null
+    );
+}

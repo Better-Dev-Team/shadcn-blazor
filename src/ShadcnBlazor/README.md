@@ -40,8 +40,8 @@ In your `_Imports.razor`:
 ### 3. Add CSS & JS references
 In your `App.razor` or `index.html`:
 ```html
-<link rel="stylesheet" href="_content/ShadcnBlazor/shadcn-blazor.css" />
-<script src="_content/ShadcnBlazor/shadcn-blazor.js"></script>
+<link rel="stylesheet" href="_content/BetterDev.ShadcnBlazor/shadcn-blazor.css" />
+<script src="_content/BetterDev.ShadcnBlazor/shadcn-blazor.js"></script>
 ```
 
 ---
@@ -51,8 +51,9 @@ In your `App.razor` or `index.html`:
 - **Buttons & Indicators**: `Button`, `Badge`
 - **Layout & Cards**: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `Separator`
 - **Modals & Overlays**: `Dialog`, `AlertDialog`, `Sheet`, `Popover`, `Tooltip`, `DropdownMenu`
-- **Forms & Controls**: `Input`, `Textarea`, `Label`, `Checkbox`, `Switch`, `RadioGroup`, `Select`, `Slider`
-- **Navigation & Feedback**: `Tabs`, `Accordion`, `Breadcrumb`, `Table`, `Progress`, `Skeleton`, `Avatar`, `Toaster`
+- **Forms & Controls**: `Form`, `FormField`, `Input`, `Textarea`, `Label`, `Checkbox`, `Switch`, `RadioGroup`, `Select`, `Slider`, `Calendar`, `DatePicker`, `Command`, `Combobox`
+- **Navigation & Feedback**: `Tabs`, `Accordion`, `Breadcrumb`, `Pagination`, `Toggle`, `ToggleGroup`, `Collapsible`, `Table`, `Progress`, `Skeleton`, `Avatar`, `Toaster`
+- **Menus & Layout**: `ContextMenu`, `NavigationMenu`, `Menubar`, `Carousel`
 
 ---
 

@@ -1,0 +1,46 @@
+@page "/docs/components/form"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Form</h1>
+        <p class="text-lg text-muted-foreground">Accessible form layout primitives for validated Blazor workflows.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Form with fields">
+        <Form Model="@_model" OnValidSubmit="HandleValidSubmitAsync" Class="w-full max-w-md space-y-6">
+            <FormField Label="Project name" Description="Choose a name your team will recognize." Required Id="project-name">
+                <Input id="project-name" @bind-Value="_model.Name" Placeholder="Acme dashboard" />
+            </FormField>
+            <FormField Label="Description" Id="project-description">
+                <Textarea id="project-description" @bind-Value="_model.Description" Placeholder="What are you building?" Rows="4" />
+            </FormField>
+            <div class="flex items-center gap-3">
+                <Button Type="submit">Create project</Button>
+                @if (_submitted)
+                {
+                    <span class="text-sm text-muted-foreground">Project submitted.</span>
+                }
+            </div>
+        </Form>
+    </ComponentPreview>
+</div>
+
+@code {
+    private readonly ProjectModel _model = new();
+    private bool _submitted;
+
+    private Task HandleValidSubmitAsync(EditContext _)
+    {
+        _submitted = true;
+        return Task.CompletedTask;
+    }
+
+    private sealed class ProjectModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+    }
+}

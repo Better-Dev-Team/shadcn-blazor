@@ -1,0 +1,23 @@
+@page "/docs/components/carousel"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Carousel</h1>
+        <p class="text-lg text-muted-foreground">A controlled, accessible sliding content region with loop support.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Looping carousel">
+        <Carousel Loop Class="w-full max-w-lg">
+            <CarouselContent>
+                <CarouselItem><div class="flex h-48 items-center justify-center rounded-xl bg-primary text-3xl font-semibold text-primary-foreground">01</div></CarouselItem>
+                <CarouselItem><div class="flex h-48 items-center justify-center rounded-xl bg-secondary text-3xl font-semibold text-secondary-foreground">02</div></CarouselItem>
+                <CarouselItem><div class="flex h-48 items-center justify-center rounded-xl bg-accent text-3xl font-semibold text-accent-foreground">03</div></CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+        </Carousel>
+    </ComponentPreview>
+</div>

@@ -1,0 +1,402 @@
+﻿@page "/"
+@inject IToastService ToastService
+
+<PageTitle>ShadcnBlazor Showcase</PageTitle>
+
+<div class="container mx-auto max-w-3xl space-y-12 px-4 py-8">
+
+    <!-- Hero -->
+    <section class="space-y-4 py-6 text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight">ShadcnBlazor</h1>
+        <p class="mx-auto max-w-lg text-lg text-muted-foreground">
+            Beautifully designed Blazor components. Every component on this page is interactive — click around.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <Button Size="ButtonSize.Lg" OnClick="@(() => ToastService.Success("Welcome!", "This is a ShadcnBlazor toast."))">Get Started</Button>
+            <Button Size="ButtonSize.Lg" Variant="ButtonVariant.Outline" Href="https://github.com/Better-Dev-Team/shadcn-blazor">GitHub</Button>
+        </div>
+    </section>
+
+    <Separator />
+
+    <!-- Buttons -->
+    <section class="space-y-4">
+        <SectionTitle>Buttons</SectionTitle>
+        <div class="flex flex-wrap gap-3">
+            <Button>Default</Button>
+            <Button Variant="ButtonVariant.Secondary">Secondary</Button>
+            <Button Variant="ButtonVariant.Destructive">Destructive</Button>
+            <Button Variant="ButtonVariant.Outline">Outline</Button>
+            <Button Variant="ButtonVariant.Ghost">Ghost</Button>
+            <Button Variant="ButtonVariant.Link">Link</Button>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <Button Size="ButtonSize.Sm">Small</Button>
+            <Button Size="ButtonSize.Default">Default</Button>
+            <Button Size="ButtonSize.Lg">Large</Button>
+            <Button Size="ButtonSize.Icon">✦</Button>
+            <Button Loading="true">Please wait</Button>
+        </div>
+    </section>
+
+    <!-- Badges & Avatars -->
+    <section class="space-y-4">
+        <SectionTitle>Badges &amp; Avatars</SectionTitle>
+        <div class="flex flex-wrap gap-2">
+            <Badge>Default</Badge>
+            <Badge Variant="BadgeVariant.Secondary">Secondary</Badge>
+            <Badge Variant="BadgeVariant.Destructive">Destructive</Badge>
+            <Badge Variant="BadgeVariant.Outline">Outline</Badge>
+            <Badge Variant="BadgeVariant.Success">Success</Badge>
+            <Badge Variant="BadgeVariant.Warning">Warning</Badge>
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+            <Avatar>
+                <AvatarImage Src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" Alt="avatar" />
+                <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Avatar>
+                <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+            <Avatar>
+                <AvatarFallback>SB</AvatarFallback>
+            </Avatar>
+        </div>
+    </section>
+
+    <!-- Alerts -->
+    <section class="space-y-4">
+        <SectionTitle>Alerts</SectionTitle>
+        <Alert>
+            <Icon>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z"/><path d="m9 12 2 2 4-4"/>
+                </svg>
+            </Icon>
+            <ChildContent>
+                <AlertTitle>Everything is fine</AlertTitle>
+                <AlertDescription>The showcase app is running smoothly.</AlertDescription>
+            </ChildContent>
+        </Alert>
+        <Alert Variant="AlertVariant.Destructive">
+            <Icon>
+                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>
+                </svg>
+            </Icon>
+            <ChildContent>
+                <AlertTitle>Uh oh</AlertTitle>
+                <AlertDescription>Your session has expired. Please log in again.</AlertDescription>
+            </ChildContent>
+        </Alert>
+    </section>
+
+    <!-- Forms -->
+    <section class="space-y-4">
+        <SectionTitle>Forms</SectionTitle>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+                <Label>Email</Label>
+                <Input Type="email" Placeholder="name@example.com" @bind-Value="_email" />
+            </div>
+            <div class="space-y-2">
+                <Label>Message</Label>
+                <Textarea Placeholder="Type your message here." Rows="3" />
+            </div>
+            <Checkbox @bind-Checked="_acceptTerms"
+                      Label="Accept terms and conditions"
+                      Description="You agree to our Terms of Service and Privacy Policy." />
+            <Switch @bind-Checked="_airplaneMode"
+                    Label="Airplane Mode"
+                    Description="Disable all wireless connections on this device." />
+        </div>
+        <div class="space-y-2">
+            <div class="flex items-center justify-between">
+                <Label>Volume</Label>
+                <span class="text-sm text-muted-foreground">@_sliderValue.ToString("0")%</span>
+            </div>
+            <Slider @bind-Value="_sliderValue" Min="0" Max="100" />
+        </div>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="space-y-2">
+                <Label>Theme density</Label>
+                <RadioGroup @bind-Value="_themeOption">
+                    <RadioGroupItem Value="default" Label="Default" />
+                    <RadioGroupItem Value="comfortable" Label="Comfortable" />
+                    <RadioGroupItem Value="compact" Label="Compact" />
+                </RadioGroup>
+            </div>
+            <div class="space-y-2">
+                <Label>Favorite fruit</Label>
+                <Select @bind-Value="_fruit">
+                    <SelectTrigger>
+                        <SelectValue Placeholder="Select a fruit" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectLabel>Fruits</SelectLabel>
+                        <SelectItem Value="apple" Label="Apple" />
+                        <SelectItem Value="banana" Label="Banana" />
+                        <SelectItem Value="blueberry" Label="Blueberry" />
+                        <SelectItem Value="grapes" Label="Grapes" />
+                        <SelectItem Value="pineapple" Label="Pineapple" />
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <section class="space-y-4">
+        <SectionTitle>Navigation</SectionTitle>
+        <Breadcrumb>
+            <BreadcrumbList>
+                <BreadcrumbItem><BreadcrumbLink Href="">Home</BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbLink Href="">Components</BreadcrumbLink></BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbPage>Showcase</BreadcrumbPage></BreadcrumbItem>
+            </BreadcrumbList>
+        </Breadcrumb>
+
+        <Tabs Class="w-full">
+            <TabsList>
+                <TabsTrigger Value="account">Account</TabsTrigger>
+                <TabsTrigger Value="password">Password</TabsTrigger>
+                <TabsTrigger Value="billing">Billing</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account">Make changes to your account here.</TabsContent>
+            <TabsContent Value="password">Change your password here.</TabsContent>
+            <TabsContent Value="billing">Manage your billing details here.</TabsContent>
+        </Tabs>
+
+        <Accordion Class="w-full">
+            <AccordionItem Value="item-1">
+                <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-2">
+                <AccordionTrigger>Is it styled?</AccordionTrigger>
+                <AccordionContent>Yes. It comes with default styles that match shadcn/ui.</AccordionContent>
+            </AccordionItem>
+            <AccordionItem Value="item-3">
+                <AccordionTrigger>Is it animated?</AccordionTrigger>
+                <AccordionContent>Yes. It's animated by default, but you can disable it if you prefer.</AccordionContent>
+            </AccordionItem>
+        </Accordion>
+    </section>
+
+    <!-- Overlays -->
+    <section class="space-y-4">
+        <SectionTitle>Overlays</SectionTitle>
+        <div class="flex flex-wrap gap-3">
+            <Dialog>
+                <DialogTrigger>
+                    <Button Variant="ButtonVariant.Outline">Dialog</Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Edit profile</DialogTitle>
+                        <DialogDescription>Make changes to your profile here. Click save when you're done.</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <DialogClose>
+                            <Button Variant="ButtonVariant.Outline">Cancel</Button>
+                        </DialogClose>
+                        <DialogClose>
+                            <Button OnClick="@(() => ToastService.Success("Saved!", "Your profile has been updated."))">Save</Button>
+                        </DialogClose>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            <AlertDialog>
+                <AlertDialogTrigger>
+                    <Button Variant="ButtonVariant.Destructive">Delete Account</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction OnClick="@(() => ToastService.Error("Account deleted permanently."))">Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <Sheet>
+                <SheetTrigger>
+                    <Button Variant="ButtonVariant.Outline">Sheet</Button>
+                </SheetTrigger>
+                <SheetContent Side="SheetSide.Right">
+                    <SheetHeader>
+                        <SheetTitle>Right sheet</SheetTitle>
+                        <SheetDescription>Slide-in panel from the right edge.</SheetDescription>
+                    </SheetHeader>
+                    <div class="mt-4 space-y-3">
+                        <p class="text-sm text-muted-foreground">Sheets can hold anything: forms, settings, previews...</p>
+                        <Button Class="w-full" OnClick="@(() => ToastService.Info("Hi from the sheet!"))">Do a thing</Button>
+                    </div>
+                </SheetContent>
+            </Sheet>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Button Variant="ButtonVariant.Outline">Dropdown</Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent Class="w-56">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem OnClick="@(() => ToastService.Info("Profile clicked"))">Profile</DropdownMenuItem>
+                    <DropdownMenuItem OnClick="@(() => ToastService.Info("Billing clicked"))">Billing</DropdownMenuItem>
+                    <DropdownMenuItem OnClick="@(() => ToastService.Info("Settings clicked"))">Settings</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem Destructive="true" OnClick="@(() => ToastService.Error("Logged out"))">Log out</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Popover>
+                <PopoverTrigger>
+                    <Button Variant="ButtonVariant.Outline">Popover</Button>
+                </PopoverTrigger>
+                <PopoverContent Class="w-80">
+                    <div class="grid gap-4">
+                        <div class="space-y-2">
+                            <h4 class="font-medium">Dimensions</h4>
+                            <p class="text-sm text-muted-foreground">Set the dimensions for the layer.</p>
+                        </div>
+                        <div class="space-y-2">
+                            <Label>Width</Label>
+                            <Input Placeholder="100%" />
+                        </div>
+                    </div>
+                </PopoverContent>
+            </Popover>
+
+            <Tooltip>
+                <TooltipTrigger>
+                    <Button Variant="ButtonVariant.Outline">Hover me</Button>
+                </TooltipTrigger>
+                <TooltipContent Placement="TooltipPlacement.Top">
+                    Add to library
+                </TooltipContent>
+            </Tooltip>
+        </div>
+    </section>
+
+    <!-- Data display -->
+    <section class="space-y-4">
+        <SectionTitle>Data Display</SectionTitle>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Card</CardTitle>
+                <CardDescription>Cards stack headers, content and footers.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p class="text-sm text-muted-foreground">Content goes here. Combine cards with tables, forms or any other component.</p>
+            </CardContent>
+            <CardFooter>
+                <Button>Action</Button>
+            </CardFooter>
+        </Card>
+
+        <Table>
+            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>Invoice</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Method</TableHead>
+                    <TableHead Class="text-right">Amount</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableCell Class="font-medium">INV001</TableCell>
+                    <TableCell><Badge Variant="BadgeVariant.Success">Paid</Badge></TableCell>
+                    <TableCell>Credit Card</TableCell>
+                    <TableCell Class="text-right">$250.00</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell Class="font-medium">INV002</TableCell>
+                    <TableCell><Badge Variant="BadgeVariant.Warning">Pending</Badge></TableCell>
+                    <TableCell>PayPal</TableCell>
+                    <TableCell Class="text-right">$150.00</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell Class="font-medium">INV003</TableCell>
+                    <TableCell><Badge Variant="BadgeVariant.Destructive">Failed</Badge></TableCell>
+                    <TableCell>Bank Transfer</TableCell>
+                    <TableCell Class="text-right">$350.00</TableCell>
+                </TableRow>
+            </TableBody>
+            <TableFooter>
+                <TableRow>
+                    <TableCell colspan="3">Total</TableCell>
+                    <TableCell Class="text-right">$750.00</TableCell>
+                </TableRow>
+            </TableFooter>
+        </Table>
+
+        <div class="space-y-3">
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-muted-foreground">Progress</span>
+                <span class="text-sm font-medium">@_progress.ToString("0")%</span>
+            </div>
+            <Progress Value="@_progress" Max="100" />
+            <div class="flex gap-2">
+                <Button Size="ButtonSize.Sm" Variant="ButtonVariant.Outline" OnClick="() => _progress = Math.Max(0, _progress - 15)">-15%</Button>
+                <Button Size="ButtonSize.Sm" Variant="ButtonVariant.Outline" OnClick="() => _progress = Math.Min(100, _progress + 15)">+15%</Button>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-4">
+            <Skeleton Class="h-12 w-12 rounded-full" />
+            <div class="space-y-2">
+                <Skeleton Class="h-4 w-[250px]" />
+                <Skeleton Class="h-4 w-[200px]" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Toasts -->
+    <section class="space-y-4">
+        <SectionTitle>Toasts</SectionTitle>
+        <div class="flex flex-wrap gap-3">
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Success("Success!", "Your file has been uploaded."))">Success</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Error("Error!", "Failed to save changes."))">Error</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Warning("Warning!", "Disk space running low."))">Warning</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="@(() => ToastService.Info("Info", "Update available."))">Info</Button>
+            <Button Variant="ButtonVariant.Outline" OnClick="TriggerActionToast">With action</Button>
+        </div>
+    </section>
+</div>
+
+@code {
+    private string _email = "";
+    private bool _acceptTerms = true;
+    private bool _airplaneMode = false;
+    private double _sliderValue = 45;
+    private string? _themeOption = "default";
+    private string? _fruit;
+    private double _progress = 60;
+
+    private void TriggerActionToast()
+    {
+        ToastService.Show(
+            "Event scheduled",
+            "Added to your primary calendar",
+            ToastType.Default,
+            actionText: "Undo",
+            onAction: async () =>
+            {
+                await Task.Yield();
+                ToastService.Info("Action undone!");
+            }
+        );
+    }
+}

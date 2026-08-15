@@ -9,6 +9,7 @@ ShadcnBlazor: a shadcn/ui-style component library for Blazor, plus a CLI tool fo
 - `src/ShadcnBlazor` – component library (Razor Class Library, PackageId `BetterDev.ShadcnBlazor`)
 - `src/ShadcnBlazor.Cli` – .NET tool (`BetterDev.ShadcnBlazor.Cli`, command: `shadcn-blazor`). Component sources from `src/ShadcnBlazor` are embedded into the tool assembly at build time (`EmbeddedResource` items in its csproj) so scaffolding works standalone.
 - `src/ShadcnBlazor.Docs` – the docs site (Blazor WASM on .NET 10, Tailwind CSS via CDN)
+- `src/ShadcnBlazor.Showcase` – minimal local demo app showcasing every component (Blazor WASM, ProjectReference to the library, no Tailwind CDN — styled entirely by the compiled stylesheet)
 - `tests/ShadcnBlazor.Tests` – bUnit-based unit tests
 
 ## CLI `init` integration (what it must do)
@@ -59,6 +60,8 @@ Docs site deploys to GitHub Pages (`deploy-pages.yml`) and Vercel (`deploy-verce
 ## Static asset paths (gotcha)
 
 The `PackageId` values (`BetterDev.ShadcnBlazor`) override the library's static web asset base path. Library assets are therefore served at `_content/BetterDev.ShadcnBlazor/...`, **not** `_content/ShadcnBlazor/...`. Any reference in `index.html`, docs, or generated output must use `_content/BetterDev.ShadcnBlazor/shadcn-blazor.{js,css}`.
+
+WASM apps that reference the library and are published to static hosting need `<BlazorEnableCompression>false</BlazorEnableCompression>` and `<WasmFingerprintAssets>false</WasmFingerprintAssets>` in their csproj, otherwise the publish output is missing the runtime stub files (`_framework/dotnet.js`, `dotnet.runtime.js`, ...) and the app fails to boot.
 
 ## Docs conventions
 

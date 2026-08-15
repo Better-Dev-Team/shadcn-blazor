@@ -1,0 +1,62 @@
+@page "/docs/components/menubar"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Menubar &amp; Navigation Menu</h1>
+        <p class="text-lg text-muted-foreground">Build application menus and expandable site navigation with shared keyboard-friendly primitives.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Menubar">
+        <Menubar>
+            <MenubarMenu Value="file">
+                <MenubarTrigger>File</MenubarTrigger>
+                <MenubarContent>
+                    <MenubarItem OnClick="HandleNewAsync">New project</MenubarItem>
+                    <MenubarItem OnClick="HandleOpenAsync">Open</MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem OnClick="HandleExportAsync">Export</MenubarItem>
+                </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu Value="edit">
+                <MenubarTrigger>Edit</MenubarTrigger>
+                <MenubarContent>
+                    <MenubarItem OnClick="HandleUndoAsync">Undo</MenubarItem>
+                    <MenubarItem OnClick="HandleRedoAsync">Redo</MenubarItem>
+                </MenubarContent>
+            </MenubarMenu>
+        </Menubar>
+    </ComponentPreview>
+
+    <ComponentPreview Title="Navigation menu">
+        <NavigationMenu>
+            <NavigationMenuList>
+                <NavigationMenuItem Value="docs">
+                    <NavigationMenuTrigger>Documentation</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <div class="grid w-[280px] gap-2">
+                            <a href="docs/introduction" class="rounded-md p-3 hover:bg-accent">Introduction</a>
+                            <a href="docs/installation" class="rounded-md p-3 hover:bg-accent">Installation</a>
+                        </div>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem Value="themes">
+                    <NavigationMenuTrigger>Themes</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <a href="docs/theming" class="block w-[220px] rounded-md p-3 hover:bg-accent">Customize the system</a>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+        </NavigationMenu>
+    </ComponentPreview>
+</div>
+
+@code {
+    private Task HandleNewAsync(MouseEventArgs _) => Task.CompletedTask;
+    private Task HandleOpenAsync(MouseEventArgs _) => Task.CompletedTask;
+    private Task HandleExportAsync(MouseEventArgs _) => Task.CompletedTask;
+    private Task HandleUndoAsync(MouseEventArgs _) => Task.CompletedTask;
+    private Task HandleRedoAsync(MouseEventArgs _) => Task.CompletedTask;
+}

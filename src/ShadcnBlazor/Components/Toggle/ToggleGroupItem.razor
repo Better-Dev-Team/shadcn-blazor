@@ -1,0 +1,52 @@
+@namespace ShadcnBlazor
+
+<button type="button"
+        role="button"
+        aria-pressed="@(IsSelected ? "true" : "false")"
+        data-state="@(IsSelected ? "on" : "off")"
+        disabled="@IsDisabled"
+        class="@ComputedClass"
+        @onclick="HandleClickAsync"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+</button>
+
+@code {
+    [CascadingParameter] public ToggleGroup? Parent { get; set; }
+    [Parameter] public string Value { get; set; } = string.Empty;
+    [Parameter] public ToggleVariant? Variant { get; set; }
+    [Parameter] public ToggleSize? Size { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool IsSelected => Parent?.IsSelected(Value) == true;
+    private bool IsDisabled => Disabled || Parent?.Disabled == true;
+
+    private async Task HandleClickAsync()
+    {
+        if (!IsDisabled && Parent != null)
+        {
+            await Parent.ToggleValueAsync(Value);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
+        (Variant ?? Parent?.Variant ?? ToggleVariant.Default) switch
+        {
+            ToggleVariant.Default => "bg-transparent",
+            ToggleVariant.Outline => "border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground",
+            _ => "bg-transparent"
+        },
+        (Size ?? Parent?.Size ?? ToggleSize.Default) switch
+        {
+            ToggleSize.Default => "h-9 px-3",
+            ToggleSize.Sm => "h-8 px-2",
+            ToggleSize.Lg => "h-10 px-5",
+            _ => "h-9 px-3"
+        },
+        Class
+    );
+}

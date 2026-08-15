@@ -1,0 +1,50 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <nav class="@Cn.Class("relative z-10 flex max-w-max flex-1 items-center justify-center", Class)"
+         @onkeydown="HandleKeyDownAsync"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </nav>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool IsOpen(string value)
+    {
+        return Value == value;
+    }
+
+    public async Task SetValueAsync(string? value)
+    {
+        if ((Disabled && value != null) || Value == value)
+        {
+            return;
+        }
+
+        Value = value;
+        await ValueChanged.InvokeAsync(Value);
+        StateHasChanged();
+    }
+
+    public Task ToggleItemAsync(string value, bool disabled = false)
+    {
+        return disabled ? Task.CompletedTask : SetValueAsync(Value == value ? null : value);
+    }
+
+    public Task CloseAsync()
+    {
+        return SetValueAsync(null);
+    }
+
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
+    {
+        return args.Key == "Escape" ? CloseAsync() : Task.CompletedTask;
+    }
+}

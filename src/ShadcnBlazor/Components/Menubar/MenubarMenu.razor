@@ -1,0 +1,19 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@Cn.Class("relative", Class)" @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [CascadingParameter] public Menubar? Parent { get; set; }
+    [Parameter] public string Value { get; set; } = $"menubar-menu-{Guid.NewGuid():N}";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public readonly string TriggerId = $"menubar-trig-{Guid.NewGuid():N}";
+    public readonly string ContentId = $"menubar-cnt-{Guid.NewGuid():N}";
+}

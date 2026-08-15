@@ -1,0 +1,52 @@
+@namespace ShadcnBlazor
+
+<button type="button"
+        role="button"
+        aria-pressed="@(Pressed ? "true" : "false")"
+        data-state="@(Pressed ? "on" : "off")"
+        disabled="@Disabled"
+        class="@ComputedClass"
+        @onclick="ToggleAsync"
+        @attributes="AdditionalAttributes">
+    @ChildContent
+</button>
+
+@code {
+    [Parameter] public bool Pressed { get; set; }
+    [Parameter] public EventCallback<bool> PressedChanged { get; set; }
+    [Parameter] public ToggleVariant Variant { get; set; } = ToggleVariant.Default;
+    [Parameter] public ToggleSize Size { get; set; } = ToggleSize.Default;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task ToggleAsync()
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        Pressed = !Pressed;
+        await PressedChanged.InvokeAsync(Pressed);
+    }
+
+    private string ComputedClass => Cn.Class(
+        "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground",
+        Variant switch
+        {
+            ToggleVariant.Default => "bg-transparent",
+            ToggleVariant.Outline => "border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground",
+            _ => "bg-transparent"
+        },
+        Size switch
+        {
+            ToggleSize.Default => "h-9 px-3",
+            ToggleSize.Sm => "h-8 px-2",
+            ToggleSize.Lg => "h-10 px-5",
+            _ => "h-9 px-3"
+        },
+        Class
+    );
+}

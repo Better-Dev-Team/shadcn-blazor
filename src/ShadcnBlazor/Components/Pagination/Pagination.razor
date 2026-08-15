@@ -1,0 +1,123 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <nav aria-label="pagination" class="@ComputedClass" @attributes="AdditionalAttributes">
+        <ul class="flex flex-row items-center gap-1">
+            <li>
+                <button type="button"
+                        class="@NavigationButtonClass"
+                        aria-label="@PreviousText"
+                        disabled="@IsPreviousDisabled"
+                        @onclick="GoPreviousAsync">
+                    <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m15 18-6-6 6-6"></path>
+                    </svg>
+                    <span>@PreviousText</span>
+                </button>
+            </li>
+
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+            else
+            {
+                @foreach (var page in VisiblePages)
+                {
+                    <PaginationItem Page="@((int)page)" />
+                }
+            }
+
+            <li>
+                <button type="button"
+                        class="@NavigationButtonClass"
+                        aria-label="@NextText"
+                        disabled="@IsNextDisabled"
+                        @onclick="GoNextAsync">
+                    <span>@NextText</span>
+                    <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m9 18 6-6-6"></path>
+                    </svg>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</CascadingValue>
+
+@code {
+    [Parameter] public int Page { get; set; } = 1;
+    [Parameter] public EventCallback<int> PageChanged { get; set; }
+    [Parameter] public int TotalPages { get; set; } = 1;
+    [Parameter] public int VisiblePageCount { get; set; } = 5;
+    [Parameter] public string PreviousText { get; set; } = "Previous";
+    [Parameter] public string NextText { get; set; } = "Next";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public int EffectiveTotalPages => Math.Max(0, TotalPages);
+    public bool IsPreviousDisabled => Page <= 1 || EffectiveTotalPages == 0;
+    public bool IsNextDisabled => Page >= EffectiveTotalPages || EffectiveTotalPages == 0;
+
+    public async Task SetPageAsync(int page)
+    {
+        var maximum = Math.Max(1, EffectiveTotalPages);
+        var nextPage = Math.Clamp(page, 1, maximum);
+        if (Page == nextPage)
+        {
+            return;
+        }
+
+        Page = nextPage;
+        await PageChanged.InvokeAsync(Page);
+        StateHasChanged();
+    }
+
+    private async Task GoPreviousAsync()
+    {
+        if (!IsPreviousDisabled)
+        {
+            await SetPageAsync(Page - 1);
+        }
+    }
+
+    private async Task GoNextAsync()
+    {
+        if (!IsNextDisabled)
+        {
+            await SetPageAsync(Page + 1);
+        }
+    }
+
+    private IEnumerable<int> VisiblePages
+    {
+        get
+        {
+            var total = EffectiveTotalPages;
+            if (total == 0)
+            {
+                yield break;
+            }
+
+            var count = Math.Min(Math.Max(1, VisiblePageCount), total);
+            var current = Math.Clamp(Page, 1, total);
+            var start = Math.Max(1, current - count / 2);
+            var end = Math.Min(total, start + count - 1);
+            start = Math.Max(1, end - count + 1);
+
+            for (var page = start; page <= end; page++)
+            {
+                yield return page;
+            }
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "mx-auto flex w-full justify-center",
+        Class
+    );
+
+    private string NavigationButtonClass => Cn.Class(
+        "inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+    );
+}

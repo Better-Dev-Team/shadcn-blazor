@@ -1,0 +1,51 @@
+@page "/docs/components/context-menu"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Context Menu</h1>
+        <p class="text-lg text-muted-foreground">Expose contextual actions on right-click or keyboard invocation.</p>
+    </div>
+
+    <Separator />
+
+    <ComponentPreview Title="Right-click actions">
+        <ContextMenu>
+            <ContextMenuTrigger Class="flex h-32 w-full max-w-md items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+                Right-click this surface
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+                <ContextMenuItem OnClick="HandleRenameAsync">Rename</ContextMenuItem>
+                <ContextMenuItem OnClick="HandleDuplicateAsync">Duplicate</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem Destructive OnClick="HandleDeleteAsync">Delete</ContextMenuItem>
+            </ContextMenuContent>
+        </ContextMenu>
+        @if (!string.IsNullOrEmpty(_lastAction))
+        {
+            <p class="mt-3 text-sm text-muted-foreground">Last action: @_lastAction</p>
+        }
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _lastAction;
+
+    private Task HandleRenameAsync(MouseEventArgs _)
+    {
+        _lastAction = "Rename";
+        return Task.CompletedTask;
+    }
+
+    private Task HandleDuplicateAsync(MouseEventArgs _)
+    {
+        _lastAction = "Duplicate";
+        return Task.CompletedTask;
+    }
+
+    private Task HandleDeleteAsync(MouseEventArgs _)
+    {
+        _lastAction = "Delete";
+        return Task.CompletedTask;
+    }
+}

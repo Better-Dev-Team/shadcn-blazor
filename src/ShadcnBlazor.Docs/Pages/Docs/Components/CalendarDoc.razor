@@ -1,0 +1,29 @@
+@page "/docs/components/calendar"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Calendar &amp; Date Picker</h1>
+        <p class="text-lg text-muted-foreground">Select dates directly or through a compact popover input.</p>
+    </div>
+
+    <Separator />
+
+    <div class="grid gap-8 md:grid-cols-2">
+        <ComponentPreview Title="Calendar">
+            <Calendar @bind-Value="_selectedDate" MinDate="@DateTime.Today.AddDays(-14)" MaxDate="@DateTime.Today.AddMonths(2)" />
+        </ComponentPreview>
+        <ComponentPreview Title="Date picker">
+            <div class="w-full max-w-sm space-y-3">
+                <DatePicker @bind-Value="_selectedDate" />
+                <p class="text-sm text-muted-foreground">
+                    Selected: @(_selectedDate?.ToString("MMMM d, yyyy") ?? "none")
+                </p>
+            </div>
+        </ComponentPreview>
+    </div>
+</div>
+
+@code {
+    private DateTime? _selectedDate = DateTime.Today;
+}

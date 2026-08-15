@@ -1,0 +1,47 @@
+@page "/docs/components/command"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Command &amp; Combobox</h1>
+        <p class="text-lg text-muted-foreground">Searchable command palettes and single-value selection controls.</p>
+    </div>
+
+    <Separator />
+
+    <div class="grid gap-8 md:grid-cols-2">
+        <ComponentPreview Title="Command palette">
+            <Command Class="w-full max-w-sm border">
+                <CommandInput Placeholder="Search actions..." />
+                <CommandList>
+                    <CommandEmpty>No actions found.</CommandEmpty>
+                    <CommandGroup Heading="Actions">
+                        <CommandItem Value="new project" OnSelected="SelectNewProjectAsync">New project</CommandItem>
+                        <CommandItem Value="open settings" OnSelected="SelectSettingsAsync">Open settings</CommandItem>
+                        <CommandItem Value="invite team" OnSelected="SelectInviteAsync">Invite team</CommandItem>
+                    </CommandGroup>
+                </CommandList>
+            </Command>
+        </ComponentPreview>
+
+        <ComponentPreview Title="Combobox">
+            <div class="w-full max-w-sm space-y-3">
+                <Combobox @bind-Value="_framework">
+                    <ComboboxItem Value="blazor" Label="Blazor">Blazor</ComboboxItem>
+                    <ComboboxItem Value="aspnet" Label="ASP.NET Core">ASP.NET Core</ComboboxItem>
+                    <ComboboxItem Value="dotnet" Label=".NET">.NET</ComboboxItem>
+                    <ComboboxItem Value="tailwind" Label="Tailwind CSS">Tailwind CSS</ComboboxItem>
+                </Combobox>
+                <p class="text-sm text-muted-foreground">Selected: @_framework</p>
+            </div>
+        </ComponentPreview>
+    </div>
+</div>
+
+@code {
+    private string _framework = "blazor";
+
+    private Task SelectNewProjectAsync() => Task.CompletedTask;
+    private Task SelectSettingsAsync() => Task.CompletedTask;
+    private Task SelectInviteAsync() => Task.CompletedTask;
+}

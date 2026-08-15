@@ -1,0 +1,7 @@
+@namespace ShadcnBlazor.Showcase.Components
+
+<h2 class="text-2xl font-semibold tracking-tight">@ChildContent</h2>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
