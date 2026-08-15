@@ -8,7 +8,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>shadcn-blazor</ToolCommandName>
     <PackageId>BetterDev.ShadcnBlazor.Cli</PackageId>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Authors>Better-Dev-Team</Authors>
     <Company>Better-Dev-Team</Company>
     <Description>CLI tool for scaffolding ShadcnBlazor components directly into Blazor projects.</Description>
@@ -30,11 +30,15 @@
 
   <ItemGroup>
     <None Remove="..\ShadcnBlazor\Components\**\*.razor" />
+    <None Remove="..\ShadcnBlazor\Components\**\*.cs" />
     <None Remove="..\ShadcnBlazor\Common\*.cs" />
     <None Remove="..\ShadcnBlazor\Services\*.cs" />
     <None Remove="..\ShadcnBlazor\wwwroot\shadcn-blazor.css" />
     <None Remove="..\ShadcnBlazor\wwwroot\shadcn-blazor.js" />
     <EmbeddedResource Include="..\ShadcnBlazor\Components\**\*.razor"
+                      Link="Assets\Components\%(RecursiveDir)%(Filename)%(Extension)"
+                      LogicalName="ShadcnBlazor.Cli.assets.Components.%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\ShadcnBlazor\Components\**\*.cs"
                       Link="Assets\Components\%(RecursiveDir)%(Filename)%(Extension)"
                       LogicalName="ShadcnBlazor.Cli.assets.Components.%(RecursiveDir)%(Filename)%(Extension)" />
     <EmbeddedResource Include="..\ShadcnBlazor\Common\*.cs"
