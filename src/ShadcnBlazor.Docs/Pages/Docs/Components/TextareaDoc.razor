@@ -1,0 +1,32 @@
+@page "/docs/components/textarea"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Textarea</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays a multiline text input field.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default Textarea" CodeSnippet="@_code">
+        <div class="grid w-full max-w-sm gap-1.5 mx-auto p-4">
+            <Label>Your Message</Label>
+            <Textarea Placeholder="Type your message here." @bind-Value="_message" Rows="4" />
+            <p class="text-xs text-muted-foreground">Your message will be sent to the support team.</p>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _message;
+
+    private string _code = @"<div class=""grid w-full max-w-sm gap-1.5"">
+    <Label>Your Message</Label>
+    <Textarea Placeholder=""Type your message here."" @bind-Value=""_message"" Rows=""4"" />
+    <p class=""text-xs text-muted-foreground"">Your message will be sent to the support team.</p>
+</div>";
+}

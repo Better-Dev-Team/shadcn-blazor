@@ -24,6 +24,18 @@ public static class InitCommand
             Console.ResetColor();
         }
 
+        // Detect the hosting model: WASM apps have wwwroot/index.html,
+        // server-side Blazor Web Apps have Components/App.razor instead.
+        var indexPath = Path.Combine(currentDir, "wwwroot", "index.html");
+        var appRazorPath = Path.Combine(currentDir, "Components", "App.razor");
+        var isWasm = File.Exists(indexPath);
+        var isServer = !isWasm && File.Exists(appRazorPath);
+
+        if (isServer)
+        {
+            Console.WriteLine("ℹ Detected server-side Blazor Web App (Components/App.razor).");
+        }
+
         // 2. Ensure Components/UI directory exists
         var uiDir = Path.Combine(currentDir, "Components", "UI");
         Directory.CreateDirectory(uiDir);
@@ -46,13 +58,28 @@ public static class InitCommand
         Console.WriteLine("✓ Configured theme variables & design tokens.");
 
         // 5. Configure _Imports.razor with @using ShadcnBlazor
-        ConfigureImports(currentDir);
+        //    Server-side apps keep component imports in Components/_Imports.razor.
+        var importsPath = isServer
+            ? Path.Combine(currentDir, "Components", "_Imports.razor")
+            : Path.Combine(currentDir, "_Imports.razor");
+        ConfigureImports(importsPath);
 
         // 6. Register DI services in Program.cs
         ConfigureProgramCs(currentDir);
 
-        // 7. Wire stylesheet & interop script into wwwroot/index.html
-        ConfigureIndexHtml(currentDir);
+        // 7. Wire stylesheet & interop script into the app entrypoint
+        if (isWasm)
+        {
+            ConfigureIndexHtml(currentDir, indexPath);
+        }
+        else if (isServer)
+        {
+            ConfigureAppRazor(currentDir, appRazorPath);
+        }
+        else
+        {
+            Console.WriteLine("  ⚠ Could not detect wwwroot/index.html or Components/App.razor. Link shadcn-blazor.css and shadcn-blazor.js manually.");
+        }
 
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("\n✦ ShadcnBlazor initialization complete! You can now add components with:");
@@ -89,10 +116,9 @@ public static class InitCommand
         return true;
     }
 
-    private static void ConfigureImports(string projectDir)
+    private static void ConfigureImports(string importsPath)
     {
         const string importsLine = "@using ShadcnBlazor";
-        var importsPath = Path.Combine(projectDir, "_Imports.razor");
 
         if (File.Exists(importsPath))
         {
@@ -113,7 +139,10 @@ public static class InitCommand
                 importsLine + Environment.NewLine);
         }
 
-        Console.WriteLine("  ✓ _Imports.razor configured with @using ShadcnBlazor.");
+        var label = Path.GetFileName(Path.GetDirectoryName(importsPath)!) == "Components"
+            ? "Components/_Imports.razor"
+            : "_Imports.razor";
+        Console.WriteLine($"  ✓ {label} configured with @using ShadcnBlazor.");
     }
 
     private static void ConfigureProgramCs(string projectDir)
@@ -160,9 +189,8 @@ public static class InitCommand
         }
     }
 
-    private static void ConfigureIndexHtml(string projectDir)
+    private static void ConfigureIndexHtml(string projectDir, string indexPath)
     {
-        var indexPath = Path.Combine(projectDir, "wwwroot", "index.html");
         if (!File.Exists(indexPath))
         {
             Console.WriteLine("  ⚠ wwwroot/index.html not found. Link shadcn-blazor.css and shadcn-blazor.js manually.");
@@ -243,5 +271,61 @@ public static class InitCommand
         content = content.Remove(lineStart, lineEnd - lineStart);
         changed = true;
         Console.WriteLine("  ✓ Removed Bootstrap stylesheet (ShadcnBlazor provides its own styling).");
+    }
+
+    private static void ConfigureAppRazor(string projectDir, string appRazorPath)
+    {
+        if (!File.Exists(appRazorPath))
+        {
+            Console.WriteLine("  ⚠ Components/App.razor not found. Link shadcn-blazor.css and shadcn-blazor.js manually.");
+            return;
+        }
+
+        var content = File.ReadAllText(appRazorPath);
+        var changed = false;
+
+        if (content.Contains("shadcn-blazor.css", StringComparison.Ordinal))
+        {
+            Console.WriteLine("  - Skipped App.razor (shadcn-blazor.css already linked)");
+        }
+        else
+        {
+            const string cssLink = "    <link rel=\"stylesheet\" href=\"shadcn-blazor.css\" />";
+            var headClose = content.IndexOf("</head>", StringComparison.OrdinalIgnoreCase);
+            if (headClose >= 0)
+            {
+                content = content.Insert(headClose, cssLink + Environment.NewLine);
+                changed = true;
+            }
+            else
+            {
+                Console.WriteLine("  ⚠ Could not find </head> in App.razor. Link shadcn-blazor.css manually.");
+            }
+        }
+
+        if (content.Contains("shadcn-blazor.js", StringComparison.Ordinal))
+        {
+            Console.WriteLine("  - Skipped App.razor (shadcn-blazor.js already referenced)");
+        }
+        else
+        {
+            const string jsScript = "    <script src=\"shadcn-blazor.js\"></script>";
+            var bodyClose = content.IndexOf("</body>", StringComparison.OrdinalIgnoreCase);
+            if (bodyClose >= 0)
+            {
+                content = content.Insert(bodyClose, jsScript + Environment.NewLine);
+                changed = true;
+            }
+            else
+            {
+                Console.WriteLine("  ⚠ Could not find </body> in App.razor. Link shadcn-blazor.js manually.");
+            }
+        }
+
+        if (changed)
+        {
+            File.WriteAllText(appRazorPath, content);
+            Console.WriteLine("  ✓ App.razor wired with ShadcnBlazor stylesheet & interop script.");
+        }
     }
 }

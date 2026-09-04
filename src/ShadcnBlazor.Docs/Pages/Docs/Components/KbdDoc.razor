@@ -1,0 +1,53 @@
+@page "/docs/components/kbd"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Kbd</h1>
+        <p class="text-lg text-muted-foreground">
+            Keyboard key indicator for showing hotkeys and shortcuts.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default" CodeSnippet="@_defaultCode">
+        <div class="flex items-center gap-2">
+            <span class="text-sm text-muted-foreground">Search</span>
+            <div class="flex items-center gap-1">
+                <Kbd>⌘</Kbd>
+                <Kbd>K</Kbd>
+            </div>
+        </div>
+    </ComponentPreview>
+
+    <!-- Inside Input or Button -->
+    <ComponentPreview Title="In Context" CodeSnippet="@_contextCode">
+        <Button Variant="ButtonVariant.Outline" Class="justify-between w-64 text-muted-foreground">
+            <span>Quick Search...</span>
+            <div class="flex items-center gap-1">
+                <Kbd>Ctrl</Kbd>
+                <Kbd>P</Kbd>
+            </div>
+        </Button>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _defaultCode = @"<div class=""flex items-center gap-2"">
+    <span class=""text-sm text-muted-foreground"">Search</span>
+    <div class=""flex items-center gap-1"">
+        <Kbd>⌘</Kbd>
+        <Kbd>K</Kbd>
+    </div>
+</div>";
+
+    private string _contextCode = @"<Button Variant=""ButtonVariant.Outline"" Class=""justify-between w-64 text-muted-foreground"">
+    <span>Quick Search...</span>
+    <div class=""flex items-center gap-1"">
+        <Kbd>Ctrl</Kbd>
+        <Kbd>P</Kbd>
+    </div>
+</Button>";
+}

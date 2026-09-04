@@ -1,0 +1,74 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ComputedClass" @onclick="FocusInputAsync" @attributes="AdditionalAttributes">
+        <input @ref="_inputRef"
+               type="text"
+               inputmode="numeric"
+               autocomplete="one-time-code"
+               maxlength="@MaxLength"
+               disabled="@Disabled"
+               value="@Value"
+               @oninput="HandleInputAsync"
+               @onfocus="HandleFocus"
+               @onblur="HandleBlur"
+               class="absolute inset-0 opacity-0 cursor-pointer disabled:cursor-not-allowed w-full h-full z-10" />
+
+        <div class="flex items-center gap-2">
+            @ChildContent
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public global::System.Linq.Expressions.Expression<global::System.Func<string?>>? ValueExpression { get; set; }
+    [Parameter] public int MaxLength { get; set; } = 6;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    public bool IsFocused { get; private set; }
+    public int ActiveIndex => string.IsNullOrEmpty(Value) ? 0 : Math.Min(Value.Length, MaxLength - 1);
+
+    private ElementReference _inputRef;
+
+    private void HandleFocus()
+    {
+        IsFocused = true;
+        StateHasChanged();
+    }
+
+    private void HandleBlur()
+    {
+        IsFocused = false;
+        StateHasChanged();
+    }
+
+    private async Task HandleInputAsync(ChangeEventArgs e)
+    {
+        var raw = e.Value?.ToString() ?? "";
+        if (raw.Length > MaxLength)
+        {
+            raw = raw.Substring(0, MaxLength);
+        }
+        Value = raw;
+        await ValueChanged.InvokeAsync(Value);
+    }
+
+    private async Task FocusInputAsync()
+    {
+        if (!Disabled)
+        {
+            try
+            {
+                await _inputRef.FocusAsync();
+            }
+            catch {}
+        }
+    }
+
+    private string ComputedClass => Cn.Class("relative inline-flex items-center select-none", Class);
+}

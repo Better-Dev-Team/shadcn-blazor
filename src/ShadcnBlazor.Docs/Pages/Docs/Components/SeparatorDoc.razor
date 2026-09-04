@@ -1,0 +1,48 @@
+@page "/docs/components/separator"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Separator</h1>
+        <p class="text-lg text-muted-foreground">
+            Visually or semantically separates content.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Horizontal & Vertical Separators" CodeSnippet="@_code">
+        <div class="p-4">
+            <div class="space-y-1">
+                <h4 class="text-sm font-medium leading-none">ShadcnBlazor</h4>
+                <p class="text-sm text-muted-foreground">An open-source UI component library for Blazor.</p>
+            </div>
+            <Separator Class="my-4" />
+            <div class="flex h-5 items-center space-x-4 text-sm">
+                <div>Blog</div>
+                <Separator Orientation="vertical" />
+                <div>Docs</div>
+                <Separator Orientation="vertical" />
+                <div>Source</div>
+            </div>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<div>
+    <div class=""space-y-1"">
+        <h4 class=""text-sm font-medium leading-none"">Radix Primitives</h4>
+        <p class=""text-sm text-muted-foreground"">An open-source UI component library.</p>
+    </div>
+    <Separator Class=""my-4"" />
+    <div class=""flex h-5 items-center space-x-4 text-sm"">
+        <div>Blog</div>
+        <Separator Orientation=""vertical"" />
+        <div>Docs</div>
+        <Separator Orientation=""vertical"" />
+        <div>Source</div>
+    </div>
+</div>";
+}

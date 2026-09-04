@@ -72,4 +72,11 @@ public class CnTests
         var result = Cn.Class("bg-primary hover:bg-red-500 hover:bg-blue-500");
         Assert.Equal("bg-primary hover:bg-blue-500", result);
     }
+
+    [Fact]
+    public void Class_PreservesFontFamilyAndWeight()
+    {
+        var result = Cn.Class("font-mono font-medium");
+        Assert.Equal("font-mono font-medium", result);
+    }
 }

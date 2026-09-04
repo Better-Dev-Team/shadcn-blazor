@@ -1,0 +1,40 @@
+@page "/docs/components/combobox"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Combobox</h1>
+        <p class="text-lg text-muted-foreground">
+            Autocomplete input and command palette with a list of suggestions.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Framework Selector" CodeSnippet="@_code">
+        <div class="flex justify-center p-4">
+            <div class="w-64">
+                <Combobox Placeholder="Select framework..." @bind-Value="_selected">
+                    <ComboboxItem Value="next">Next.js</ComboboxItem>
+                    <ComboboxItem Value="blazor">Blazor</ComboboxItem>
+                    <ComboboxItem Value="svelte">SvelteKit</ComboboxItem>
+                    <ComboboxItem Value="remix">Remix</ComboboxItem>
+                </Combobox>
+            </div>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _selected = "blazor";
+
+    private string _code = @"<div class=""w-64"">
+    <Combobox Placeholder=""Select framework..."" @bind-Value=""_selected"">
+        <ComboboxItem Value=""next"">Next.js</ComboboxItem>
+        <ComboboxItem Value=""blazor"">Blazor</ComboboxItem>
+        <ComboboxItem Value=""svelte"">SvelteKit</ComboboxItem>
+        <ComboboxItem Value=""remix"">Remix</ComboboxItem>
+    </Combobox>
+</div>";
+}

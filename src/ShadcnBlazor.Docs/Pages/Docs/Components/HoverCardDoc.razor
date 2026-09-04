@@ -1,0 +1,61 @@
+@page "/docs/components/hover-card"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Hover Card</h1>
+        <p class="text-lg text-muted-foreground">
+            For sighted users to preview content available behind a link.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default" CodeSnippet="@_code">
+        <div class="flex justify-center p-6">
+            <HoverCard>
+                <HoverCardTrigger>
+                    <span class="text-sm font-semibold underline underline-offset-4 cursor-pointer text-primary">@("@shadcnblazor")</span>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                    <div class="flex justify-between space-x-4">
+                        <Avatar Class="h-10 w-10">
+                            <AvatarFallback>SB</AvatarFallback>
+                        </Avatar>
+                        <div class="space-y-1">
+                            <h4 class="text-sm font-semibold">@("@shadcnblazor")</h4>
+                            <p class="text-xs text-muted-foreground">
+                                Beautifully designed components for Blazor. Open source and copy-paste ready.
+                            </p>
+                            <div class="flex items-center pt-2">
+                                <span class="text-xs text-muted-foreground">Joined August 2026</span>
+                            </div>
+                        </div>
+                    </div>
+                </HoverCardContent>
+            </HoverCard>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<HoverCard>
+    <HoverCardTrigger>
+        <span class=""text-sm font-semibold underline underline-offset-4 cursor-pointer text-primary"">@shadcnblazor</span>
+    </HoverCardTrigger>
+    <HoverCardContent>
+        <div class=""flex justify-between space-x-4"">
+            <Avatar Class=""h-10 w-10"">
+                <AvatarFallback>SB</AvatarFallback>
+            </Avatar>
+            <div class=""space-y-1"">
+                <h4 class=""text-sm font-semibold"">@shadcnblazor</h4>
+                <p class=""text-xs text-muted-foreground"">
+                    Beautifully designed components for Blazor.
+                </p>
+            </div>
+        </div>
+    </HoverCardContent>
+</HoverCard>";
+}

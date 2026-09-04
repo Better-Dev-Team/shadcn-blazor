@@ -1,0 +1,83 @@
+@page "/docs/components/drawer"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Drawer</h1>
+        <p class="text-lg text-muted-foreground">
+            A drawer component for mobile-friendly sheet views and overlays.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default Bottom Drawer" CodeSnippet="@_code">
+        <div class="flex justify-center p-4">
+            <Drawer @bind-Open="_isOpen">
+                <DrawerTrigger>
+                    <Button Variant="ButtonVariant.Outline">Open Drawer</Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                    <div class="mx-auto w-full max-w-sm">
+                        <DrawerHeader>
+                            <DrawerTitle>Move Goal</DrawerTitle>
+                            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+                        </DrawerHeader>
+                        <div class="p-4 pb-0">
+                            <div class="flex items-center justify-center space-x-2">
+                                <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" OnClick="() => _goal = Math.Max(200, _goal - 50)">-</Button>
+                                <div class="flex-1 text-center">
+                                    <div class="text-5xl font-bold tracking-tighter">@_goal</div>
+                                    <div class="text-[0.70rem] uppercase text-muted-foreground">Calories/day</div>
+                                </div>
+                                <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" OnClick="() => _goal = Math.Min(5000, _goal + 50)">+</Button>
+                            </div>
+                        </div>
+                        <DrawerFooter>
+                            <Button OnClick="() => _isOpen = false">Submit</Button>
+                            <DrawerClose>
+                                <Button Variant="ButtonVariant.Outline" Class="w-full">Cancel</Button>
+                            </DrawerClose>
+                        </DrawerFooter>
+                    </div>
+                </DrawerContent>
+            </Drawer>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private bool _isOpen;
+    private int _goal = 350;
+
+    private string _code = @"<Drawer @bind-Open=""_isOpen"">
+    <DrawerTrigger>
+        <Button Variant=""ButtonVariant.Outline"">Open Drawer</Button>
+    </DrawerTrigger>
+    <DrawerContent>
+        <div class=""mx-auto w-full max-w-sm"">
+            <DrawerHeader>
+                <DrawerTitle>Move Goal</DrawerTitle>
+                <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+            </DrawerHeader>
+            <div class=""p-4 pb-0"">
+                <div class=""flex items-center justify-center space-x-2"">
+                    <Button Variant=""ButtonVariant.Outline"" Size=""ButtonSize.Icon"" OnClick=""() => _goal -= 50"">-</Button>
+                    <div class=""flex-1 text-center"">
+                        <div class=""text-5xl font-bold tracking-tighter"">@_goal</div>
+                        <div class=""text-[0.70rem] uppercase text-muted-foreground"">Calories/day</div>
+                    </div>
+                    <Button Variant=""ButtonVariant.Outline"" Size=""ButtonSize.Icon"" OnClick=""() => _goal += 50"">+</Button>
+                </div>
+            </div>
+            <DrawerFooter>
+                <Button OnClick=""() => _isOpen = false"">Submit</Button>
+                <DrawerClose>
+                    <Button Variant=""ButtonVariant.Outline"" Class=""w-full"">Cancel</Button>
+                </DrawerClose>
+            </DrawerFooter>
+        </div>
+    </DrawerContent>
+</Drawer>";
+}

@@ -1,0 +1,47 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" @attributes="AdditionalAttributes">
+    @CharValue
+    @if (IsActive && string.IsNullOrEmpty(CharValue))
+    {
+        <div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <div class="h-4 w-px animate-caret-blink bg-foreground duration-1000" />
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] public InputOTP? Parent { get; set; }
+    [Parameter] public int Index { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string? CharValue
+    {
+        get
+        {
+            var val = Parent?.Value;
+            if (val != null && Index >= 0 && Index < val.Length)
+            {
+                return val[Index].ToString();
+            }
+            return null;
+        }
+    }
+
+    private bool IsActive
+    {
+        get
+        {
+            if (Parent == null || !Parent.IsFocused) return false;
+            var valLength = Parent.Value?.Length ?? 0;
+            return Index == valLength || (Index == Parent.MaxLength - 1 && valLength == Parent.MaxLength);
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-xs transition-all first:rounded-l-md first:border-l last:rounded-r-md",
+        IsActive ? "z-10 ring-1 ring-ring border-ring" : "",
+        Class
+    );
+}

@@ -26,7 +26,7 @@
 @code {
     [Parameter] public string? Value { get; set; }
     [Parameter] public EventCallback<string?> ValueChanged { get; set; }
-    [Parameter] public Expression<Func<string?>>? ValueExpression { get; set; }
+    [Parameter] public global::System.Linq.Expressions.Expression<global::System.Func<string?>>? ValueExpression { get; set; }
     [Parameter] public string Type { get; set; } = "text";
     [Parameter] public string? Placeholder { get; set; }
     [Parameter] public string? Class { get; set; }

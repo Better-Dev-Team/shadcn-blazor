@@ -1,0 +1,63 @@
+@page "/docs/components/scroll-area"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Scroll-area</h1>
+        <p class="text-lg text-muted-foreground">
+            Augments native scroll functionality for custom, cross-browser styling.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Vertical Preview -->
+    <ComponentPreview Title="Vertical Scroll" CodeSnippet="@_verticalCode">
+        <ScrollArea Class="h-72 w-48 rounded-md border p-4">
+            <h4 class="mb-4 text-sm font-medium leading-none">Tags</h4>
+            @for (int i = 1; i <= 30; i++)
+            {
+                <div class="text-sm py-1 border-b border-border/40 last:border-0">
+                    Tag item #@i
+                </div>
+            }
+        </ScrollArea>
+    </ComponentPreview>
+
+    <!-- Horizontal Preview -->
+    <ComponentPreview Title="Horizontal Scroll" CodeSnippet="@_horizontalCode">
+        <ScrollArea Orientation="ScrollOrientation.Horizontal" Class="w-80 sm:w-96 whitespace-nowrap rounded-md border p-4">
+            <div class="flex space-x-4">
+                @for (int i = 1; i <= 10; i++)
+                {
+                    <div class="shrink-0 w-32 h-20 rounded-md bg-muted flex items-center justify-center font-medium text-sm">
+                        Card #@i
+                    </div>
+                }
+            </div>
+        </ScrollArea>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _verticalCode = @"<ScrollArea Class=""h-72 w-48 rounded-md border p-4"">
+    <h4 class=""mb-4 text-sm font-medium leading-none"">Tags</h4>
+    @for (int i = 1; i <= 30; i++)
+    {
+        <div class=""text-sm py-1 border-b border-border/40 last:border-0"">
+            Tag item #@i
+        </div>
+    }
+</ScrollArea>";
+
+    private string _horizontalCode = @"<ScrollArea Orientation=""ScrollOrientation.Horizontal"" Class=""w-96 whitespace-nowrap rounded-md border p-4"">
+    <div class=""flex space-x-4"">
+        @for (int i = 1; i <= 10; i++)
+        {
+            <div class=""shrink-0 w-32 h-20 rounded-md bg-muted flex items-center justify-center font-medium text-sm"">
+                Card #@i
+            </div>
+        }
+    </div>
+</ScrollArea>";
+}

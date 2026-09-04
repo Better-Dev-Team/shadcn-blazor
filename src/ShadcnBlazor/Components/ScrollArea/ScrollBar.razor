@@ -1,0 +1,19 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" @attributes="AdditionalAttributes">
+    <div class="relative flex-1 rounded-full bg-border" />
+</div>
+
+@code {
+    [Parameter] public ScrollOrientation Orientation { get; set; } = ScrollOrientation.Vertical;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "flex touch-none select-none transition-colors",
+        Orientation == ScrollOrientation.Vertical
+            ? "h-full w-2.5 border-l border-l-transparent p-[1px]"
+            : "h-2.5 flex-col border-t border-t-transparent p-[1px]",
+        Class
+    );
+}

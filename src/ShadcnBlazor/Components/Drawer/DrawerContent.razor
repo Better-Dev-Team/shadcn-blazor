@@ -1,0 +1,47 @@
+@namespace ShadcnBlazor
+
+@if (Parent?.IsOpen == true)
+{
+    <!-- Backdrop -->
+    <div class="fixed inset-0 z-50 bg-black/80 animate-in fade-in-0"
+         @onclick="HandleBackdropClick" />
+
+    <!-- Drawer Content Surface -->
+    <div class="@ComputedClass"
+         role="dialog"
+         aria-modal="true"
+         @attributes="AdditionalAttributes">
+        @if (Parent?.Direction == DrawerDirection.Bottom)
+        {
+            <div class="mx-auto mt-4 h-1.5 w-12 rounded-full bg-muted" />
+        }
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] public Drawer? Parent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task HandleBackdropClick()
+    {
+        if (Parent?.Dismissible == true)
+        {
+            await Parent.CloseAsync();
+        }
+    }
+
+    private string ComputedClass => Cn.Class(
+        "fixed z-50 flex flex-col bg-background border-border shadow-lg transition-transform duration-300 ease-in-out",
+        Parent?.Direction switch
+        {
+            DrawerDirection.Top => "inset-x-0 top-0 mb-24 rounded-b-[10px] border-b max-h-[85vh]",
+            DrawerDirection.Left => "inset-y-0 left-0 h-full w-3/4 max-w-sm border-r",
+            DrawerDirection.Right => "inset-y-0 right-0 h-full w-3/4 max-w-sm border-l",
+            _ => "inset-x-0 bottom-0 mt-24 rounded-t-[10px] border-t max-h-[85vh]"
+        },
+        Class
+    );
+}

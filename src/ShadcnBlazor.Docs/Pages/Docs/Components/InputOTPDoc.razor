@@ -1,0 +1,77 @@
+@page "/docs/components/input-otp"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Input OTP</h1>
+        <p class="text-lg text-muted-foreground">
+            Accessible one-time password component with copy-paste and slot support.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- 6-digit OTP Preview -->
+    <ComponentPreview Title="6-Digit OTP with Separator" CodeSnippet="@_otpCode">
+        <div class="flex flex-col items-center gap-4 p-4">
+            <InputOTP MaxLength="6" @bind-Value="_otpValue">
+                <InputOTPGroup>
+                    <InputOTPSlot Index="0" />
+                    <InputOTPSlot Index="1" />
+                    <InputOTPSlot Index="2" />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                    <InputOTPSlot Index="3" />
+                    <InputOTPSlot Index="4" />
+                    <InputOTPSlot Index="5" />
+                </InputOTPGroup>
+            </InputOTP>
+            <div class="text-center text-sm text-muted-foreground">
+                Entered code: @(_otpValue ?? "none")
+            </div>
+        </div>
+    </ComponentPreview>
+
+    <!-- 4-digit Simple OTP Preview -->
+    <ComponentPreview Title="4-Digit Pin" CodeSnippet="@_pinCode">
+        <div class="flex justify-center p-4">
+            <InputOTP MaxLength="4" @bind-Value="_pinValue">
+                <InputOTPGroup>
+                    <InputOTPSlot Index="0" />
+                    <InputOTPSlot Index="1" />
+                    <InputOTPSlot Index="2" />
+                    <InputOTPSlot Index="3" />
+                </InputOTPGroup>
+            </InputOTP>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string? _otpValue = "123";
+    private string? _pinValue;
+
+    private string _otpCode = @"<InputOTP MaxLength=""6"" @bind-Value=""_otpValue"">
+    <InputOTPGroup>
+        <InputOTPSlot Index=""0"" />
+        <InputOTPSlot Index=""1"" />
+        <InputOTPSlot Index=""2"" />
+    </InputOTPGroup>
+    <InputOTPSeparator />
+    <InputOTPGroup>
+        <InputOTPSlot Index=""3"" />
+        <InputOTPSlot Index=""4"" />
+        <InputOTPSlot Index=""5"" />
+    </InputOTPGroup>
+</InputOTP>";
+
+    private string _pinCode = @"<InputOTP MaxLength=""4"" @bind-Value=""_pinValue"">
+    <InputOTPGroup>
+        <InputOTPSlot Index=""0"" />
+        <InputOTPSlot Index=""1"" />
+        <InputOTPSlot Index=""2"" />
+        <InputOTPSlot Index=""3"" />
+    </InputOTPGroup>
+</InputOTP>";
+}

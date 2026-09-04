@@ -1,0 +1,22 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    <div class="@ComputedClass"
+         data-panel-group-direction="@(Direction == ResizableOrientation.Vertical ? "vertical" : "horizontal")"
+         @attributes="AdditionalAttributes">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    [Parameter] public ResizableOrientation Direction { get; set; } = ResizableOrientation.Horizontal;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class(
+        "flex h-full w-full",
+        Direction == ResizableOrientation.Vertical ? "flex-col" : "flex-row",
+        Class
+    );
+}

@@ -1,0 +1,28 @@
+@page "/docs/components/date-picker"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Date Picker</h1>
+        <p class="text-lg text-muted-foreground">
+            A date picker component with range and popover support.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default Date Picker" CodeSnippet="@_code">
+        <div class="flex justify-center p-4">
+            <div class="w-64">
+                <DatePicker @bind-Value="_selectedDate" Placeholder="Pick a date" />
+            </div>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private DateTime? _selectedDate = DateTime.Today;
+
+    private string _code = @"<DatePicker @bind-Value=""_selectedDate"" Placeholder=""Pick a date"" />";
+}

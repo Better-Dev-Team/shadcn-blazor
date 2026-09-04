@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @inject IToastService ToastService
 
 <PageTitle>ShadcnBlazor Showcase</PageTitle>
@@ -374,6 +374,98 @@
             <Button Variant="ButtonVariant.Outline" OnClick="TriggerActionToast">With action</Button>
         </div>
     </section>
+
+    <!-- Drawer, HoverCard & Kbd -->
+    <section class="space-y-4">
+        <SectionTitle>Drawer, HoverCard &amp; Kbd</SectionTitle>
+        <div class="flex flex-wrap items-center gap-4">
+            <Drawer @bind-Open="_drawerOpen">
+                <DrawerTrigger>
+                    <Button Variant="ButtonVariant.Outline">Open Drawer</Button>
+                </DrawerTrigger>
+                <DrawerContent>
+                    <div class="mx-auto w-full max-w-sm">
+                        <DrawerHeader>
+                            <DrawerTitle>Interactive Drawer</DrawerTitle>
+                            <DrawerDescription>Slide up sheet view with gestures.</DrawerDescription>
+                        </DrawerHeader>
+                        <div class="p-4 text-center">
+                            <p class="text-sm text-muted-foreground">Drawer is open!</p>
+                        </div>
+                        <DrawerFooter>
+                            <DrawerClose>
+                                <Button Class="w-full">Close Drawer</Button>
+                            </DrawerClose>
+                        </DrawerFooter>
+                    </div>
+                </DrawerContent>
+            </Drawer>
+
+            <HoverCard>
+                <HoverCardTrigger>
+                    <Button Variant="ButtonVariant.Link">Hover Me</Button>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                    <div class="text-sm">
+                        <p class="font-semibold">ShadcnBlazor</p>
+                        <p class="text-xs text-muted-foreground">Fast, accessible UI components for Blazor.</p>
+                    </div>
+                </HoverCardContent>
+            </HoverCard>
+
+            <div class="flex items-center gap-1">
+                <Kbd>⌘</Kbd>
+                <Kbd>K</Kbd>
+            </div>
+        </div>
+    </section>
+
+    <!-- Input OTP -->
+    <section class="space-y-4">
+        <SectionTitle>Input OTP</SectionTitle>
+        <div class="flex items-center gap-4">
+            <InputOTP MaxLength="6" @bind-Value="_otp">
+                <InputOTPGroup>
+                    <InputOTPSlot Index="0" />
+                    <InputOTPSlot Index="1" />
+                    <InputOTPSlot Index="2" />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                    <InputOTPSlot Index="3" />
+                    <InputOTPSlot Index="4" />
+                    <InputOTPSlot Index="5" />
+                </InputOTPGroup>
+            </InputOTP>
+            <span class="text-xs text-muted-foreground font-mono">Code: @_otp</span>
+        </div>
+    </section>
+
+    <!-- Resizable & ScrollArea -->
+    <section class="space-y-4">
+        <SectionTitle>Resizable &amp; Scroll Area</SectionTitle>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="h-44 rounded-lg border overflow-hidden">
+                <ResizablePanelGroup Direction="ResizableOrientation.Horizontal">
+                    <ResizablePanel DefaultSize="50">
+                        <div class="flex h-full items-center justify-center p-4 bg-muted/20 text-xs font-semibold">Left Panel</div>
+                    </ResizablePanel>
+                    <ResizableHandle WithHandle="true" />
+                    <ResizablePanel DefaultSize="50">
+                        <div class="flex h-full items-center justify-center p-4 bg-muted/40 text-xs font-semibold">Right Panel</div>
+                    </ResizablePanel>
+                </ResizablePanelGroup>
+            </div>
+
+            <ScrollArea Class="h-44 rounded-md border p-3">
+                <h4 class="text-xs font-semibold mb-2">Scrollable Content</h4>
+                @for (int i = 1; i <= 15; i++)
+                {
+                    <div class="text-xs py-1 border-b border-border/30 last:border-0">Item #@i</div>
+                }
+            </ScrollArea>
+        </div>
+    </section>
 </div>
 
 @code {
@@ -384,6 +476,8 @@
     private string? _themeOption = "default";
     private string? _fruit;
     private double _progress = 60;
+    private bool _drawerOpen;
+    private string? _otp = "123";
 
     private void TriggerActionToast()
     {

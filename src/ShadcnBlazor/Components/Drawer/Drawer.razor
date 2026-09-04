@@ -1,0 +1,35 @@
+@namespace ShadcnBlazor
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public DrawerDirection Direction { get; set; } = DrawerDirection.Bottom;
+    [Parameter] public bool Dismissible { get; set; } = true;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    public bool IsOpen => Open;
+
+    public async Task OpenAsync()
+    {
+        Open = true;
+        await OpenChanged.InvokeAsync(true);
+        StateHasChanged();
+    }
+
+    public async Task CloseAsync()
+    {
+        Open = false;
+        await OpenChanged.InvokeAsync(false);
+        StateHasChanged();
+    }
+
+    public async Task ToggleAsync()
+    {
+        if (Open) await CloseAsync();
+        else await OpenAsync();
+    }
+}

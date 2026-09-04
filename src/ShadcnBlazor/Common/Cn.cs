@@ -157,7 +157,8 @@ public static class Cn
                 return modifier + "text-align";
             return modifier + "text-color-or-size";
         }
-        if (cls.StartsWith("font-")) return modifier + "font";
+        if (cls is "font-sans" or "font-serif" or "font-mono") return modifier + "font-family";
+        if (cls.StartsWith("font-")) return modifier + "font-weight";
         if (cls.StartsWith("tracking-")) return modifier + "tracking";
         if (cls.StartsWith("leading-")) return modifier + "leading";
 

@@ -1,0 +1,67 @@
+@page "/docs/components/navigation-menu"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Navigation Menu</h1>
+        <p class="text-lg text-muted-foreground">
+            A collection of links for navigating websites including multi-column layouts.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- Default Preview -->
+    <ComponentPreview Title="Default" CodeSnippet="@_code">
+        <div class="flex justify-center p-4">
+            <NavigationMenu>
+                <NavigationMenuList>
+                    <NavigationMenuItem Value="getting-started">
+                        <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <div class="grid gap-3 p-4 w-[350px]">
+                                <a href="docs/introduction" class="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                    <div class="text-sm font-medium leading-none">Introduction</div>
+                                    <p class="line-clamp-2 text-xs leading-snug text-muted-foreground">Re-usable Blazor components built with Tailwind CSS.</p>
+                                </a>
+                                <a href="docs/installation" class="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                    <div class="text-sm font-medium leading-none">Installation</div>
+                                    <p class="line-clamp-2 text-xs leading-snug text-muted-foreground">How to install and integrate into your Blazor project.</p>
+                                </a>
+                            </div>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem Value="components">
+                        <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                            <div class="grid gap-3 p-4 w-[350px]">
+                                <a href="docs/components/button" class="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground">
+                                    <div class="text-sm font-medium leading-none">Button</div>
+                                    <p class="line-clamp-2 text-xs leading-snug text-muted-foreground">Clickable button with variants and loading state.</p>
+                                </a>
+                            </div>
+                        </NavigationMenuContent>
+                    </NavigationMenuItem>
+                </NavigationMenuList>
+            </NavigationMenu>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code = @"<NavigationMenu>
+    <NavigationMenuList>
+        <NavigationMenuItem Value=""getting-started"">
+            <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <div class=""grid gap-3 p-4 w-[400px]"">
+                    <a href=""docs/introduction"" class=""block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground"">
+                        <div class=""text-sm font-medium leading-none"">Introduction</div>
+                        <p class=""line-clamp-2 text-xs leading-snug text-muted-foreground"">Re-usable Blazor components built with Tailwind CSS.</p>
+                    </a>
+                </div>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+</NavigationMenu>";
+}

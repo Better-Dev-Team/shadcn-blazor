@@ -23,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -32,16 +37,14 @@ jobs:
         run: |
           dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj -c Release -o output
           # Adjust base href for GitHub Pages repo subpath
-          sed -i 's/<base href="\/" \/>/<base href="\/shadcn-blazor\/" \/>/g' output/wwwroot/index.html
+          sed -i -E 's|<base href="[^"]*" ?/?>|<base href="/shadcn-blazor/" />|g' output/wwwroot/index.html
+          # Remove precompressed files so server serves the modified index.html with the correct base href
+          find output/wwwroot -name "*.gz" -delete || true
+          find output/wwwroot -name "*.br" -delete || true
           # Copy index.html to 404.html for GitHub Pages SPA client-side routing fallback
           cp output/wwwroot/index.html output/wwwroot/404.html
           # Prevent GitHub Pages Jekyll engine from ignoring underscore folders
           touch output/wwwroot/.nojekyll
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

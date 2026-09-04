@@ -1,0 +1,22 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" style="@ComputedStyle" @attributes="AdditionalAttributes">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] public ResizablePanelGroup? Parent { get; set; }
+    [Parameter] public double DefaultSize { get; set; } = 50;
+    [Parameter] public double MinSize { get; set; } = 0;
+    [Parameter] public double MaxSize { get; set; } = 100;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class("relative overflow-hidden flex-1", Class);
+
+    private string ComputedStyle =>
+        DefaultSize > 0
+            ? $"flex-basis: {DefaultSize.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}%; flex-grow: {DefaultSize.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)};"
+            : "";
+}

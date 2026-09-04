@@ -1,0 +1,26 @@
+@namespace ShadcnBlazor
+
+<div class="@ComputedClass" @attributes="AdditionalAttributes">
+    <div class="@ViewportClass">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter] public ScrollOrientation Orientation { get; set; } = ScrollOrientation.Vertical;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string ComputedClass => Cn.Class("relative overflow-hidden", Class);
+
+    private string ViewportClass => Cn.Class(
+        "h-full w-full rounded-[inherit]",
+        Orientation switch
+        {
+            ScrollOrientation.Horizontal => "overflow-x-auto overflow-y-hidden",
+            ScrollOrientation.Both => "overflow-auto",
+            _ => "overflow-y-auto overflow-x-hidden"
+        }
+    );
+}

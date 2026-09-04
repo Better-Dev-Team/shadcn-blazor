@@ -1,0 +1,51 @@
+@page "/docs/components/aspect-ratio"
+@namespace ShadcnBlazor.Docs.Pages.Docs.Components
+
+<div class="space-y-8">
+    <div class="space-y-2">
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight">Aspect Ratio</h1>
+        <p class="text-lg text-muted-foreground">
+            Displays content within a desired ratio.
+        </p>
+    </div>
+
+    <Separator />
+
+    <!-- 16:9 Preview -->
+    <ComponentPreview Title="16:9 Ratio" CodeSnippet="@_code169">
+        <div class="w-[320px] sm:w-[450px]">
+            <AspectRatio Ratio="16.0 / 9.0" Class="bg-muted rounded-md overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80"
+                     alt="Photo by Drew Beamer"
+                     class="h-full w-full object-cover" />
+            </AspectRatio>
+        </div>
+    </ComponentPreview>
+
+    <!-- 1:1 Ratio Preview -->
+    <ComponentPreview Title="1:1 Square" CodeSnippet="@_code11">
+        <div class="w-[200px]">
+            <AspectRatio Ratio="1.0" Class="bg-muted rounded-md flex items-center justify-center border">
+                <div class="flex h-full w-full items-center justify-center text-sm font-semibold text-muted-foreground">
+                    1:1 Square
+                </div>
+            </AspectRatio>
+        </div>
+    </ComponentPreview>
+</div>
+
+@code {
+    private string _code169 = @"<div class=""w-[450px]"">
+    <AspectRatio Ratio=""16.0 / 9.0"" Class=""bg-muted rounded-md overflow-hidden"">
+        <img src=""https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&dpr=2&q=80""
+             alt=""Photo by Drew Beamer""
+             class=""h-full w-full object-cover"" />
+    </AspectRatio>
+</div>";
+
+    private string _code11 = @"<div class=""w-[200px]"">
+    <AspectRatio Ratio=""1.0"" Class=""bg-muted rounded-md flex items-center justify-center border"">
+        <span class=""text-sm font-semibold text-muted-foreground"">1:1 Square</span>
+    </AspectRatio>
+</div>";
+}
