@@ -147,7 +147,7 @@
 }
 .dark[data-preset="blue"], [data-theme="dark"][data-preset="blue"] {
   --primary: 217.2 91.2% 59.8%;
-  --primary-foreground: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
   --ring: 217.2 91.2% 59.8%;
 }
 
@@ -159,7 +159,7 @@
 }
 .dark[data-preset="green"], [data-theme="dark"][data-preset="green"] {
   --primary: 142.1 70.6% 45.3%;
-  --primary-foreground: 144.9 80.4% 10%;
+  --primary-foreground: 355.7 100% 97.3%;
   --ring: 142.1 70.6% 45.3%;
 }
 
@@ -209,13 +209,13 @@
 }
 
 @keyframes animate-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from { opacity: 0; scale: 0.95; }
+  to { opacity: 1; scale: 1; }
 }
 
 @keyframes animate-out {
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
+  from { opacity: 1; scale: 1; }
+  to { opacity: 0; scale: 0.95; }
 }
 
 @keyframes fade-in {
@@ -281,4 +281,32 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* Range slider styling */
+input[type="range"] {
+  background-size: 100% 100%;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1.15rem;
+  width: 1.15rem;
+  border-radius: 9999px;
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--primary));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+input[type="range"]::-moz-range-thumb {
+  height: 1.15rem;
+  width: 1.15rem;
+  border-radius: 9999px;
+  background-color: hsl(var(--background));
+  border: 2px solid hsl(var(--primary));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  cursor: pointer;
 }

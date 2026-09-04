@@ -8,9 +8,10 @@
     <div class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm transition-all duration-150 animate-fade-in"></div>
 
     <!-- Alert Modal Content -->
-    <div class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-xl duration-200 rounded-lg sm:rounded-xl animate-in fade-in zoom-in-95 @Class"
+    <div class="fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2rem)] sm:w-full max-w-lg -translate-x-1/2 -translate-y-1/2 gap-4 border bg-background p-6 shadow-xl duration-200 rounded-lg sm:rounded-xl animate-in fade-in @Class"
          role="alertdialog"
          aria-modal="true"
+         style="translate: -50% -50%;"
          @attributes="AdditionalAttributes">
         @ChildContent
     </div>

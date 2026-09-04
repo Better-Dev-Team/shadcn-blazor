@@ -7,7 +7,8 @@
            step="@Step"
            value="@Value"
            disabled="@Disabled"
-           class="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+           style="@TrackGradientStyle"
+           class="w-full h-2 rounded-full appearance-none cursor-pointer accent-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
            @oninput="HandleInput"
            @attributes="AdditionalAttributes" />
 </div>
@@ -22,9 +23,15 @@
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
 
+    private double Percentage => Max > Min ? Math.Clamp(((Value - Min) / (Max - Min)) * 100.0, 0.0, 100.0) : 0.0;
+
+    private string TrackGradientStyle =>
+        $"background: linear-gradient(to right, hsl(var(--primary)) 0%, hsl(var(--primary)) {Percentage.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)}%, hsl(var(--secondary)) {Percentage.ToString("F1", System.Globalization.CultureInfo.InvariantCulture)}%, hsl(var(--secondary)) 100%);";
+
     private async Task HandleInput(ChangeEventArgs e)
     {
-        if (double.TryParse(e.Value?.ToString(), out var val))
+        if (double.TryParse(e.Value?.ToString(), System.Globalization.CultureInfo.InvariantCulture, out var val) ||
+            double.TryParse(e.Value?.ToString(), out val))
         {
             Value = val;
             await ValueChanged.InvokeAsync(Value);
