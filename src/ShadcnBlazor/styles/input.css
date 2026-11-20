@@ -3,6 +3,10 @@
 @source "../Components/**/*.razor";
 @source "../Common/**/*.cs";
 @source "../Services/**/*.cs";
+@source "../../ShadcnBlazor.Docs/**/*.razor";
+@source "../../ShadcnBlazor.Docs/wwwroot/index.html";
+@source "../../ShadcnBlazor.Showcase/**/*.razor";
+@source "../../ShadcnBlazor.Showcase/wwwroot/index.html";
 
 @theme {
   --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;

@@ -12,7 +12,7 @@
     }
     else
     {
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
@@ -34,7 +34,7 @@
     }
 
     private string ComputedClass => Cn.Class(
-        "absolute h-8 w-8 rounded-full border bg-background p-0 shadow-sm hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50",
+        "absolute inline-flex items-center justify-center h-8 w-8 rounded-full border bg-background p-0 shadow-sm hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
         "left-2 top-1/2 -translate-y-1/2",
         Class
     );

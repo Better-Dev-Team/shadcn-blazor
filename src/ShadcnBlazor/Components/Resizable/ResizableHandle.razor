@@ -1,9 +1,13 @@
 @namespace ShadcnBlazor
 
-<div class="@ComputedClass" role="separator" @attributes="AdditionalAttributes">
+<div class="@ComputedClass"
+     role="separator"
+     data-resizable-handle="true"
+     data-disabled="@(Disabled ? "true" : null)"
+     @attributes="AdditionalAttributes">
     @if (WithHandle)
     {
-        <div class="z-10 flex h-4 w-3 items-center justify-center rounded-xs border border-border bg-border">
+        <div class="@Cn.Class("z-10 flex h-4 w-3 items-center justify-center rounded-xs border border-border bg-border", IsVertical ? "rotate-90" : null)">
             <svg class="h-2.5 w-2.5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="9" cy="12" r="1"/>
                 <circle cx="9" cy="5" r="1"/>
@@ -26,10 +30,10 @@
     private bool IsVertical => Parent?.Direction == ResizableOrientation.Vertical;
 
     private string ComputedClass => Cn.Class(
-        "relative flex items-center justify-center bg-border transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
+        "relative flex items-center justify-center bg-border transition-colors select-none touch-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-1",
         IsVertical
-            ? "h-px w-full cursor-row-resize after:absolute after:inset-x-0 after:top-1/2 after:h-1 after:-translate-y-1/2"
-            : "w-px h-full cursor-col-resize after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2",
+            ? "h-px w-full cursor-row-resize after:absolute after:inset-x-0 after:top-1/2 after:h-2 after:-translate-y-1/2"
+            : "w-px h-full cursor-col-resize after:absolute after:inset-y-0 after:left-1/2 after:w-2 after:-translate-x-1/2",
         Disabled ? "pointer-events-none opacity-50" : "",
         Class
     );

@@ -34,5 +34,11 @@ public class InputOTPTests : TestContext
 
         Assert.Contains("4", cut.Markup);
         Assert.Contains("2", cut.Markup);
+
+        cut.Find("input").Input("987");
+
+        Assert.Contains("9", cut.Markup);
+        Assert.Contains("8", cut.Markup);
+        Assert.Contains("7", cut.Markup);
     }
 }

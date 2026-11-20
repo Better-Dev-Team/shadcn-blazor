@@ -15,7 +15,7 @@
     private string ComputedClass => Cn.Class("relative overflow-hidden", Class);
 
     private string ViewportClass => Cn.Class(
-        "h-full w-full rounded-[inherit]",
+        "h-full max-h-[inherit] w-full rounded-[inherit]",
         Orientation switch
         {
             ScrollOrientation.Horizontal => "overflow-x-auto overflow-y-hidden",

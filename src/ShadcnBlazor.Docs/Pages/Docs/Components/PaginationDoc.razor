@@ -9,7 +9,7 @@
 
     <Separator />
 
-    <ComponentPreview Title="Pagination">
+    <ComponentPreview Title="Pagination" CodeSnippet="@_code">
         <div class="w-full space-y-4">
             <Pagination @bind-Page="_page" TotalPages="12" VisiblePageCount="5" />
             <p class="text-center text-sm text-muted-foreground">Current page: @_page</p>
@@ -19,4 +19,6 @@
 
 @code {
     private int _page = 4;
+
+    private string _code = @"<Pagination @bind-Page=""_page"" TotalPages=""12"" VisiblePageCount=""5"" />";
 }

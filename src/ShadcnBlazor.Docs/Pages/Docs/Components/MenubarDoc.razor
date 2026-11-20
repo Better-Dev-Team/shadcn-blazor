@@ -9,7 +9,7 @@
 
     <Separator />
 
-    <ComponentPreview Title="Menubar">
+    <ComponentPreview Title="Menubar" CodeSnippet="@_menubarCode">
         <Menubar>
             <MenubarMenu Value="file">
                 <MenubarTrigger>File</MenubarTrigger>
@@ -30,7 +30,7 @@
         </Menubar>
     </ComponentPreview>
 
-    <ComponentPreview Title="Navigation menu">
+    <ComponentPreview Title="Navigation menu" CodeSnippet="@_navMenuCode">
         <NavigationMenu>
             <NavigationMenuList>
                 <NavigationMenuItem Value="docs">
@@ -59,4 +59,37 @@
     private Task HandleExportAsync(MouseEventArgs _) => Task.CompletedTask;
     private Task HandleUndoAsync(MouseEventArgs _) => Task.CompletedTask;
     private Task HandleRedoAsync(MouseEventArgs _) => Task.CompletedTask;
+
+    private string _menubarCode = @"<Menubar>
+    <MenubarMenu Value=""file"">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem>New project</MenubarItem>
+            <MenubarItem>Open</MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>Export</MenubarItem>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu Value=""edit"">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem>Undo</MenubarItem>
+            <MenubarItem>Redo</MenubarItem>
+        </MenubarContent>
+    </MenubarMenu>
+</Menubar>";
+
+    private string _navMenuCode = @"<NavigationMenu>
+    <NavigationMenuList>
+        <NavigationMenuItem Value=""docs"">
+            <NavigationMenuTrigger>Documentation</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <div class=""grid w-[280px] gap-2"">
+                    <a href=""docs/introduction"" class=""rounded-md p-3 hover:bg-accent"">Introduction</a>
+                    <a href=""docs/installation"" class=""rounded-md p-3 hover:bg-accent"">Installation</a>
+                </div>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+</NavigationMenu>";
 }

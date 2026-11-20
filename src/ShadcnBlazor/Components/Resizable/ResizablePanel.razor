@@ -1,14 +1,18 @@
 @namespace ShadcnBlazor
 
-<div class="@ComputedClass" style="@ComputedStyle" @attributes="AdditionalAttributes">
+<div class="@ComputedClass"
+     style="@ComputedStyle"
+     data-min-size="@MinSize.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)"
+     data-max-size="@MaxSize.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)"
+     @attributes="AdditionalAttributes">
     @ChildContent
 </div>
 
 @code {
     [CascadingParameter] public ResizablePanelGroup? Parent { get; set; }
     [Parameter] public double DefaultSize { get; set; } = 50;
-    [Parameter] public double MinSize { get; set; } = 0;
-    [Parameter] public double MaxSize { get; set; } = 100;
+    [Parameter] public double MinSize { get; set; } = 10;
+    [Parameter] public double MaxSize { get; set; } = 90;
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }

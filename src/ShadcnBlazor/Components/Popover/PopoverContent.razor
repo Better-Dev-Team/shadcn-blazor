@@ -60,16 +60,16 @@
     }
 
     private string ComputedClass => Cn.Class(
-        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95 absolute mt-2",
+        "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95 absolute",
         Placement switch
         {
-            PopoverPlacement.Bottom => "left-1/2 -translate-x-1/2 top-full",
-            PopoverPlacement.BottomStart => "left-0 top-full",
-            PopoverPlacement.BottomEnd => "right-0 top-full",
+            PopoverPlacement.Bottom => "left-1/2 -translate-x-1/2 top-full mt-2",
+            PopoverPlacement.BottomStart => "left-0 top-full mt-2",
+            PopoverPlacement.BottomEnd => "right-0 top-full mt-2",
             PopoverPlacement.Top => "left-1/2 -translate-x-1/2 bottom-full mb-2",
             PopoverPlacement.TopStart => "left-0 bottom-full mb-2",
             PopoverPlacement.TopEnd => "right-0 bottom-full mb-2",
-            _ => "left-1/2 -translate-x-1/2 top-full"
+            _ => "left-1/2 -translate-x-1/2 top-full mt-2"
         },
         Class
     );

@@ -9,7 +9,7 @@
 
     <Separator />
 
-    <ComponentPreview Title="Expandable content">
+    <ComponentPreview Title="Expandable content" CodeSnippet="@_code">
         <Collapsible @bind-Open="_open" Class="w-full max-w-md space-y-2">
             <div class="flex items-center justify-between gap-4 rounded-md border px-4 py-3">
                 <span class="text-sm font-medium">Project details</span>
@@ -24,4 +24,16 @@
 
 @code {
     private bool _open;
+
+    private string _code = @"<Collapsible @bind-Open=""_open"" Class=""w-full max-w-md space-y-2"">
+    <div class=""flex items-center justify-between gap-4 rounded-md border px-4 py-3"">
+        <span class=""text-sm font-medium"">Project details</span>
+        <CollapsibleTrigger Class=""border px-3 py-1.5"">@(_open ? ""Hide"" : ""Show"")</CollapsibleTrigger>
+    </div>
+    <CollapsibleContent>
+        <div class=""rounded-md border px-4 py-3 text-sm text-muted-foreground"">
+            Additional project metadata is shown here.
+        </div>
+    </CollapsibleContent>
+</Collapsible>";
 }

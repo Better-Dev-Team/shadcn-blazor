@@ -38,6 +38,11 @@ jobs:
           dotnet publish src/ShadcnBlazor.Docs/ShadcnBlazor.Docs.csproj -c Release -o output
           # Adjust base href for GitHub Pages repo subpath
           sed -i -E 's|<base href="[^"]*" ?/?>|<base href="/shadcn-blazor/" />|g' output/wwwroot/index.html
+          # Cache-bust static assets with short commit SHA so returning browsers never serve stale assets
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          sed -i -E "s|shadcn-blazor\.css\"|shadcn-blazor.css?v=${SHORT_SHA}\"|g" output/wwwroot/index.html
+          sed -i -E "s|shadcn-blazor\.js\"|shadcn-blazor.js?v=${SHORT_SHA}\"|g" output/wwwroot/index.html
+          sed -i -E "s|blazor\.webassembly\.js\"|blazor.webassembly.js?v=${SHORT_SHA}\"|g" output/wwwroot/index.html
           # Remove precompressed files so server serves the modified index.html with the correct base href
           find output/wwwroot -name "*.gz" -delete || true
           find output/wwwroot -name "*.br" -delete || true

@@ -68,13 +68,13 @@ window.shadcnBlazor = {
     const handler = function (event) {
       const el = document.getElementById(elementId);
       if (el && !el.contains(event.target)) {
-        dotNetRef.invokeMethodAsync(methodName);
+        dotNetRef.invokeMethodAsync(methodName).catch(function () {});
       }
     };
 
     const escHandler = function (event) {
       if (event.key === 'Escape') {
-        dotNetRef.invokeMethodAsync(methodName);
+        dotNetRef.invokeMethodAsync(methodName).catch(function () {});
       }
     };
 
@@ -176,3 +176,54 @@ if (window.matchMedia) {
     }
   });
 }
+
+// Delegated pointer drag handler for ResizableHandle
+document.addEventListener('pointerdown', function (e) {
+  if (!e.target || typeof e.target.closest !== 'function') return;
+  const handle = e.target.closest('[data-resizable-handle]');
+  if (!handle || handle.hasAttribute('data-disabled')) return;
+  const group = handle.closest('[data-panel-group-direction]');
+  const prev = handle.previousElementSibling;
+  const next = handle.nextElementSibling;
+  if (!group || !prev || !next) return;
+
+  e.preventDefault();
+  const isVertical = group.getAttribute('data-panel-group-direction') === 'vertical';
+  const groupRect = group.getBoundingClientRect();
+  const totalSize = isVertical ? groupRect.height : groupRect.width;
+  if (totalSize <= 0) return;
+
+  const prevRect = prev.getBoundingClientRect();
+  const nextRect = next.getBoundingClientRect();
+  const startPrevPct = ((isVertical ? prevRect.height : prevRect.width) / totalSize) * 100;
+  const startNextPct = ((isVertical ? nextRect.height : nextRect.width) / totalSize) * 100;
+  const combinedPct = startPrevPct + startNextPct;
+  const startPos = isVertical ? e.clientY : e.clientX;
+
+  const prevMin = parseFloat(prev.getAttribute('data-min-size') || '10');
+  const prevMax = parseFloat(prev.getAttribute('data-max-size') || '90');
+  const nextMin = parseFloat(next.getAttribute('data-min-size') || '10');
+  const nextMax = parseFloat(next.getAttribute('data-max-size') || '90');
+
+  function onMove(ev) {
+    const currentPos = isVertical ? ev.clientY : ev.clientX;
+    const deltaPct = ((currentPos - startPos) / totalSize) * 100;
+    let newPrev = startPrevPct + deltaPct;
+    newPrev = Math.max(prevMin, Math.min(prevMax, newPrev));
+    newPrev = Math.max(combinedPct - nextMax, Math.min(combinedPct - nextMin, newPrev));
+    const newNext = combinedPct - newPrev;
+
+    prev.style.flexBasis = `${newPrev.toFixed(2)}%`;
+    prev.style.flexGrow = `${newPrev.toFixed(2)}`;
+    next.style.flexBasis = `${newNext.toFixed(2)}%`;
+    next.style.flexGrow = `${newNext.toFixed(2)}`;
+  }
+
+  function onUp() {
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+  }
+
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+});

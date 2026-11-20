@@ -9,7 +9,7 @@
 
     <Separator />
 
-    <ComponentPreview Title="Form with fields">
+    <ComponentPreview Title="Form with fields" CodeSnippet="@_code">
         <Form Model="@_model" OnValidSubmit="HandleValidSubmitAsync" Class="w-full max-w-md space-y-6">
             <FormField Label="Project name" Description="Choose a name your team will recognize." Required Id="project-name">
                 <Input id="project-name" @bind-Value="_model.Name" Placeholder="Acme dashboard" />
@@ -43,4 +43,14 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
     }
+
+    private string _code = @"<Form Model=""@_model"" OnValidSubmit=""HandleValidSubmitAsync"" Class=""w-full max-w-md space-y-6"">
+    <FormField Label=""Project name"" Description=""Choose a name your team will recognize."" Required Id=""project-name"">
+        <Input id=""project-name"" @bind-Value=""_model.Name"" Placeholder=""Acme dashboard"" />
+    </FormField>
+    <FormField Label=""Description"" Id=""project-description"">
+        <Textarea id=""project-description"" @bind-Value=""_model.Description"" Placeholder=""What are you building?"" Rows=""4"" />
+    </FormField>
+    <Button Type=""submit"">Create project</Button>
+</Form>";
 }

@@ -9,7 +9,7 @@
 
     <Separator />
 
-    <ComponentPreview Title="Looping carousel">
+    <ComponentPreview Title="Looping carousel" CodeSnippet="@_code">
         <Carousel Loop Class="w-full max-w-lg">
             <CarouselContent>
                 <CarouselItem><div class="flex h-48 items-center justify-center rounded-xl bg-primary text-3xl font-semibold text-primary-foreground">01</div></CarouselItem>
@@ -21,3 +21,21 @@
         </Carousel>
     </ComponentPreview>
 </div>
+
+@code {
+    private string _code = @"<Carousel Loop Class=""w-full max-w-lg"">
+    <CarouselContent>
+        <CarouselItem>
+            <div class=""flex h-48 items-center justify-center rounded-xl bg-primary text-3xl font-semibold text-primary-foreground"">01</div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class=""flex h-48 items-center justify-center rounded-xl bg-secondary text-3xl font-semibold text-secondary-foreground"">02</div>
+        </CarouselItem>
+        <CarouselItem>
+            <div class=""flex h-48 items-center justify-center rounded-xl bg-accent text-3xl font-semibold text-accent-foreground"">03</div>
+        </CarouselItem>
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+</Carousel>";
+}

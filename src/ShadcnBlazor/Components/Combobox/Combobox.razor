@@ -1,6 +1,8 @@
 @namespace ShadcnBlazor
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
-<CascadingValue Value="this" IsFixed="true">
+<CascadingValue Value="this">
     <div id="@RootId" class="@ComputedClass" @attributes="AdditionalAttributes">
         <button type="button"
                 id="@TriggerId"
@@ -178,6 +180,50 @@
     }
 
     private string SearchText => _searchText;
+    private DotNetObjectReference<Combobox>? _dotNetRef;
+    private bool _registered;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Open && !_registered)
+        {
+            _registered = true;
+            _dotNetRef = DotNetObjectReference.Create(this);
+            try
+            {
+                await JS.InvokeVoidAsync("shadcnBlazor.registerClickOutside", RootId, _dotNetRef, nameof(OnClickOutside));
+            }
+            catch {}
+        }
+        else if (!Open && _registered)
+        {
+            _registered = false;
+            try
+            {
+                await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", RootId);
+            }
+            catch {}
+        }
+    }
+
+    [JSInvokable]
+    public async Task OnClickOutside()
+    {
+        await SetOpenAsync(false);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_registered)
+        {
+            try
+            {
+                await JS.InvokeVoidAsync("shadcnBlazor.unregisterClickOutside", RootId);
+            }
+            catch {}
+        }
+        _dotNetRef?.Dispose();
+    }
 
     private string ComputedClass => Cn.Class(
         "relative w-full",

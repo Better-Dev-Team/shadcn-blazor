@@ -12,63 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CSS Script CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Geist', 'sans-serif'],
-                        mono: ['Geist Mono', 'monospace'],
-                    },
-                    colors: {
-                        border: "hsl(var(--border))",
-                        input: "hsl(var(--input))",
-                        ring: "hsl(var(--ring))",
-                        background: "hsl(var(--background))",
-                        foreground: "hsl(var(--foreground))",
-                        primary: {
-                            DEFAULT: "hsl(var(--primary))",
-                            foreground: "hsl(var(--primary-foreground))",
-                        },
-                        secondary: {
-                            DEFAULT: "hsl(var(--secondary))",
-                            foreground: "hsl(var(--secondary-foreground))",
-                        },
-                        destructive: {
-                            DEFAULT: "hsl(var(--destructive))",
-                            foreground: "hsl(var(--destructive-foreground))",
-                        },
-                        muted: {
-                            DEFAULT: "hsl(var(--muted))",
-                            foreground: "hsl(var(--muted-foreground))",
-                        },
-                        accent: {
-                            DEFAULT: "hsl(var(--accent))",
-                            foreground: "hsl(var(--accent-foreground))",
-                        },
-                        popover: {
-                            DEFAULT: "hsl(var(--popover))",
-                            foreground: "hsl(var(--popover-foreground))",
-                        },
-                        card: {
-                            DEFAULT: "hsl(var(--card))",
-                            foreground: "hsl(var(--card-foreground))",
-                        },
-                    },
-                    borderRadius: {
-                        lg: "var(--radius)",
-                        md: "calc(var(--radius) - 2px)",
-                        sm: "calc(var(--radius) - 4px)",
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- ShadcnBlazor CSS Design Tokens -->
+    <!-- ShadcnBlazor Compiled Tailwind v4 Stylesheet & Design Tokens -->
     <link rel="stylesheet" href="_content/BetterDev.ShadcnBlazor/shadcn-blazor.css" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'><rect width='256' height='256' fill='black'/><path d='M208,128a80,80,0,1,1-80-80A80,80,0,0,1,208,128Z' fill='white'/></svg>" />
 </head>
@@ -83,9 +27,9 @@
         </div>
     </div>
 
-    <div id="blazor-error-ui" class="fixed bottom-4 right-4 z-50 rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive shadow-lg hidden">
+    <div id="blazor-error-ui" style="display: none;" class="fixed bottom-4 right-4 z-50 rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive shadow-lg hidden">
         An unhandled error has occurred.
-        <a href="." class="underline font-semibold ml-2">Reload</a>
+        <a href="." onclick="if('caches' in window){caches.keys().then(function(k){k.forEach(function(c){caches.delete(c);});});} window.location.reload(); return false;" class="underline font-semibold ml-2">Reload</a>
     </div>
 
     <!-- ShadcnBlazor JavaScript Interop -->
@@ -105,7 +49,24 @@
             } catch (e) {}
         })();
     </script>
-    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script>
+        Blazor.start({
+            loadBootResource: function (type, name, defaultUri, integrity) {
+                if (type === 'dotnetjs') {
+                    return defaultUri;
+                }
+                return fetch(defaultUri, {
+                    cache: 'no-cache',
+                    integrity: integrity
+                }).catch(function () {
+                    return fetch(defaultUri + (defaultUri.indexOf('?') === -1 ? '?' : '&') + 'v=' + Date.now(), {
+                        cache: 'reload'
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

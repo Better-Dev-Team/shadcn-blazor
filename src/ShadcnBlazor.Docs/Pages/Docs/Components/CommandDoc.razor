@@ -9,33 +9,31 @@
 
     <Separator />
 
-    <div class="grid gap-8 md:grid-cols-2">
-        <ComponentPreview Title="Command palette">
-            <Command Class="w-full max-w-sm border">
-                <CommandInput Placeholder="Search actions..." />
-                <CommandList>
-                    <CommandEmpty>No actions found.</CommandEmpty>
-                    <CommandGroup Heading="Actions">
-                        <CommandItem Value="new project" OnSelected="SelectNewProjectAsync">New project</CommandItem>
-                        <CommandItem Value="open settings" OnSelected="SelectSettingsAsync">Open settings</CommandItem>
-                        <CommandItem Value="invite team" OnSelected="SelectInviteAsync">Invite team</CommandItem>
-                    </CommandGroup>
-                </CommandList>
-            </Command>
-        </ComponentPreview>
+    <ComponentPreview Title="Command palette" CodeSnippet="@_commandCode">
+        <Command Class="w-full max-w-md rounded-lg border shadow-md">
+            <CommandInput Placeholder="Search actions..." />
+            <CommandList>
+                <CommandEmpty>No actions found.</CommandEmpty>
+                <CommandGroup Heading="Actions">
+                    <CommandItem Value="new project" OnSelected="SelectNewProjectAsync">New project</CommandItem>
+                    <CommandItem Value="open settings" OnSelected="SelectSettingsAsync">Open settings</CommandItem>
+                    <CommandItem Value="invite team" OnSelected="SelectInviteAsync">Invite team</CommandItem>
+                </CommandGroup>
+            </CommandList>
+        </Command>
+    </ComponentPreview>
 
-        <ComponentPreview Title="Combobox">
-            <div class="w-full max-w-sm space-y-3">
-                <Combobox @bind-Value="_framework">
-                    <ComboboxItem Value="blazor" Label="Blazor">Blazor</ComboboxItem>
-                    <ComboboxItem Value="aspnet" Label="ASP.NET Core">ASP.NET Core</ComboboxItem>
-                    <ComboboxItem Value="dotnet" Label=".NET">.NET</ComboboxItem>
-                    <ComboboxItem Value="tailwind" Label="Tailwind CSS">Tailwind CSS</ComboboxItem>
-                </Combobox>
-                <p class="text-sm text-muted-foreground">Selected: @_framework</p>
-            </div>
-        </ComponentPreview>
-    </div>
+    <ComponentPreview Title="Combobox" CodeSnippet="@_comboboxCode">
+        <div class="w-full max-w-xs space-y-3">
+            <Combobox @bind-Value="_framework">
+                <ComboboxItem Value="blazor" Label="Blazor">Blazor</ComboboxItem>
+                <ComboboxItem Value="aspnet" Label="ASP.NET Core">ASP.NET Core</ComboboxItem>
+                <ComboboxItem Value="dotnet" Label=".NET">.NET</ComboboxItem>
+                <ComboboxItem Value="tailwind" Label="Tailwind CSS">Tailwind CSS</ComboboxItem>
+            </Combobox>
+            <p class="text-sm text-muted-foreground text-center">Selected: @_framework</p>
+        </div>
+    </ComponentPreview>
 </div>
 
 @code {
@@ -44,4 +42,23 @@
     private Task SelectNewProjectAsync() => Task.CompletedTask;
     private Task SelectSettingsAsync() => Task.CompletedTask;
     private Task SelectInviteAsync() => Task.CompletedTask;
+
+    private string _commandCode = @"<Command Class=""w-full max-w-md rounded-lg border shadow-md"">
+    <CommandInput Placeholder=""Search actions..."" />
+    <CommandList>
+        <CommandEmpty>No actions found.</CommandEmpty>
+        <CommandGroup Heading=""Actions"">
+            <CommandItem Value=""new project"">New project</CommandItem>
+            <CommandItem Value=""open settings"">Open settings</CommandItem>
+            <CommandItem Value=""invite team"">Invite team</CommandItem>
+        </CommandGroup>
+    </CommandList>
+</Command>";
+
+    private string _comboboxCode = @"<Combobox @bind-Value=""_framework"">
+    <ComboboxItem Value=""blazor"" Label=""Blazor"">Blazor</ComboboxItem>
+    <ComboboxItem Value=""aspnet"" Label=""ASP.NET Core"">ASP.NET Core</ComboboxItem>
+    <ComboboxItem Value=""dotnet"" Label="".NET"">.NET</ComboboxItem>
+    <ComboboxItem Value=""tailwind"" Label=""Tailwind CSS"">Tailwind CSS</ComboboxItem>
+</Combobox>";
 }

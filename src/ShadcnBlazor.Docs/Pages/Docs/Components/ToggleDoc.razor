@@ -9,18 +9,17 @@
 
     <Separator />
 
-    <div class="grid gap-8 md:grid-cols-2">
-        <ComponentPreview Title="Toggle">
-            <Toggle @bind-Pressed="_isBold" Variant="ToggleVariant.Outline">Bold</Toggle>
-        </ComponentPreview>
-        <ComponentPreview Title="Toggle group">
-            <ToggleGroup Value="@_alignment" ValueChanged="SetAlignmentAsync" Type="ToggleGroupType.Single">
-                <ToggleGroupItem Value="left" Variant="ToggleVariant.Outline">Left</ToggleGroupItem>
-                <ToggleGroupItem Value="center" Variant="ToggleVariant.Outline">Center</ToggleGroupItem>
-                <ToggleGroupItem Value="right" Variant="ToggleVariant.Outline">Right</ToggleGroupItem>
-            </ToggleGroup>
-        </ComponentPreview>
-    </div>
+    <ComponentPreview Title="Toggle" CodeSnippet="@_toggleCode">
+        <Toggle @bind-Pressed="_isBold" Variant="ToggleVariant.Outline">Bold</Toggle>
+    </ComponentPreview>
+
+    <ComponentPreview Title="Toggle group" CodeSnippet="@_groupCode">
+        <ToggleGroup Value="@_alignment" ValueChanged="SetAlignmentAsync" Type="ToggleGroupType.Single">
+            <ToggleGroupItem Value="left" Variant="ToggleVariant.Outline">Left</ToggleGroupItem>
+            <ToggleGroupItem Value="center" Variant="ToggleVariant.Outline">Center</ToggleGroupItem>
+            <ToggleGroupItem Value="right" Variant="ToggleVariant.Outline">Right</ToggleGroupItem>
+        </ToggleGroup>
+    </ComponentPreview>
 </div>
 
 @code {
@@ -32,4 +31,12 @@
         _alignment = value;
         return Task.CompletedTask;
     }
+
+    private string _toggleCode = @"<Toggle @bind-Pressed=""_isBold"" Variant=""ToggleVariant.Outline"">Bold</Toggle>";
+
+    private string _groupCode = @"<ToggleGroup @bind-Value=""_alignment"" Type=""ToggleGroupType.Single"">
+    <ToggleGroupItem Value=""left"" Variant=""ToggleVariant.Outline"">Left</ToggleGroupItem>
+    <ToggleGroupItem Value=""center"" Variant=""ToggleVariant.Outline"">Center</ToggleGroupItem>
+    <ToggleGroupItem Value=""right"" Variant=""ToggleVariant.Outline"">Right</ToggleGroupItem>
+</ToggleGroup>";
 }

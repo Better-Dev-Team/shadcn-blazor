@@ -21,9 +21,9 @@
         </div>
     </div>
 
-    <div id="blazor-error-ui" class="fixed bottom-4 right-4 z-50 hidden rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive shadow-lg">
+    <div id="blazor-error-ui" style="display: none;" class="fixed bottom-4 right-4 z-50 hidden rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive shadow-lg">
         An unhandled error has occurred.
-        <a href="." class="underline font-semibold ml-2">Reload</a>
+        <a href="." onclick="if('caches' in window){caches.keys().then(function(k){k.forEach(function(c){caches.delete(c);});});} window.location.reload(); return false;" class="underline font-semibold ml-2">Reload</a>
     </div>
 
     <script src="_content/BetterDev.ShadcnBlazor/shadcn-blazor.js"></script>
